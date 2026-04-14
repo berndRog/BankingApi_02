@@ -1,0 +1,33 @@
+@baseUrl = https://localhost:8010/banking/v2.0
+
+###
+# @name Get customers
+GET {{baseUrl}}/employees
+Accept: application/json
+
+###
+# @name Get employee1
+GET {{baseUrl}}/employees/00000000-0001-0000-0000-000000000000
+Accept: application/json
+
+###
+# @name Get employee2
+GET {{baseUrl}}/employees/00000000-0002-0000-0000-000000000000
+Accept: application/json
+
+###
+# @name Get employee1 by name
+GET {{baseUrl}}/employees/name?name=Wag
+Accept: application/json
+
+###
+# @name Get employee1 by email
+GET {{baseUrl}}/employees/email?email=v.vogel@banking.de
+Accept: application/json
+
+###
+# @name Get customer6 by email
+GET {{baseUrl}}/employees/email?email=W.Wagner@Banking.de
+Accept: application/json
+
+###

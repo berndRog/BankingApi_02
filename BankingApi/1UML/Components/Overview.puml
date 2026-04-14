@@ -1,0 +1,33 @@
+@startuml
+skinparam componentStyle rectangle
+skinparam shadowing false
+
+package "BC Customers" {
+  component "Customers" as Customers
+}
+
+package "BC Employees" {
+  component "Employees" as Employees
+}
+
+package "BC Payments" {
+  component "Payments" as Payments
+
+  component "Account" as Account
+  component "Beneficiary" as Beneficiary
+  component "Transaction" as Transaction
+  component "Transfer" as Transfer
+
+  Payments --> Account
+  Payments --> Beneficiary
+  Payments --> Transaction
+  Payments --> Transfer
+}
+
+interface "IAccountsContract" as IAccountsContract
+
+Customers ..> IAccountsContract : uses
+Employees ..> IAccountsContract : uses
+Payments ..|> IAccountsContract : implements
+
+@enduml

@@ -1,0 +1,147 @@
+
+###
+# @name Post customer1
+POST {{baseUrl}}/customers
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "10000000-0000-0000-0000-000000000000",
+  "firstname": "Erika",
+  "lastname": "Mustermann",
+  "companyName": null,
+  "email": "erika.mustermann@t-online.de",
+  "subject": "a00090ad-d9df-486a-8757-4a649e26a54e",
+  "statusInt": 1,
+  "addressDto": {
+    "street": "Hauptstr. 23",
+    "postalCode": "29556",
+    "city": "Suderburg",
+    "country": "DE"
+  },
+  "accountid": "01000000-0000-0000-0000-000000000000",
+  "iban": "DE10 1000 0000 0000 0000 42",
+  "balance": 2100.0
+}
+
+###
+# @name Post customer2
+POST {{baseUrl}}/customers
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "20000000-0000-0000-0000-000000000000",
+  "firstname": "Max",
+  "lastname": "Mustermann",
+  "companyName": null,
+  "email": "max.mustermann@gmail.com",
+  "subject": "b0000640-161e-4228-9729-d6b142C2dfad",
+  "statusInt": 1,
+  "addressDto": {
+    "street": "Hauptstr. 23",
+    "postalCode": "29556",
+    "city": "Suderburg",
+    "country": "DE"
+  },
+  "accountid": "03000000-0000-0000-0000-000000000000",
+  "iban": "DE20 1000 0000 0000 0000 56",
+  "balance": 3000.0
+}
+
+###
+# @name Post customer3
+POST {{baseUrl}}/customers
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "30000000-0000-0000-0000-000000000000",
+  "firstname": "Arne",
+  "lastname": "Arndt",
+  "email": "a.arndt@t.online.de",
+  "subject": "c0004e61-ba7a-4d2a-977f-766b42bb79a9",
+  "statusInt": 1,
+  "addressDto": {
+    "street": "Neuperverstr. 29",
+    "postalCode": "29410",
+    "city": "Salzwedel",
+    "country": "DE"
+  },
+  "accountid": "04000000-0000-0000-0000-000000000000",
+  "iban": "DE30 1000 0000 0000 0000 70",
+  "balance": 3000.0
+}
+
+###
+# @name Post customer4
+POST {{baseUrl}}/customers
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "40000000-0000-0000-0000-000000000000",
+  "firstname": "Benno",
+  "lastname": "Bauer",
+  "email": "b.bauer@gmail.com",
+  "subject": "d0024ab-43c5-4c64-872d-6ca05f66756b",
+  "statusInt": 1,
+  "addressDto": {
+    "street": "Neuperverstr. 29",
+    "postalCode": "29410",
+    "city": "Salzwedel",
+    "country": "DE"
+  },
+  "accountid": "05000000-0000-0000-0000-000000000000",
+  "iban": "DE40 1000 0000 0000 0000 84",
+  "balance": 1900.0
+}
+
+###
+# @name Post customer5
+POST {{baseUrl}}/customers
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "50000000-0000-0000-0000-000000000000",
+  "firstname": "Christine",
+  "lastname": "Conrad",
+  "companyname": "CC Consulting GmbH",
+  "email": "c.conrad@gmx.de",
+  "subject": "e00050fb-a381-4e3f-a44b-81ffa7610b72",
+  "statusInt": 1,
+  "addressDto": {
+    "street": "Berliner Platz 8",
+    "postalCode": "29614",
+    "city": "Soltau",
+    "country": "DE"
+  },
+  "accountid": "06000000-0000-0000-0000-000000000000",
+  "iban": "DE50 1000 0000 0000 0000 01",
+  "balance": 3500.0
+}
+
+###
+# @name Post customer6
+POST {{baseUrl}}/customers
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "60000000-0000-0000-0000-000000000000",
+  "firstname": "Dana",
+  "lastname": "Deppe",
+  "email": "d.deppe@icloud.com",
+  "subject": "f0004f67-72a3-4449-af1f-803dcfaddb7f",
+  "statusInt": 1,
+  "addressDto": {
+    "street": "Allertalweg 2",
+    "postalCode": "29227",
+    "city": "Celle",
+    "country": "DE"
+  },
+  "accountid": "08000000-0000-0000-0000-000000000000",
+  "iban": "DE60 1000 0000 0000 0000 15",
+  "balance": 4300.0
+}

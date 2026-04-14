@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>BankingApi</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>  
+  	<!-- Swagger -->
+  	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  	<PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
+  	<PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\BankingApi_2_Core_BuildingBlocks\BankingApi_2_Core_BuildingBlocks.csproj" />
+    <ProjectReference Include="..\BankingApi_2_Core_Customer\BankingApi_2_Core_Customer.csproj" />
+    <ProjectReference Include="..\BankingApi_2_Core_Payments\BankingApi_2_Core_Payments.csproj" />
+  </ItemGroup>
+
+</Project>

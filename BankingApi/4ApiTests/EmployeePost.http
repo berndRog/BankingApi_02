@@ -1,0 +1,34 @@
+
+###
+# @name Post employee1
+POST {{baseUrl}}/employees
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "00000000-0001-0000-0000-000000000000",
+  "firstname": "Veronika",
+  "lastname": "Vogel",
+  "email": "v.vogel@banking.de",
+  "phone": "+49 5826 123 4010",
+  "subject": "11111111-0001-0000-0000-000000000000",
+  "adminrights": 255,
+  "personnelnumber": "Emp001"
+}
+
+###
+# @name Post employee2
+POST {{baseUrl}}/employees
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "00000000-0002-0000-0000-000000000000",
+  "firstname": "Walter",
+  "lastname": "Wagner",
+  "email": "w.wagner@banking.de",
+  "phone": "+49 5826 123 4020",
+  "subject": "11111111-0002-0000-0000-000000000000",
+  "adminrights": 511,
+  "personnelnumber": "Emp002"
+}

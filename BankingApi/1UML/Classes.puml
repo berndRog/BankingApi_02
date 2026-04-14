@@ -1,0 +1,83 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+'======================
+' Aggregate: Customer
+'======================
+class Customer <<AggregateRoot>> {
+  +Id: Guid
+  +Firstname: string
+  +Lastname: string
+  +Email: string
+  +IsActive: bool
+}
+
+'======================
+' Aggregate: Account
+'======================
+class Account <<AggregateRoot>> {
+  +Id: Guid
+  +CustomerId: Guid
+  +Iban: string
+  +Balance: Money
+}
+
+class Beneficiary <<Entity>> {
+  +Id: Guid
+  +Name: string
+  +Iban: string
+}
+
+class Transaction <<Entity>> {
+  +Id: Guid
+  +AccountId: Guid
+  +Type: TransactionType
+  +Amount: Money
+  +Purpose: string
+  +BookedAt: DateTimeOffset
+  +TransferId: Guid?
+}
+
+'======================
+' Aggregate: Transfer
+'======================
+class Transfer <<AggregateRoot>> {
+  +Id: Guid
+  +FromAccountId: Guid
+  +ToAccountId: Guid
+  +Amount: Money
+  +Purpose: string
+  +DebitTransactionId: Guid
+  +CreditTransactionId: Guid
+  +CreatedAt: DateTimeOffset
+  +ReversedByTransferId: Guid?
+}
+
+'======================
+' Value Objects
+'======================
+class Money <<ValueObject>> {
+  +Amount: decimal
+  +Currency: string
+}
+
+enum TransactionType {
+  Debit
+  Credit
+}
+
+'======================
+' Relationships
+'======================
+
+Customer "1" --> "0..*" Account : owns >
+
+Account "1" --> "0..*" Beneficiary : manages >
+Account "1" --> "0..*" Transaction : books >
+
+Transaction --> Transfer : optional link
+
+Transfer --> Account : from
+Transfer --> Account : to
+
+@enduml

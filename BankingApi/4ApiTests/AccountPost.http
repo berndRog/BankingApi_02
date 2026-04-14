@@ -1,0 +1,61 @@
+
+###
+# @name Post account2
+POST {{baseUrl}}/customers/10000000-0000-0000-0000-000000000000/accounts
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "02000000-0000-0000-0000-000000000000",
+  "iban": "DE10 20000000 0000000004",
+  "balance": 2000,
+  "currency": 1,
+  "ownerId": "10000000-0000-0000-0000-000000000000"
+}
+
+###
+# @name Post account7
+POST {{baseUrl}}/customers/50000000-0000-0000-0000-000000000000/accounts
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "07000000-0000-0000-0000-000000000000",
+  "iban": "DE50 2000 0000 0000 0000 60",
+  "balance": 3100,
+  "currency": 1,
+  "ownerId": "50000000-0000-0000-0000-000000000000"
+}
+
+
+###
+# @name Delete account1
+# DELETE {{baseUrl}}/owners/10000000-0000-0000-0000-000000000000/accounts/01000000-0000-0000-0000-000000000000
+
+###
+# @name Delete account2
+# DELETE {{baseUrl}}/owners/10000000-0000-0000-0000-000000000000/accounts/02000000-0000-0000-0000-000000000000
+
+###
+# @name Delete account3
+# DELETE {{baseUrl}}/owners/20000000-0000-0000-0000-000000000000/accounts/03000000-0000-0000-0000-000000000000
+
+###
+# @name Delete account4
+# DELETE {{baseUrl}}/owners/30000000-0000-0000-0000-000000000000/accounts/04000000-0000-0000-0000-000000000000
+
+###
+# @name Delete account5
+# DELETE {{baseUrl}}/owners/40000000-0000-0000-0000-000000000000/accounts/05000000-0000-0000-0000-000000000000
+
+###
+# @name Delete account6
+# DELETE {{baseUrl}}/owners/50000000-0000-0000-0000-000000000000/accounts/06000000-0000-0000-0000-000000000000
+
+###
+# @name Delete account7
+# DELETE {{baseUrl}}/owners/50000000-0000-0000-0000-000000000000/accounts/07000000-0000-0000-0000-000000000000
+
+###
+# @name Delete account8
+# DELETE {{baseUrl}}/owners/60000000-0000-0000-0000-000000000000/accounts/08000000-0000-0000-0000-000000000000

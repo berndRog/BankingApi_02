@@ -1,0 +1,48 @@
+@baseUrl = https://localhost:8010/banking/v2.0
+
+###
+# @name Get customers
+GET {{baseUrl}}/customers
+Accept: application/json
+
+###
+# @name Get customer1
+GET {{baseUrl}}/customers/10000000-0000-0000-0000-000000000000
+Accept: application/json
+
+###
+# @name Get customer2
+GET {{baseUrl}}/customers/20000000-0000-0000-0000-000000000000
+Accept: application/json
+
+###
+# @name Get customer3
+GET {{baseUrl}}/customers/30000000-0000-0000-0000-000000000000
+Accept: application/json
+
+###
+# @name Get customer1+2 by name
+GET {{baseUrl}}/customers/name?name=Mustermann
+Accept: application/json
+
+###
+# @name Get customer3 by name
+GET {{baseUrl}}/customers/name?name=Arne
+Accept: application/json
+
+###
+# @name Get customer5 by name (companyname)
+GET {{baseUrl}}/customers/name?name=CC Consult
+Accept: application/json
+
+###
+# @name Get customer5 by email
+GET {{baseUrl}}/customers/email?email=d.deppe@icloud.com
+Accept: application/json
+
+###
+# @name Get customer6 by email
+GET {{baseUrl}}/customers/email?email=d.deppe@icloud.com
+Accept: application/json
+
+###

@@ -1,0 +1,67 @@
+
+###
+# @name Get accounts
+GET {{baseUrl}}/accounts
+Accept: application/json
+
+###
+# @name Get account1 By Id
+GET {{baseUrl}}/accounts/01000000-0000-0000-0000-000000000000
+Accept: application/json
+
+###
+# @name Get account2 By Id
+GET {{baseUrl}}/accounts/02000000-0000-0000-0000-000000000000
+Accept: application/json
+
+###
+# @name Get account3 By Id
+GET {{baseUrl}}/accounts/03000000-0000-0000-0000-000000000000
+Accept: application/json
+
+###
+# @name Get account4 By Iban
+GET {{baseUrl}}/accounts/iban?iban=DE30 1000 0000 0000 0000 70
+Accept: application/json
+
+###
+# @name Get account5 By Iban
+GET {{baseUrl}}/accounts/iban?iban=DE50 1000 0000 0000 0000 01
+
+###
+# @name Get account6 By Iban
+GET {{baseUrl}}/accounts/iban?iban=DE60 1000 0000 0000 0000 15
+
+###
+# @name Get accounts ByCustomer1
+GET {{baseUrl}}/customers/10000000-0000-0000-0000-000000000000/accounts
+Accept: application/json
+
+###
+# @name Get accounts ByCustomer2
+GET {{baseUrl}}/customers/20000000-0000-0000-0000-000000000000/accounts
+Accept: application/json
+
+###
+# @name Get accounts ByCustomer3
+GET {{baseUrl}}/customers/30000000-0000-0000-0000-000000000000/accounts
+Accept: application/json
+
+###
+# @name Get accounts ByCustomer4
+GET {{baseUrl}}/customers/40000000-0000-0000-0000-000000000000/accounts
+Accept: application/json
+
+###
+# @name Get accounts ByCustomer5
+GET {{baseUrl}}/customers/50000000-0000-0000-0000-000000000000/accounts
+Accept: application/json
+
+###
+# @name Get accounts ByCustomer6
+GET {{baseUrl}}/customers/60000000-0000-0000-0000-000000000000/accounts
+Accept: application/json
+
+###
+# @name Get transactions ByAccount1
+# GET {{baseUrl}}/accounts/01000000-0000-0000-0000-000000000000/filter?start=2023-01-01&end=2023-12-31

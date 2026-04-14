@@ -1,0 +1,94 @@
+@startuml
+' High-level component diagram for Banking26DDD
+' Layout: vertical (top to bottom)
+' Save: 1UML/Components/banking_components.puml
+
+' Direction and style
+top to bottom direction
+skinparam componentStyle rectangle
+skinparam nodesep 20
+skinparam ranksep 48
+skinparam componentFontSize 12
+skinparam defaultFontName "Arial"
+
+' Program / Composition root
+package "Program / Host" {
+  [Program.cs] <<entrypoint>>
+  [DiAddBuildingBlocks.cs] <<DI>>
+}
+
+' Controllers
+package "Controllers" {
+  [AccountsController.cs]
+  [CustomersController.cs]
+  [EmployeesController.cs]
+  [BeneficiariesController.cs]
+}
+
+' Modules (application logic)
+package "Modules" {
+  [BuildingBlocks]
+  [Customers.Module]
+  [Employees.Module]
+  [Payments.Module]
+}
+
+' Infrastructure (adapters & persistence)
+package "Infrastructure" {
+  [DiInfrastructureModule.cs] <<DI>>
+  [DiAuthNAuthZ.cs] <<Auth>>
+  [SystemClock.cs]
+  package "Persistence" {
+    [BankingDbContext] <<DbContext>>
+    [Migrations]
+  }
+  package "Security" {
+    [TokenService]
+    [IdentityGateway]
+  }
+}
+
+' Database and files
+database "Database" as DB {
+  [BankingDb.db]
+  [Migrations Folder]
+}
+
+' Tests
+package "Tests" {
+  [BankingApiTest]
+  [IntegrationTestBase]
+  [BankingApiTestFactory]
+}
+
+' Ports styled as lollipops for provided interfaces
+circle "Persistence Port" as PersistencePort <<port>> #LightBlue
+circle "Auth Port" as AuthPort <<port>> #LightYellow
+
+' Connections (wiring)
+[Program.cs] --> Modules
+[Program.cs] --> Infrastructure
+
+' Controllers use Modules (via ports)
+[AccountsController.cs] --> [Customers.Module]
+[CustomersController.cs] --> [Customers.Module]
+[EmployeesController.cs] --> [Employees.Module]
+[BeneficiariesController.cs] --> [Payments.Module]
+
+' Modules rely on persistence and auth
+[Customers.Module] --> PersistencePort
+[Employees.Module] --> PersistencePort
+[Payments.Module] --> PersistencePort
+[Customers.Module] --> AuthPort
+
+' Infrastructure implements ports / connects to DB
+PersistencePort --> [BankingDbContext]
+AuthPort --> [TokenService]
+[BankingDbContext] --> DB
+
+' Tests depend on Program & Infrastructure
+[BankingApiTest] --> [Program.cs]
+[BankingApiTest] --> [BankingDbContext]
+
+@enduml
+

@@ -1,0 +1,7 @@
+﻿services:
+  bankingapi:
+    image: bankingapi
+    build:
+      context: .
+      dockerfile: BankingApi/Dockerfile
+

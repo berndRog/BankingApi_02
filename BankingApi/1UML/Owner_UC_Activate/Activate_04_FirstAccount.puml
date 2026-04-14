@@ -1,0 +1,19 @@
+@startuml
+scale 1.35
+skinparam shadowing false
+skinparam sequenceMessageAlign center
+skinparam maxMessageSize 90
+title Detail 3: Open Initial Account (Core)
+
+participant "OwnerUcActivate (BC Owner)" as U
+participant "AccountsContract (BC Core)" as AC
+
+U -> AC : OpenInitialAccount(customerId, iban?)
+alt invalid iban
+  AC --> U : Failure (422)
+else initial account exists
+  AC --> U : Failure (409)
+else ok
+  AC --> U : AccountCreated
+end
+@enduml

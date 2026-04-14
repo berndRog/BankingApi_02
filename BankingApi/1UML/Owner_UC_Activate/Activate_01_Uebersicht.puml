@@ -1,0 +1,31 @@
+@startuml
+scale 1.3
+skinparam shadowing false
+skinparam sequenceMessageAlign center
+skinparam maxMessageSize 80
+title Owner Activation (Übersicht)
+
+actor "Employee" as E
+participant "API" as API
+box "BC Owner" #EEF
+participant "OwnerUcActivate" as U
+end box
+box "BC Employee" #EFE
+participant "EmployeesContract" as EA
+end box
+box "BC Core" #FFE
+participant "AccountsContract" as AC
+end box
+
+E -> API : ActivateOwner(customerId, iban?)
+API -> U : Execute(customerId, iban?)
+
+U -> EA : RequireEmployee(OwnerActivate)
+EA --> U : EmployeeId / Forbidden
+
+U -> AC : OpenInitialAccount(customerId, iban?)
+AC --> U : OK / Error
+
+U --> API : Success / Failure
+API --> E : 200 / 4xx
+@enduml

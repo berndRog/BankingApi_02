@@ -1,0 +1,19 @@
+@startuml
+scale 1.35
+skinparam shadowing false
+skinparam sequenceMessageAlign center
+skinparam maxMessageSize 90
+title Detail 1: Employee Authorization
+
+participant "OwnerUcActivate (BC Owner)" as U
+participant "EmployeeContract (BC Employee)" as EA
+
+U -> EA : RequireEmployee(OwnerActivate)
+alt not logged in
+  EA --> U : Failure (401)
+else no rights / not provisioned
+  EA --> U : Failure (403)
+else ok
+  EA --> U : EmployeeId
+end
+@enduml

@@ -1,0 +1,47 @@
+###
+# @name Get beneficiary1 by AccountId & beneficiaryId
+GET {{baseUrl}}/accounts/01000000-0000-0000-0000-000000000000/beneficiaries/00100000-0000-0000-0000-000000000000
+Accept: application/json
+
+###
+# @name Get beneficiary2 by AccountId & beneficiaryId
+GET {{baseUrl}}/accounts/01000000-0000-0000-0000-000000000000/beneficiaries/00200000-0000-0000-0000-000000000000
+Accept: application/json
+
+###
+# @name Get beneficiariesByAccount1
+GET {{baseUrl}}/accounts/01000000-0000-0000-0000-000000000000/beneficiaries
+Accept: application/json
+
+###
+# @name Get beneficiariesByAccount2
+GET {{baseUrl}}/accounts/02000000-0000-0000-0000-000000000000/beneficiaries
+Accept: application/json
+
+###
+# @name Get beneficiariesByAccount3
+GET {{baseUrl}}/accounts/03000000-0000-0000-0000-000000000000/beneficiaries
+Accept: application/json
+
+###
+# @name Get beneficiariesByAccount4
+GET {{baseUrl}}/accounts/04000000-0000-0000-0000-000000000000/beneficiaries
+Accept: application/json
+
+###
+# @name Get beneficiariesByAccount5
+GET {{baseUrl}}/accounts/05000000-0000-0000-0000-000000000000/beneficiaries
+Accept: application/json
+
+###
+# @name Get beneficiariesByAccount6
+GET {{baseUrl}}/accounts/06000000-0000-0000-0000-000000000000/beneficiaries
+Accept: application/json
+
+
+###
+# @name Get beneficiariesByAccount1AndName
+#GET {{baseUrl}}/accounts/01000000-0000-0000-0000-000000000000/beneficiaries/name?
+#    name=Consulting
+#Accept: application/json
+

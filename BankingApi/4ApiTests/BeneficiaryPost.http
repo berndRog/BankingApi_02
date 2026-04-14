@@ -1,0 +1,132 @@
+
+###
+# @name Post beneficiary1
+POST {{baseUrl}}/accounts/01000000-0000-0000-0000-000000000000/beneficiaries
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "00100000-0000-0000-0000-000000000000",
+  "name": "CC Consulting GmbH",
+  "iban": "DE50 1000 0000 0000 0000 01"
+}
+
+###
+# @name Post beneficiary2
+POST {{baseUrl}}/accounts/01000000-0000-0000-0000-000000000000/beneficiaries
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "00200000-0000-0000-0000-000000000000",
+  "name": "CC Consulting GmbH",
+  "iban": "DE50 2000 0000 0000 0000 60"
+}
+
+###
+# @name Post beneficiary3
+POST {{baseUrl}}/accounts/02000000-0000-0000-0000-000000000000/beneficiaries
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "00300000-0000-0000-0000-000000000000",
+  "name": "Arne Arndt",
+  "iban": "DE30 1000 0000 0000 0000 70"
+}
+
+###
+# @name Post beneficiary4
+POST {{baseUrl}}/accounts/02000000-0000-0000-0000-000000000000/beneficiaries
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "00400000-0000-0000-0000-000000000000",
+  "name": "Benno Bauer",
+  "iban": "DE40 1000 0000 0000 0000 84"
+}
+
+###
+# @name Post beneficiary5
+POST {{baseUrl}}/accounts/03000000-0000-0000-0000-000000000000/beneficiaries
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "00500000-0000-0000-0000-000000000000",
+  "name": "Arne Arndt",
+  "iban": "DE30 1000 0000 0000 0000 70"
+}
+
+###
+# @name Post beneficiary6
+POST {{baseUrl}}/accounts/03000000-0000-0000-0000-000000000000/beneficiaries
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "00600000-0000-0000-0000-000000000000",
+  "name": "Benno Bauer",
+  "iban": "DE40 1000 0000 0000 0000 84"
+}
+
+###
+# @name Post beneficiary7
+POST {{baseUrl}}/accounts/03000000-0000-0000-0000-000000000000/beneficiaries
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "00700000-0000-0000-0000-000000000000",
+  "name": "Dana Deppe",
+  "iban": "DE60 1000 0000 0000 0000 15"
+}
+
+###
+# @name Post beneficiary8
+POST {{baseUrl}}/accounts/04000000-0000-0000-0000-000000000000/beneficiaries
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "00800000-0000-0000-0000-000000000000",
+  "name": "Max Mustermann",
+  "iban": "DE20 1000 0000 0000 0000 56"
+}
+
+###
+# @name Post beneficiary9
+POST {{baseUrl}}/accounts/04000000-0000-0000-0000-000000000000/beneficiaries
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "00900000-0000-0000-0000-000000000000",
+  "name": "Christine Conrad",
+  "iban": "DE50 2000 0000 0000 0000 60"
+}
+
+###
+# @name Post beneficiary10
+POST {{baseUrl}}/accounts/05000000-0000-0000-0000-000000000000/beneficiaries
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "01000000-0000-0000-0000-000000000000",
+  "name": "Erika Mustermann",
+  "iban": "DE10 1000 0000 0000 0000 42"
+}
+
+###
+# @name Post beneficiary11
+POST {{baseUrl}}/accounts/05000000-0000-0000-0000-000000000000/beneficiaries
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "01100000-0000-0000-0000-000000000000",
+  "name": "Erika Mustermann",
+  "iban": "DE10 2000 0000 0000 0000 04"
+}

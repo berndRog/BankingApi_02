@@ -1,0 +1,79 @@
+@startuml
+scale 1.2
+skinparam dpi 200
+skinparam shadowing false
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+skinparam maxMessageSize 120
+
+title Owner Activation\nEmployee Authorization + Initial Account Opening
+
+actor "Bank Employee" as User
+
+box "API Layer"
+participant "EmployeesController" as API
+end box
+
+box "BC Owner"
+participant "OwnerUcActivate" as UcActivate
+participant "Owner Aggregate" as Owner
+participant "OwnersRepository" as OwnerRepo
+end box
+
+box "BC Employee"
+participant "EmployeeAuthContract" as EmpContract
+participant "Employees" as Employees
+end box
+
+box "BC Core"
+participant "AccountsContract" as AccContract
+participant "Accounts" as Accounts
+end box
+
+== Request ==
+User -> API : POST /employees/{id}/activate(iban)
+API -> UcActivate : Execute(customerId)
+
+== Authorize Employee ==
+UcActivate -> EmpContract : RequireEmployee(OwnerActivate)
+EmpContract -> Employees : FindBySubject(subject)
+Employees --> EmpContract : Employee + AdminRights
+EmpContract --> UcActivate : EmployeeId / Failure
+
+alt not authorized
+    UcActivate --> API : Failure (403)
+    API --> User : Forbidden
+else authorized
+    == Load Owner ==
+    UcActivate -> OwnerRepo : FindById(customerId)
+    OwnerRepo --> UcActivate : Owner / null
+
+    alt owner not found
+        UcActivate --> API : Failure (404)
+        API --> User : Not Found
+    else owner found
+        == Open Initial Account ==
+        UcActivate -> AccContract : OpenInitialAccount(customerId, iban)
+        AccContract -> Accounts : Create Account
+        Accounts --> AccContract : AccountCreated / Failure
+
+        alt invalid iban / already exists
+            AccContract --> UcActivate : Failure
+            UcActivate --> API : Failure (422/409)
+            API --> User : Error
+        else account created
+            == Activate Owner ==
+            UcActivate -> Owner : Activate(employeeId, utcNow)
+            Owner --> UcActivate : OK
+
+            == Persist ==
+            UcActivate -> OwnerRepo : Save
+            OwnerRepo --> UcActivate : done
+
+            UcActivate --> API : Success
+            API --> User : 200 OK
+        end
+    end
+end
+
+@enduml
