@@ -27,6 +27,15 @@ internal class CustomerRepositoryEf(
    ) => await customerDbContext.Customers
          .SingleOrDefaultAsync(c => c.EmailVo == emailVo, ct);
 
+   // Efficiently checks if at least one account exists for a specific customer.
+   public async Task<bool> ExistsByCustomerIdAsync(
+      Guid customerId,
+      CancellationToken ct = default
+   ) => await customerDbContext.Customers
+      .Where(c => c.Id == customerId && c.DeactivatedAt == null)
+      .AnyAsync(ct);
+
+   
    public async Task<IReadOnlyList<Customer>> SelectByDisplayNameAsync(
       string displayName,
       CancellationToken ct = default

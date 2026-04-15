@@ -55,7 +55,6 @@ internal sealed class CustomerReadModelEf(
       string email,
       CancellationToken ct
    ) {
-
       var result = EmailVo.Create(email);
       if (result.IsFailure)      
          return Result<CustomerDto>.Failure(result.Error);

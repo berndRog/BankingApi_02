@@ -7,46 +7,47 @@ using Microsoft.EntityFrameworkCore;
 namespace BankingApi._3_Infrastructure._2_Persistence.Repositories;
 
 internal sealed class AccountRepositoryEf(
-   IAccountDbContext dbContext
+   IAccountDbContext accountDbContext
 ) : IAccountRepository {
+   
    #region --- Aggregate root: Account ------------------------------------------------------
    // Loads a single account by its primary key (Id) without navigation properties.
    public async Task<Account?> FindByIdAsync(
       Guid id,
       CancellationToken ct = default
-   ) => await dbContext.Accounts
+   ) => await accountDbContext.Accounts
       .FirstOrDefaultAsync(a => a.Id == id, ct);
 
    // Loads a single account by its unique IBAN Value Object.
    public async Task<Account?> FindByIbanAsync(
       IbanVo ibanVo,
       CancellationToken ct = default
-   ) => await dbContext.Accounts
+   ) => await accountDbContext.Accounts
       .FirstOrDefaultAsync(a => a.IbanVo == ibanVo, ct);
 
-   // Efficiently checks if at least one account exists for a specific customer.
+   // Check whether a customer already owns an account
    public async Task<bool> ExistsByCustomerIdAsync(
-      Guid customerId,
+      Guid customerId, 
       CancellationToken ct = default
-   ) => await dbContext.Accounts
-      .Where(a => a.CustomerId == customerId && a.DeactivatedAt == null)
-      .AnyAsync(ct);
-
+   ) => await accountDbContext.Accounts
+         .Where(a => a.CustomerId == customerId)
+         .AnyAsync(ct);
+   
    // Retrieves all accounts associated with a customer ID.
    public async Task<IReadOnlyList<Account>> SelelctByCustomerIdAsync(
       Guid customerId,
       CancellationToken ct = default
-   ) => await dbContext.Accounts
+   ) => await accountDbContext.Accounts
       .Where(a => a.CustomerId == customerId)
       .ToListAsync(ct);
 
    // Mark Account entity as added in the tracker
    public void Add(Account account)
-      => dbContext.Add(account);
+      => accountDbContext.Add(account);
 
    // Mark multiple Account as added to the tracker
    public void AddRange(IEnumerable<Account> accounts)
-      => dbContext.AddRange(accounts);
+      => accountDbContext.AddRange(accounts);
    #endregion
 
    #region --- Child entity: Benficiary -----------------------------------------------------
@@ -54,7 +55,7 @@ internal sealed class AccountRepositoryEf(
    public async Task<Account?> FindAccountByIdWithBeneficiariesAsync(
       Guid accountId,
       CancellationToken ct = default
-   ) => await dbContext.Accounts
+   ) => await accountDbContext.Accounts
       .Include(a => a.Beneficiaries)
       .FirstOrDefaultAsync(a => a.Id == accountId, ct);
 
@@ -63,17 +64,17 @@ internal sealed class AccountRepositoryEf(
       Guid accountId,
       Guid beneficiaryId,
       CancellationToken ct = default
-   ) => await dbContext.Accounts
+   ) => await accountDbContext.Accounts
       .Include(a => a.Beneficiaries.Where(b => b.Id == beneficiaryId))
       .FirstOrDefaultAsync(a => a.Id == accountId, ct);
 
    public void Add(Beneficiary beneficiary)
-      => dbContext.Add(beneficiary);
+      => accountDbContext.Add(beneficiary);
 
    public void AddRange(IEnumerable<Beneficiary> beneficiaries)
-      => dbContext.AddRange(beneficiaries);
+      => accountDbContext.AddRange(beneficiaries);
 
    public void Remove(Beneficiary beneficiary)
-      => dbContext.Remove(beneficiary);
+      => accountDbContext.Remove(beneficiary);
    #endregion
 }

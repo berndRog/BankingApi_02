@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BankingApi._3_Infrastructure._2_Persistence.ReadModel;
 
 internal sealed class AccountReadModelEf(
-   AppDbContext dbContext
+   IAccountDbContext accountDbContext
 ) : IAccountReadModel {
    
    #region --- Aggregate root: Account ------------------------------------------------------
@@ -20,7 +20,7 @@ internal sealed class AccountReadModelEf(
       CancellationToken ct
    ) {
       // the DB is doing the work: filter by Id, project to DTO, no tracking (read-only)
-      var accountDto = await dbContext.Accounts
+      var accountDto = await accountDbContext.Accounts
          .AsNoTracking()
          .Where(a => a.Id == id) // filter
          .Select(c => c.ToAccountDto()) // projection
@@ -40,7 +40,7 @@ internal sealed class AccountReadModelEf(
          throw new ApplicationException(result.Error.Message);
       var ibanVo = result.Value;
 
-      var accountDto = await dbContext.Accounts
+      var accountDto = await accountDbContext.Accounts
          .AsNoTracking()
          .Where(a => a.IbanVo == ibanVo) // filter
          .Select(c => c.ToAccountDto()) // projection
@@ -54,7 +54,7 @@ internal sealed class AccountReadModelEf(
    public async Task<Result<IEnumerable<AccountDto>>> SelectAsync(
       CancellationToken ctToken = default
    ) {
-      var accountDtos = await dbContext.Accounts
+      var accountDtos = await accountDbContext.Accounts
          .AsNoTracking()
          .Select(a => a.ToAccountDto())
          .ToListAsync(ctToken);
@@ -72,7 +72,7 @@ internal sealed class AccountReadModelEf(
       // 2. Consistent with the Beneficiary logic: 
       // We check if the "Parent" (Customer) exists to avoid returning a 
       // "false empty" list if the ID is simply wrong.
-      var accountDtos = await dbContext.Accounts
+      var accountDtos = await accountDbContext.Accounts
          .Where(a => a.CustomerId == customerId)
          .Select(a => a.ToAccountDto())
          .ToListAsync(ct);
@@ -94,7 +94,7 @@ internal sealed class AccountReadModelEf(
    ) {
       // 1. Fetch the specific beneficiary ensuring it belongs to the provided AccountId.
       // We use AsNoTracking for read-only performance and project directly to a DTO.
-      var beneficiaryDto = await dbContext.Beneficiaries
+      var beneficiaryDto = await accountDbContext.Beneficiaries
          .AsNoTracking()
          .Where(b => b.AccountId == accountId && b.Id == beneficiaryId)
          .Select(b => b.ToBeneficiaryDto())
@@ -114,7 +114,7 @@ internal sealed class AccountReadModelEf(
       // 1. Query the database using the Aggregate Root (Account) as the entry point.
       // We use a projection (Select) to check for account existence and 
       // retrieve the list of beneficiaries in a single database roundtrip.
-      var result = await dbContext.Accounts
+      var result = await accountDbContext.Accounts
          .AsNoTracking()
          .Where(a => a.Id == accountId)
          .Select(a => new {
@@ -146,7 +146,7 @@ internal sealed class AccountReadModelEf(
 
       // 2. Query starting from the Aggregate Root (Account) to ensure context validity.
       // We use a projection to fetch existence and filtered data in one DB trip.
-      var result = await dbContext.Accounts
+      var result = await accountDbContext.Accounts
          .AsNoTracking()
          .Where(a => a.Id == accountId)
          .Select(a => new {

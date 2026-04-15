@@ -26,18 +26,18 @@ public interface ICustomerRepository {
       CancellationToken ct = default
    );
 
+   // Check if the customer exists and is currently active
+   Task<bool> ExistsActiveAsync(
+      Guid customerId,
+      CancellationToken ct = default
+   );
+   
    // Load all customers with SQL like displayName
    Task<IReadOnlyList<Customer>> SelectByDisplayNameAsync(
       string displayName,
       CancellationToken ct = default
    );
    
-   // Check if the customer exists and is currently active
-   Task<bool> ExistsActiveAsync(
-      Guid customerId,
-      CancellationToken ct = default
-   );
-
    // Select all customers
    Task<IReadOnlyList<Customer>> SelectAllAsync(
       CancellationToken ct = default

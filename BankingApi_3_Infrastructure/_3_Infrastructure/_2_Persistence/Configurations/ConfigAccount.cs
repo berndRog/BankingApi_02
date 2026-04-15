@@ -36,8 +36,7 @@ internal sealed class ConfigAccount(
       builder.Property(a => a.IbanVo)
          .HasConversion(vo => vo.Value, s => IbanVo.FromPersisted(s))
          .IsRequired()
-         .HasColumnName("Iban")
-         .HasColumnOrder(1)
+         .HasColumnName("Iban").HasColumnOrder(1)
          .HasMaxLength(50);
       builder.HasIndex(c => c.IbanVo).IsUnique();
 
