@@ -3,25 +3,25 @@ scale 1.3
 skinparam shadowing false
 skinparam sequenceMessageAlign center
 skinparam maxMessageSize 80
-title Owner Activation (Übersicht)
+title Customer Activation (Übersicht)
 
 actor "Employee" as E
 participant "API" as API
-box "BC Owner" #EEF
-participant "OwnerUcActivate" as U
+box "BC Customer" #EEF
+participant "CustomerUcActivate" as U
 end box
 box "BC Employee" #EFE
-participant "EmployeesContract" as EA
+participant "EmployeesContract" as EC
 end box
 box "BC Core" #FFE
 participant "AccountsContract" as AC
 end box
 
-E -> API : ActivateOwner(customerId, iban?)
+E -> API : ActivateCustomer(customerId, iban?)
 API -> U : Execute(customerId, iban?)
 
-U -> EA : RequireEmployee(OwnerActivate)
-EA --> U : EmployeeId / Forbidden
+U -> EC : RequireEmployee(CustomerActivate)
+EC --> U : EmployeeId / Forbidden
 
 U -> AC : OpenInitialAccount(customerId, iban?)
 AC --> U : OK / Error

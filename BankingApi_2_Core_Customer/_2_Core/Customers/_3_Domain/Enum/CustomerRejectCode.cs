@@ -2,7 +2,7 @@ namespace BankingApi._2_Core.Customers._3_Domain.Enum;
 
 // Reasons why a customer application can be rejected.
 // Represents domain-level rejection codes used during customer onboarding.
-public enum RejectCode {
+public enum CustomerRejectCode {
    None = 0,
 
    // Identity verification failed

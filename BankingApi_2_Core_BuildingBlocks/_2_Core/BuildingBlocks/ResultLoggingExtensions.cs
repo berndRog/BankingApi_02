@@ -1,10 +1,8 @@
 using Microsoft.Extensions.Logging;
 namespace BankingApi._2_Core.BuildingBlocks;
 
-/// <summary>
-/// Centralized logging extensions for Result and Result&lt;T&gt;.
-/// Logs failures consistently at the system boundary.
-/// </summary>
+// Centralized logging extensions for Result and Result&lt;T&gt;.
+// Logs failures consistently at the system boundary.
 public static class ResultLoggingExtensions {
 
    public static Result LogIfFailure(

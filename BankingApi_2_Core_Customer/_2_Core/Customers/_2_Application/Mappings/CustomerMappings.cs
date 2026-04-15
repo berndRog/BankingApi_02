@@ -43,7 +43,7 @@ public static class CustomerMappings {
       StatusInt: (int)customer.Status,
       ActivatedAt: customer.ActivatedAt?.ToString("O"),
       RejectedAt: customer.RejectedAt?.ToString("O"),
-      RejectCodeInt: (int)customer.RejectCode,
+      RejectCodeInt: (int)customer.CustomerRejectCode,
       AuditedByEmployeeId: customer.AuditedByEmployeeId,
       DeactivatedAt: customer.DeactivatedAt?.ToString("O"),
       DeactivatedByEmployeeId: customer.DeactivatedByEmployeeId,

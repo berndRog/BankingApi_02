@@ -5,20 +5,20 @@ skinparam sequenceMessageAlign center
 skinparam maxMessageSize 90
 title Detail 2: Load Owner + Status Guard
 
-participant "OwnerUcActivate" as U
+participant "CustomerUcActivate" as U
 participant "EmployeesRepository" as R
-participant "Owner Aggregate" as O
+participant "Customer Aggregate" as CA
 
 U -> R : FindById(customerId)
 alt not found
   R --> U : null (404)
 else found
-  R --> U : Owner
-  U -> O : EnsureStatus(Provisioned)
+  R --> U : Customer
+  U -> CA : EnsureStatus(Provisioned)
   alt wrong status
-    O --> U : Failure (409)
+    CA --> U : Failure (409)
   else ok
-    O --> U : OK
+    CA --> U : OK
   end
 end
 @enduml

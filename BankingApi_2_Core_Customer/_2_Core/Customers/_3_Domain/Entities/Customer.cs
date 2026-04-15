@@ -32,7 +32,7 @@ public sealed class Customer : AggregateRoot {
    // Employee decisions (audit facts)
    public DateTimeOffset? ActivatedAt { get; private set; }
    public DateTimeOffset? RejectedAt { get; private set; }
-   public RejectCode RejectCode { get; private set; }
+   public CustomerRejectCode CustomerRejectCode { get; private set; }
    public Guid? AuditedByEmployeeId { get; private set; }
 
    public DateTimeOffset? DeactivatedAt { get; private set; }
@@ -250,7 +250,7 @@ public sealed class Customer : AggregateRoot {
       AuditedByEmployeeId = activatedByEmployeeId;
 
       RejectedAt = null;
-      RejectCode = RejectCode.None;
+      CustomerRejectCode = CustomerRejectCode.None;
 
       // create initial account for the owner (domain event, handled in application layer)
       Touch(activatedAt);
@@ -260,7 +260,7 @@ public sealed class Customer : AggregateRoot {
    // Employee rejects the owner (e.g., KYC failed).
    public Result Reject(
       Guid rejectedByEmployeeId,
-      RejectCode rejectCode,
+      CustomerRejectCode customerRejectCode,
       DateTimeOffset rejectedAt
    ) {
       if (rejectedAt == default)
@@ -270,7 +270,7 @@ public sealed class Customer : AggregateRoot {
       // (employee, timestamp, status, reason code)
       if (rejectedByEmployeeId == Guid.Empty)
          return Result.Failure(CustomerErrors.AuditRequiresEmployee);
-      if (rejectCode == default)
+      if (customerRejectCode == default)
          return Result.Failure(CustomerErrors.RejectionRequiresReason);
       if (Status != CustomerStatus.Pending)
          return Result.Failure(CustomerErrors.NotPending);
@@ -278,7 +278,7 @@ public sealed class Customer : AggregateRoot {
       Status = CustomerStatus.Rejected;
       RejectedAt = rejectedAt;
       AuditedByEmployeeId = rejectedByEmployeeId;
-      RejectCode = rejectCode;
+      CustomerRejectCode = customerRejectCode;
 
       Touch(rejectedAt);
       return Result.Success();

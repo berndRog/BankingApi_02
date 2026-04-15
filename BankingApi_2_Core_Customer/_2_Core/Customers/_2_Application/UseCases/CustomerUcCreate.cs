@@ -91,14 +91,13 @@ internal sealed class CustomerUcCreate(
          accountId: customerCreateDto.AccountId,
          iban: customerCreateDto.Iban,
          balance: customerCreateDto.Balance ?? 0.0m,
-         
          ct: ct
       );
       if(resultAccount.IsFailure)
          return Result<CustomerDto>.Failure(resultAccount.Error)
             .LogIfFailure(logger, "CustomerUcCreate.OpenInitialAccountFailed", new { customerId = customer.Id });
      
-      logger.LogInformation("CustomerUcCreate done OpenInitialAccount for CustomerId={id} with iban={iban}",
+      logger.LogInformation("CustomerUcCreate done CustomerId={id}, iban={iban}",
          customer.Id, resultAccount.Value!.Iban);  
       
       return Result<CustomerDto>.Success(customer.ToCustomerDto());
