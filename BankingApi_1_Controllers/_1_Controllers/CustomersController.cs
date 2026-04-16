@@ -1,4 +1,3 @@
-using Asp.Versioning;
 using BankingApi._1_Controllers.Extensions;
 using BankingApi._2_Core.Customers._1_Ports.Inbound;
 using BankingApi._2_Core.Customers._1_Ports.Outbound;
@@ -6,11 +5,12 @@ using BankingApi._2_Core.Customers._2_Application.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-namespace BankingApi._1_Controllers.V2;
+namespace BankingApi._1_Controllers;
 
-[ApiVersion("1.0")]
-[ApiVersion("2.0")]
-[Route("banking/v{version:apiVersion}")]
+//[ApiVersion("1.0")]
+//[ApiVersion("2.0")]
+//[Route("banking/v{version:apiVersion}")]
+[Route("banking/v2")]
 [ApiController]
 public sealed class CustomersController(
    ICustomerReadModel readModel,

@@ -26,15 +26,6 @@ public class Program {
 
       // Add Error handling
       builder.Services.AddProblemDetails();
-
-      // AuthN (Bearer) + AuthZ
-      // builder.Services.AddAuthNAuthZ(builder.Configuration);
-
-      // API versioning 
-      builder.Services.AddApiReaderAndVersioning();
-      
-      // Swagger
-      builder.Services.AddSwagger();
       
       var app = builder.Build();
 
@@ -44,26 +35,12 @@ public class Program {
            
          app.UseHttpLogging();
          app.UseDeveloperExceptionPage();
-
-         app.UseSwagger();
-
-         var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
-
-         app.UseSwaggerUI(options => {
-            foreach (var description in provider.ApiVersionDescriptions) {
-               options.SwaggerEndpoint(
-                  $"/swagger/{description.GroupName}/swagger.json",
-                  $"BankingApi {description.GroupName.ToUpperInvariant()}"
-               );
-            }
-            options.RoutePrefix = "swagger";
-         });
       }
       
       app.UseHttpsRedirection();
 
-      app.UseAuthentication();
-      app.UseAuthorization();
+      //app.UseAuthentication();
+      //app.UseAuthorization();
 
       app.MapControllers();
 

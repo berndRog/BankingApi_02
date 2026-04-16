@@ -59,6 +59,7 @@ public static class DiTestModules {
       // Account UseCases
       services.AddScoped<IAccountUseCases, AccountUseCases>();
       services.AddScoped<AccountUcCreate>();
+      services.AddScoped<AccountUcDeactivate>();
       services.AddScoped<AccountUcBeneficiaryAdd>();
       services.AddScoped<AccountUcBeneficiaryRemove>();
       

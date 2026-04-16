@@ -24,19 +24,19 @@ internal sealed class AccountUcBeneficiaryAdd(
       BeneficiaryDto beneficiaryDto,
       CancellationToken ct = default
    ) {
-      // find account with beneficiaries
+      // 1) Load account with beneficiaries
       var account = await accountRepository.FindAccountByIdWithBeneficiariesAsync(accountId, ct);
       if (account is null) 
          return Result<BeneficiaryDto>.Failure(BeneficiaryErrors.AccountNotFound);
       
-      // Domain logic
+      // 2) Domain Model
       // create IbanVo
       var resultIban = IbanVo.Create(beneficiaryDto.Iban);
       if (resultIban.IsFailure) 
          return Result<BeneficiaryDto>.Failure(BeneficiaryErrors.InvalidIban);
       var ibanVo = resultIban.Value;
       
-      // create a new beneficiary
+      // Create a new beneficiary
       var resultBeneficiary = Beneficiary.Create(
          accountId: accountId,
          name: beneficiaryDto.Name,
@@ -46,7 +46,7 @@ internal sealed class AccountUcBeneficiaryAdd(
       if (resultBeneficiary.IsFailure)
          return Result<BeneficiaryDto>.Failure(resultBeneficiary.Error);
       
-      // add beneficiary to account
+      // Add beneficiary to account
       var result = account.AddBeneficiary(
          beneficiary:   resultBeneficiary.Value,
          updatedAt: clock.UtcNow
@@ -55,7 +55,7 @@ internal sealed class AccountUcBeneficiaryAdd(
          return Result<BeneficiaryDto>.Failure(result.Error);
       var beneficiary = result.Value;
       
-      // unit of work, save changes to database
+      // 3) Unit of work, save changes to database
       var savedRows = await unitOfWork.SaveAllChangesAsync("Add beneficiary to account", ct);
 
       logger.LogDebug("Beneficiary added ({Id}) to Account ({AccountId}) savedRows: {Rows}",

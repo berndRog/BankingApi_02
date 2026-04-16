@@ -10,11 +10,16 @@ namespace BankingApiTest._2_Core.Core.Application.UseCases;
 
 public sealed class AccountUcCreateIntT : TestBaseIntegration {
    
+   public AccountUcCreateIntT() {
+      DbMode = DbMode.FileUnique;
+      DbName = "AccountUcCreateIntTest";
+      SensitiveDataLogging = true;
+   }
+   
    [Fact]
    public async Task Create_account_ok() {
       using var scope = Root.CreateDefaultScope();
       var ct = CancellationToken.None;
-      var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
       var customerRepository = scope.ServiceProvider.GetRequiredService<ICustomerRepository>();
       var accountRepository = scope.ServiceProvider.GetRequiredService<IAccountRepository>();
       var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
@@ -23,6 +28,10 @@ public sealed class AccountUcCreateIntT : TestBaseIntegration {
       var sut = scope.ServiceProvider.GetRequiredService<AccountUcCreate>();
       
       // Arrange
+      // Employee2 is used as Admin 
+      var employee2Id = Guid.Parse("00000000-0002-0000-0000-000000000000");
+     
+      // Customer 1 is the owner of Account1
       var customer = seed.Customer1();
       customerRepository.Add(customer);
       await unitOfWork.SaveAllChangesAsync("Seeding data", ct);
@@ -32,11 +41,12 @@ public sealed class AccountUcCreateIntT : TestBaseIntegration {
       var accountDto = account.ToAccountDto();
       
       // Act
-      var result = await sut.ExecuteAsync(
+      var resultAccountCreate = await sut.ExecuteAsync(
          customerId: customer.Id,
          accountDto: accountDto,
          ct: ct
       );
+      True(resultAccountCreate.IsSuccess);
       unitOfWork.ClearChangeTracker();
       
       // Assert
@@ -45,6 +55,8 @@ public sealed class AccountUcCreateIntT : TestBaseIntegration {
       Equal(account.Id, actual!.Id);
       Equal(account.IbanVo, actual.IbanVo);
       Equal(account.BalanceVo, actual.BalanceVo);
+      Equal(employee2Id, actual.CreatedByEmployeeId);
+      Null(actual.DeactivatedByEmployeeId);
    }
    
    [Fact]

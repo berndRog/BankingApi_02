@@ -1,7 +1,6 @@
 using System.Runtime.CompilerServices;
 using BankingApi._2_Core.BuildingBlocks;
 using BankingApi._2_Core.BuildingBlocks._1_Ports.Outbound;
-using BankingApi._2_Core.BuildingBlocks._3_Domain;
 using BankingApi._2_Core.BuildingBlocks.Utils;
 using BankingApi._2_Core.Payments._1_Ports.Outbound;
 using BankingApi._2_Core.Payments._3_Domain.Errors;
@@ -21,15 +20,17 @@ internal sealed class AccountUcBeneficiaryRemove(
       Guid beneficiaryId,
       CancellationToken ct = default
    ) {
-      
-      var account = await accountRepository.FindByIdAsync(accountId, ct);
+      // 1) Find account with beneficiaries
+      var account = 
+         await accountRepository.FindAccountByIdWithBeneficiariesAsync(accountId, ct);
       if (account is null) 
          return Result.Failure(BeneficiaryErrors.AccountNotFound);
       
-      // Domain operation
+      // 2) Domain Model
+      // Remove beneficiary from account
       account.RemoveBeneficiary(beneficiaryId, clock.UtcNow);
       
-      // Persistence with Unit of Work
+      // 3) Unit of work, save changes to database
       var savedRows = await unitOfWork.SaveAllChangesAsync("Remove beneficiary", ct);
 
       logger.LogInformation("Beneficiary removed {id}, saedRow {rows})", 

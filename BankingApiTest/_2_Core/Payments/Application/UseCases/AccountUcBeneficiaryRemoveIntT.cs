@@ -6,11 +6,11 @@ using BankingApiTest.TestInfrastructure;
 using Microsoft.Extensions.DependencyInjection;
 namespace BankingApiTest._2_Core.Core.Application.UseCases;
 
-public sealed class AccountUcBeneficiaryAddIntT : TestBaseIntegration {
+public sealed class AccountUcBeneficiaryRemoveIntT : TestBaseIntegration {
 
-   public AccountUcBeneficiaryAddIntT() {
+   public AccountUcBeneficiaryRemoveIntT() {
       DbMode = DbMode.FileUnique;
-      DbName = "AccountUcBeneficiaryAddIntTTest";
+      DbName = "AccountUcBeneficiaryRemoveIntTTest";
       SensitiveDataLogging = true;
    }
    
@@ -21,7 +21,8 @@ public sealed class AccountUcBeneficiaryAddIntT : TestBaseIntegration {
       var accountRepository = scope.ServiceProvider.GetRequiredService<IAccountRepository>();
       var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
       var seed = scope.ServiceProvider.GetRequiredService<TestSeed>();
-      var sut = scope.ServiceProvider.GetRequiredService<AccountUcBeneficiaryAdd>();
+      var accountUcBeneficiaryAdd = scope.ServiceProvider.GetRequiredService<AccountUcBeneficiaryAdd>();
+      var sut = scope.ServiceProvider.GetRequiredService<AccountUcBeneficiaryRemove>();
       
       // Arrange
       var account = seed.Account1();
@@ -29,25 +30,29 @@ public sealed class AccountUcBeneficiaryAddIntT : TestBaseIntegration {
       await unitOfWork.SaveAllChangesAsync("Add Account1", ct);
       unitOfWork.ClearChangeTracker();
       
-      // Act
       var beneficiary = seed.Beneficiary1();
       var beneficiary1Dto = beneficiary.ToBeneficiaryDto();
-      var result = await sut.ExecuteAsync(
+      var resultAdd = await accountUcBeneficiaryAdd.ExecuteAsync(
          accountId: account.Id,
          beneficiaryDto: beneficiary1Dto,
          ct: ct);
-      True(result.IsSuccess);
-
+      True(resultAdd.IsSuccess);
+      unitOfWork.ClearChangeTracker();
+      
+      // Act
+      var resultRemove = await sut.ExecuteAsync(
+         accountId: account.Id,
+         beneficiaryId: beneficiary.Id,
+         ct: ct);
+      True(resultRemove.IsSuccess);
+      unitOfWork.ClearChangeTracker();
+      
       // Assert
       var actualAccount = 
          await accountRepository.FindAccountByIdWithBeneficiariesAsync(account.Id, ct);
       NotNull(actualAccount);
       var actual = actualAccount.Beneficiaries
           .FirstOrDefault(b => b.Id == beneficiary.Id);
-      NotNull(actual);
-      Equal(beneficiary.AccountId, actual.AccountId);
-      Equal(beneficiary.Name, actual.Name);
-      Equal(beneficiary.IbanVo, actual.IbanVo);
+      Null(actual);
    }
-   
 }

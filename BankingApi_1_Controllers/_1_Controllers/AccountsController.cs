@@ -6,10 +6,11 @@ using BankingApi._2_Core.Payments._2_Application.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-namespace BankingApi._1_Controllers.V2;
+namespace BankingApi._1_Controllers;
 
-[ApiVersion("2.0")]
-[Route("banking/v{version:apiVersion}")]
+//[ApiVersion("2.0")]
+//[Route("banking/v{version:apiVersion}")]
+[Route("banking/v2")]
 [ApiController]
 public sealed class AccountsController(
    IAccountReadModel readModel,
