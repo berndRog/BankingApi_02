@@ -9,8 +9,6 @@
     <RootNamespace>BankingApi</RootNamespace>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
-
-
   
   <ItemGroup>
     <Content Update="appsettings.json">

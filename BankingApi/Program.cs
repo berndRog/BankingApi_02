@@ -2,12 +2,14 @@ using Asp.Versioning.ApiExplorer;
 using BankingApi._2_Core.Customers;
 using BankingApi._2_Core.Payments;
 using BankingApi._3_Infrastructure;
+using BankingApi.Configure;
 namespace BankingApi;
 
 public class Program {
    
    public static async Task Main(string[] args) {
       
+      //---- Configure DI Container (IServiceCollection) ----
       var builder = WebApplication.CreateBuilder(args);
       
       // Configure Logging Providers & Http Logging       
@@ -27,6 +29,13 @@ public class Program {
       // Add Error handling
       builder.Services.AddProblemDetails();
       
+      // API versioning 
+      builder.Services.AddApiReaderAndVersioning();
+      
+      // Swagger
+      builder.Services.AddSwagger();
+      
+      //---- Create App and Setup Middleware pipeline ----
       var app = builder.Build();
 
       
@@ -35,6 +44,20 @@ public class Program {
            
          app.UseHttpLogging();
          app.UseDeveloperExceptionPage();
+         
+         app.UseSwagger();
+
+         var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
+         app.UseSwaggerUI(options => {
+            foreach (var description in provider.ApiVersionDescriptions) {
+               options.SwaggerEndpoint(
+                  $"/swagger/{description.GroupName}/swagger.json",
+                  $"BankingApi {description.GroupName.ToUpperInvariant()}"
+               );
+            }
+            options.RoutePrefix = "swagger";
+         });
       }
       
       app.UseHttpsRedirection();

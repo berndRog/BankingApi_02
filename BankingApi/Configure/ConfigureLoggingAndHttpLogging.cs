@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.HttpLogging;
-namespace BankingApi;
+namespace BankingApi.Configure;
 
 public static class ConfigureLoggingAndHttpLogging {
    

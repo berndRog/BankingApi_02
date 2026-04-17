@@ -81,7 +81,7 @@ internal sealed class CustomerUcCreate(
       // Add customer to repository (tracked by EF)
       repository.Add(customer);
      
-      // Save all changes to database using a transaction
+      // 5) Unit of work, save changes to database
       var rows = await unitOfWork.SaveAllChangesAsync("Create Customer", ct);
       logger.LogInformation("CustomerUcCreate={id} rows={rows}", customer.Id, rows);
       

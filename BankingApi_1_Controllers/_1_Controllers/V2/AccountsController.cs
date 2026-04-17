@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 namespace BankingApi._1_Controllers;
 
-//[ApiVersion("2.0")]
-//[Route("banking/v{version:apiVersion}")]
+[ApiVersion("2.0")]
+[Route("banking/v{version:apiVersion}")]
 [Route("banking/v2")]
 [ApiController]
 public sealed class AccountsController(
