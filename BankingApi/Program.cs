@@ -29,6 +29,9 @@ public class Program {
       // Add Error handling
       builder.Services.AddProblemDetails();
       
+      // AuthN (Bearer) + AuthZ
+      // builder.Services.AddAuthNAuthZ(builder.Configuration);
+      
       // API versioning 
       builder.Services.AddApiReaderAndVersioning();
       

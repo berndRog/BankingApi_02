@@ -6,11 +6,10 @@ using BankingApi._2_Core.Payments._2_Application.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-namespace BankingApi._1_Controllers;
+namespace BankingApi._1_Controllers.V2;
 
 [ApiVersion("2.0")]
 [Route("banking/v{version:apiVersion}")]
-[Route("banking/v2")]
 [ApiController]
 public sealed class AccountsController(
    IAccountReadModel readModel,
@@ -99,7 +98,7 @@ public sealed class AccountsController(
    /// <param name="ct">Cancellation token.</param>
    /// <returns>The created account resource.</returns>
    // [Authorize(Policy = "EmployeesOnly")]
-   [HttpPost("customers/{customerId}/accounts", Name = nameof(CreateAccountAsync))]
+   [HttpPost("customers/{customerId:guid}/accounts", Name = nameof(CreateAccountAsync))]
    [Consumes("application/json")]
    [Produces("application/json")]
    [ProducesResponseType<AccountDto>(StatusCodes.Status201Created)]

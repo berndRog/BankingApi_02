@@ -31,7 +31,6 @@
 
   <ItemGroup>
     <Folder Include="_2_Core\BuildingBlocks\_3_Domain\" />
-    <Folder Include="_3_Infrastructure\_3_Security\" />
   </ItemGroup>
 
   <ItemGroup>

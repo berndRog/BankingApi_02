@@ -1,10 +1,7 @@
 using BankingApi._3_Infrastructure._3_Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-namespace BankingApi._3_Infrastructure;
+namespace BankingApi;
 
 public static class DiAuthNAuthZ {
    

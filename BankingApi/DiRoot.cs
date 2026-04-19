@@ -50,11 +50,15 @@ public static class DiRoot {
             options.IncludeXmlComments(xmlFile, includeControllerXmlComments: true);
          }
 
-         // optional: nicer schema names in larger modular solutions
-         options.CustomSchemaIds(type => type.FullName?.Replace("+", "."));
+         // Use short schema names so DTO references stay readable in Swagger.
+         options.CustomSchemaIds(type => type.Name.Replace("+", "."));
 
          // optional: remove version parameter from generated operation parameters
          options.OperationFilter<SwaggerRemoveVersionParameterFilter>();
+
+         // normalize response content types and document custom ProblemDetails extensions
+         options.OperationFilter<SwaggerNormalizeResponseContentTypesFilter>();
+         options.SchemaFilter<SwaggerProblemDetailsSchemaFilter>();
 
          // optional: replace version placeholder in route templates
          options.DocumentFilter<SwaggerReplaceVersionWithExactValueInPathFilter>();

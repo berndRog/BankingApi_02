@@ -1,9 +1,9 @@
 using BankingApi._2_Core.BuildingBlocks;
-using BankingApi._2_Core.BuildingBlocks._3_Domain;
 using BankingApi._2_Core.BuildingBlocks._3_Domain.Enums;
 using BankingApi._2_Core.BuildingBlocks._3_Domain.Errors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 namespace BankingApi._1_Controllers.Extensions;
 
@@ -75,10 +75,13 @@ public static class ControllerExtensions {
       if (result.IsFailure)
          return controller.ToProblemActionResult(result.Error, logger, context, args);
 
+      var routeValueDictionary = new RouteValueDictionary(routeValues);
+      AddCurrentApiVersion(controller, routeValueDictionary);
+
       try {
          return controller.CreatedAtRoute(
             routeName: routeName,
-            routeValues: routeValues,
+            routeValues: routeValueDictionary,
             value: result.Value
          );
       }
@@ -88,12 +91,30 @@ public static class ControllerExtensions {
             "CreatedAtRoute failed in {Context}. RouteName: {RouteName}, RouteValues: {@RouteValues}",
             context,
             routeName,
-            routeValues
+            routeValueDictionary
          );
 
          // Fallback: resource was created, but route generation failed
          return controller.StatusCode(StatusCodes.Status201Created, result.Value);
       }
+   }
+
+   private static void AddCurrentApiVersion(
+      ControllerBase controller,
+      RouteValueDictionary routeValues
+   ) {
+      if (routeValues.ContainsKey("version"))
+         return;
+
+      var routeVersion = controller.RouteData.Values["version"]?.ToString();
+      if (!string.IsNullOrWhiteSpace(routeVersion)) {
+         routeValues["version"] = routeVersion;
+         return;
+      }
+
+      var requestedVersion = controller.HttpContext.GetRequestedApiVersion();
+      if (requestedVersion is not null)
+         routeValues["version"] = requestedVersion.ToString();
    }
 
    // Centralized mapping of DomainError -> HTTP ProblemDetails response
@@ -109,7 +130,10 @@ public static class ControllerExtensions {
       ArgumentNullException.ThrowIfNull(logger);
       ArgumentException.ThrowIfNullOrWhiteSpace(context);
 
-      logger.LogWarning(
+      var statusCode = ToHttpStatusCode(error.Code);
+
+      logger.Log(
+         ToLogLevel(statusCode),
          "Request failed in {Context}. ErrorCode: {ErrorCode}, Title: {Title}, Message: {Message}, Args: {@Args}",
          context,
          error.Code,
@@ -118,14 +142,15 @@ public static class ControllerExtensions {
          args
       );
 
-      var statusCode = ToHttpStatusCode(error.Code);
-
       var problemDetails = new ProblemDetails {
          Title = error.Title,
          Detail = error.Message,
          Status = statusCode,
          Type = $"https://httpstatuses.com/{statusCode}"
       };
+
+      problemDetails.Extensions["code"] = error.Code.ToString();
+      problemDetails.Extensions["traceId"] = controller.HttpContext.TraceIdentifier;
 
       return statusCode switch {
          StatusCodes.Status400BadRequest =>
@@ -165,5 +190,17 @@ public static class ControllerExtensions {
          ErrorCode.UnprocessableEntity  => StatusCodes.Status422UnprocessableEntity,
          _                              => StatusCodes.Status400BadRequest
       };
-}
 
+   private static LogLevel ToLogLevel(int statusCode) =>
+      statusCode switch {
+         StatusCodes.Status400BadRequest          => LogLevel.Information,
+         StatusCodes.Status401Unauthorized        => LogLevel.Information,
+         StatusCodes.Status403Forbidden           => LogLevel.Information,
+         StatusCodes.Status404NotFound            => LogLevel.Information,
+         StatusCodes.Status409Conflict            => LogLevel.Information,
+         StatusCodes.Status415UnsupportedMediaType => LogLevel.Information,
+         StatusCodes.Status422UnprocessableEntity => LogLevel.Information,
+         _ when statusCode >= 500                 => LogLevel.Error,
+         _                                        => LogLevel.Warning
+      };
+}
