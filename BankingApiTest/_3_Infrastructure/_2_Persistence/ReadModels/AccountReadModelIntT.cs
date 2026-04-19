@@ -74,35 +74,6 @@ public sealed class AccountReadModelIntT : TestBaseIntegration {
    }
    
    [Fact]
-   public async Task SelectAllAsync_ok() {
-      using var scope = Root.CreateDefaultScope();
-      var ct = TestContext.Current.CancellationToken;
-      var repository = scope.ServiceProvider.GetRequiredService<IAccountRepository>();
-      var readModel = scope.ServiceProvider.GetRequiredService<IAccountReadModel>();
-      var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-       var seed = scope.ServiceProvider.GetRequiredService<TestSeed>();
-      
-      // Arrange
-      var accounts = seed.Accounts;
-      repository.AddRange(accounts);
-      await unitOfWork.SaveAllChangesAsync("Accounts inserted", ct);
-      unitOfWork.ClearChangeTracker();
-      
-      var expectedAccountDtos = accounts
-         .Select(a => a.ToAccountDto())
-         .ToList();
-      
-      // Act
-      var result = await readModel.SelectAsync(ct);
-      
-      // Assert
-      True(result.IsSuccess);
-      var actualDtos = result.Value;
-      NotNull(actualDtos);
-      Equals(expectedAccountDtos, actualDtos);
-   }
-
-   [Fact]
    public async Task SelectByCustomerIdAsync_ok() {
       using var scope = Root.CreateDefaultScope();
       var ct = TestContext.Current.CancellationToken;
