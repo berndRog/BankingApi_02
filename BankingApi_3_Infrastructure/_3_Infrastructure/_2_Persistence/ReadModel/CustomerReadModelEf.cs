@@ -42,7 +42,7 @@ internal sealed class CustomerReadModelEf(
    ) {
       var customerDto = await customerDbContext.Customers
          .AsNoTracking()
-         .Where(c => c.Id == Id)          // filter by Id
+         .Where(c => c.Id == Id)       // filter by Id
          .Select(c => c.ToCustomerDto())  // project to CustomerDto (map)
          .SingleOrDefaultAsync(ct);
 
@@ -55,6 +55,7 @@ internal sealed class CustomerReadModelEf(
       string email,
       CancellationToken ct
    ) {
+
       var result = EmailVo.Create(email);
       if (result.IsFailure)      
          return Result<CustomerDto>.Failure(result.Error);

@@ -62,11 +62,7 @@ public sealed class AccountUcCreateIntT : TestBaseIntegration {
    [Fact]
    public async Task Create_account_with_invalid_iban_fails() {
       using var scope = Root.CreateDefaultScope();
-      var ct = CancellationToken.None;
-      var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-      var customerRepository = scope.ServiceProvider.GetRequiredService<ICustomerRepository>();
-      var accountRepository = scope.ServiceProvider.GetRequiredService<IAccountRepository>();
-      var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+      var ct = CancellationToken.None; 
       var seed = scope.ServiceProvider.GetRequiredService<TestSeed>();
       
       // Arrange

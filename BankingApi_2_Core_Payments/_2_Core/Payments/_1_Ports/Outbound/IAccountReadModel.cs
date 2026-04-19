@@ -17,12 +17,7 @@ public interface IAccountReadModel {
       string iban,
       CancellationToken ct
    );
-
-   // Return all accounts
-   Task<Result<IEnumerable<AccountDto>>> SelectAsync(
-      CancellationToken ctToken = default
-   );
-
+   
    // Return all accounts owned by a specific customer
    Task<Result<IEnumerable<AccountDto>>> SelectByCustomerIdAsync(
       Guid customerId,

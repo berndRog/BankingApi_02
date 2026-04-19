@@ -21,7 +21,7 @@ public sealed class AccountUt {
    }
 
    [Fact]
-   public void CreatePerson_valid_input_and_id_creates_owner() {
+   public void CreateAccount_ok() {
       // Arrange
       // Act
       var result = Account.Create(
@@ -100,7 +100,7 @@ public sealed class AccountUt {
    }
 
    [Fact]
-   public void Create_with_notallowed_customerId_is_failure() {
+   public void Create_with_notallowed_accountId_is_failure() {
       // Act
       var result = Account.Create(
          customerId: _customer.Id,

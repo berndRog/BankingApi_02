@@ -9,16 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.5" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <!-- Authentication / Authorization -->
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.5" />
-    <!-- Token validation primitives (optional but explicit) -->
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.16.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.16.0" />
 
+  <ItemGroup>
     <!-- Entity Framework Core -->
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.5">
@@ -27,10 +21,6 @@
     </PackageReference>
     <!-- SQLite provider for EF Core -->
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.5" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="_3_Infrastructure\_4_Logging\" />
   </ItemGroup>
 
   <ItemGroup>

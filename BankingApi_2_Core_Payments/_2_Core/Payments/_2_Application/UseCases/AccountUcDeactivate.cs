@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace BankingApi._2_Core.Payments._2_Application.UseCases;
 
 internal sealed class AccountUcDeactivate(
-   IIdentityGateway identityGateway,
+   //IIdentityGateway identityGateway,
    IAccountRepository repository,
    IUnitOfWork unitOfWork,
    IClock clock,

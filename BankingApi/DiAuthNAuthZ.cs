@@ -1,4 +1,4 @@
-using BankingApi._3_Infrastructure._3_Security;
+using BankingApi.Configure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 namespace BankingApi;
