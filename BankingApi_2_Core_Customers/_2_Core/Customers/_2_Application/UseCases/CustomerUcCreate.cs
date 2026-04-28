@@ -2,6 +2,7 @@ using System.Runtime.CompilerServices;
 using BankingApi._2_Core.BuildingBlocks;
 using BankingApi._2_Core.BuildingBlocks._1_Ports.Outbound;
 using BankingApi._2_Core.BuildingBlocks._2_Application.Mappings;
+using BankingApi._2_Core.BuildingBlocks._3_Domain.Enums;
 using BankingApi._2_Core.BuildingBlocks._3_Domain.ValueObjects;
 using BankingApi._2_Core.BuildingBlocks._4_BcContracts._1_Ports;
 using BankingApi._2_Core.BuildingBlocks._4_BcContracts._2_Application.Dtos;
@@ -17,6 +18,7 @@ namespace BankingApi._2_Core.Customers._2_Application.UseCases;
 internal sealed class CustomerUcCreate(
    ICustomerRepository repository,
    IAccountContract accountContract,
+   IEmployeeContract employeeContract,
    IUnitOfWork unitOfWork,
    IClock clock,
    ILogger<CustomerUcCreate> logger
@@ -25,17 +27,12 @@ internal sealed class CustomerUcCreate(
       CustomerCreateDto customerCreateDto,
       CancellationToken ct = default
    ) {
-      
       // 1) Load authorized employee and check if has rights to manage accounts
-      // var resultEmployee = await employeeContract.GetAuthorizedEmployeeAsync(
-      //    AdminRights.ManageAccounts, ct);   
-      // if(resultEmployee.IsFailure)
-      //   return Result<AccountDto>.Failure(resultEmployee.Error);
-      // var employeeContractDto = resultEmployee.Value;
-      var employeeContractDto = new EmployeeContractDto(
-         Id: Guid.Parse("00000000-0002-0000-0000-000000000000"),
-         AdminRightsInt: 511 // all AdminRights
-      );
+      var resultEmployee = await employeeContract.GetAuthorizedEmployeeAsync(
+         AdminRights.ManageAccounts, ct);   
+      if(resultEmployee.IsFailure)
+         return Result<CustomerDto>.Failure(resultEmployee.Error);
+      var employeeContractDto = resultEmployee.Value;
       
       // 2) DomainModel
       // create email value object (domain logic inside)
@@ -56,7 +53,6 @@ internal sealed class CustomerUcCreate(
          companyName: customerCreateDto.CompanyName, 
          emailVo: emailDtoVo,
          subject: customerCreateDto.Subject, 
-         auditedByEmployeeId: employeeContractDto.Id,
          createdAt: clock.UtcNow,
          id: customerCreateDto.Id.ToString(),
          addressVo: customerCreateDto.AddressDto.ToAddressVo()
@@ -84,6 +80,17 @@ internal sealed class CustomerUcCreate(
       // 5) Unit of work, save changes to database
       var rows = await unitOfWork.SaveAllChangesAsync("Create Customer", ct);
       logger.LogInformation("CustomerUcCreate={id} rows={rows}", customer.Id, rows);
+      
+      // 6) Activate customer
+      customer.Activate(
+         activatedByEmployeeId: employeeContractDto.Id,
+         activatedAt: clock.UtcNow
+      );
+      
+      // 5) Unit of work, save changes to database
+      rows = await unitOfWork.SaveAllChangesAsync("Activate Customer", ct);
+      logger.LogInformation("CustomerUcCreate={id} rows={rows}", customer.Id, rows);
+
       
       // Create initial account for owner (domain logic in accounts module)
       var resultAccount = await accountContract.OpenInitialAccountAsync(

@@ -82,7 +82,6 @@ public sealed class Seed(
       companyName: null,
       subject: "a00090ad-d9df-486a-8757-4a649e26a54e",
       email: "erika.mustermann@t-online.de",
-      auditedByEmployeeId: Guid.Parse(Employee2Id),
       addressVo: Address1Vo
    );
 
@@ -93,7 +92,6 @@ public sealed class Seed(
       companyName: null,
       subject: "b0000640-161e-4228-9729-d6b142C2dfad",
       email: "max.mustermann@gmail.com",
-      auditedByEmployeeId: Guid.Parse(Employee2Id),
       addressVo: Address2Vo
    );
 
@@ -104,7 +102,6 @@ public sealed class Seed(
       companyName: null,
       email: "a.arndt@t-online.com",
       subject: "c0004e61-ba7a-4d2a-977f-766b42bb79a9",
-      auditedByEmployeeId: Guid.Parse(Employee2Id),
       addressVo: Address3Vo
    );
 
@@ -115,7 +112,6 @@ public sealed class Seed(
       companyName: null,
       subject: "d0024ab-43c5-4c64-872d-6ca05f66756b",
       email: "b.bauer@gmail.com",
-      auditedByEmployeeId: Guid.Parse(Employee2Id),
       addressVo: Address4Vo
    );
 
@@ -126,7 +122,6 @@ public sealed class Seed(
       companyName: "Conrad Consulting GmbH",
       subject: "e00050fb-a381-4e3f-a44b-81ffa7610b72",
       email: "c.conrad@gmx.de",
-      auditedByEmployeeId: Guid.Parse(Employee2Id),
       addressVo: Address5Vo
    );
 
@@ -137,7 +132,6 @@ public sealed class Seed(
       companyName: null,
       subject: "f0004f67-72a3-4449-af1f-803dcfaddb7f",
       email: "d.deppe@icloud.com",
-      auditedByEmployeeId: Guid.Parse(Employee2Id),
       addressVo: Address6Vo
    );
 
@@ -148,7 +142,6 @@ public sealed class Seed(
       companyName: null,
       email: "e.engel@freenet.de",
       subject: "70000000-0007-0000-0000-000000000000",
-      auditedByEmployeeId: Guid.Parse(Employee2Id),
       addressVo: AddressRegVo
    );
 
@@ -426,7 +419,6 @@ public sealed class Seed(
       string? companyName,
       string email,
       string subject,
-      Guid auditedByEmployeeId,
       AddressVo addressVo
    ) {
       var resultEmail = EmailVo.Create(email);
@@ -441,7 +433,6 @@ public sealed class Seed(
          emailVo: emailVo,
          subject: subject,
          id: id,
-         auditedByEmployeeId: auditedByEmployeeId,
          createdAt: clock.UtcNow,
          addressVo: addressVo
       );

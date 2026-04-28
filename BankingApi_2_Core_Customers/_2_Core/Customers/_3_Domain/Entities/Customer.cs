@@ -89,7 +89,6 @@ public sealed class Customer : AggregateRoot {
       string subject,
       EmailVo emailVo,
       AddressVo addressVo,
-      Guid auditedByEmployeeId,
       DateTimeOffset createdAt = default!,
       string? id = null
    ) {
@@ -134,9 +133,6 @@ public sealed class Customer : AggregateRoot {
 
       // set timestamps
       customer.Initialize(createdAt);
-
-      // auto-activate on creation
-      customer.Activate(auditedByEmployeeId, customer.CreatedAt);
 
       return Result<Customer>.Success(customer);
    }

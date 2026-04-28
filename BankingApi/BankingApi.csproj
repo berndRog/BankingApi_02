@@ -9,7 +9,7 @@
     <RootNamespace>BankingApi</RootNamespace>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -21,15 +21,20 @@
 
   <ItemGroup>
     <!-- Authentication / Authorization -->
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.5"/>
     <!-- Token validation primitives (optional but explicit) -->
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.16.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.16.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.16.0"/>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.16.0"/>
     <!-- API Versioning -->
-    <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
-    <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
+    <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0"/>
+    <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0"/>
     <!-- Swagger -->
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
+    
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
   
   <ItemGroup>
@@ -39,8 +44,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BankingApi_1_Controllers\BankingApi_1_Controllers.csproj" />
-    <ProjectReference Include="..\BankingApi_3_Infrastructure\BankingApi_3_Infrastructure.csproj" />
+    <ProjectReference Include="..\BankingApi_1_Controllers\BankingApi_1_Controllers.csproj"/>
+    <ProjectReference Include="..\BankingApi_3_Infrastructure\BankingApi_3_Infrastructure.csproj"/>
   </ItemGroup>
-  
+
 </Project>

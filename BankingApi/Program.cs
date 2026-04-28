@@ -1,4 +1,5 @@
 using Asp.Versioning.ApiExplorer;
+using BankingApi._2_Core.BuildingBlocks._4_BcContracts._1_Ports;
 using BankingApi._2_Core.Customers;
 using BankingApi._2_Core.Payments;
 using BankingApi._3_Infrastructure;
@@ -22,8 +23,9 @@ public class Program {
       builder.Services.AddControllers();
 
       // Modules
-      builder.Services.AddCustomerModule();
-      builder.Services.AddPaymentModule();
+      builder.Services.AddBuildingBlocksModule();
+      builder.Services.AddCustomersModule();
+      builder.Services.AddPaymentsModule();
       builder.Services.AddInfrastructureModule(builder.Configuration);
 
       // Add Error handling
@@ -40,7 +42,6 @@ public class Program {
       
       //---- Create App and Setup Middleware pipeline ----
       var app = builder.Build();
-
       
       // Configure the HTTP request pipeline.
       if (app.Environment.IsDevelopment()) {

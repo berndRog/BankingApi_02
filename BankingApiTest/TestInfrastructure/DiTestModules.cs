@@ -12,6 +12,7 @@ using BankingApi._3_Infrastructure._2_Persistence.Adapters;
 using BankingApi._3_Infrastructure._2_Persistence.Database;
 using BankingApi._3_Infrastructure._2_Persistence.ReadModel;
 using BankingApi._3_Infrastructure._2_Persistence.Repositories;
+using BankingApi._3_FakeInfraStructure._2_Persitence.Adapters;
 using BankingApiTest._3_Infrastructure._3_Security;
 using BankingApiTest._3_Infrastructure._5_Utils;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +43,7 @@ public static class DiTestModules {
       // Contracts
       services.AddScoped<ICustomerContract, CustomerContractEf>();
       services.AddScoped<IAccountContract, AccountContractEf>();
+      services.AddScoped<IEmployeeContract, FakeEmployeeContractEf>();
       
       // Readmodels
       services.AddScoped<ICustomerReadModel, CustomerReadModelEf>();
@@ -54,6 +56,7 @@ public static class DiTestModules {
       // Customer UseCases
       services.AddScoped<ICustomerUseCases, CustomerUseCases>();
       services.AddScoped<CustomerUcCreate>();
+      services.AddScoped<CustomerUcUpdate>();
       services.AddScoped<CustomerUcDeactivate>();
       
       // Account UseCases

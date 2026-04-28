@@ -20,9 +20,10 @@ public interface ICustomerUseCases {
       CancellationToken ct = default
    );
    
-   // Change the customer's profile data
+   // Update the customer's profile data
    Task<Result> UpdateAsync(
-      CustomerDto customerDto,
+      Guid customerId,
+      CustomerUpdateDto customerUpdateDto,
       CancellationToken ct = default
    );
 }

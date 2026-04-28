@@ -7,17 +7,17 @@ using BankingApiTest.TestInfrastructure;
 using Microsoft.Extensions.DependencyInjection;
 namespace BankingApiTest._2_Core.Customers.Application;
 
-public sealed class CustomerUcCreateIntT : TestBaseIntegration {
+public sealed class CustomerUcDeactivateIntT : TestBaseIntegration {
    
-   public CustomerUcCreateIntT() {
-      this.DbName = nameof(CustomerUcCreateIntT);
+   public CustomerUcDeactivateIntT() {
+      this.DbName = nameof(CustomerUcDeactivateIntT);
       this.DbMode = DbMode.FileUnique;
       this.SensitiveDataLogging = true;
    }
    
    
    [Fact]
-   public async Task Create_Customer_ok() {
+   public async Task Deactivate_Customer_ok() {
       
       using var scope = Root.CreateDefaultScope();
       var ct = TestContext.Current.CancellationToken;
@@ -26,27 +26,35 @@ public sealed class CustomerUcCreateIntT : TestBaseIntegration {
       
       var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
       var seed = scope.ServiceProvider.GetRequiredService<TestSeed>();
-      var sut = scope.ServiceProvider.GetRequiredService<CustomerUcCreate>();
-
+      var ucCreate = scope.ServiceProvider.GetRequiredService<CustomerUcCreate>();
+      var sut = scope.ServiceProvider.GetRequiredService<CustomerUcDeactivate>();
+      
       // Arrange
       var customer = seed.CustomerRegister(); // with address
       var customerCreateDto = customer.ToCustomerCreateDto(); 
       var account1 = seed.Account1(); 
-     
-      // Act
+      
       customerCreateDto = customerCreateDto with {
          AccountId = account1.Id.ToString(),
          Iban = account1.IbanVo.Value,
          Balance = account1.BalanceVo.Amount
       }; // we set the id to be the same as the seeded customer, so we can assert it later
       
-      var resultCreate = await sut.ExecuteAsync(
+      var resultCreate = await ucCreate.ExecuteAsync(
          customerCreateDto: customerCreateDto,
          ct
       );
       True(resultCreate.IsSuccess);
       unitOfWork.ClearChangeTracker();
 
+      // Act
+      var resultDeactivate = await sut.ExecuteAsync(
+         customerId: customer.Id,
+         ct
+      );
+      True(resultDeactivate.IsSuccess);
+      unitOfWork.ClearChangeTracker();
+      
       // Assert
       var actualCustomer = await customerRepository.FindByIdAsync(customer.Id, ct);
       NotNull(actualCustomer);

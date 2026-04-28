@@ -44,7 +44,6 @@ public sealed class CustomerUt {
          subject: _customer.Subject,
          emailVo: _customer.EmailVo,
          addressVo: _customer.AddressVo,
-         auditedByEmployeeId: _employee2Id,
          createdAt: _customer.CreatedAt,
          id: _customer.Id.ToString()
       );
@@ -77,7 +76,6 @@ public sealed class CustomerUt {
          subject: _customer.Subject,
          emailVo: _customer.EmailVo,
          addressVo: _customer.AddressVo,
-         auditedByEmployeeId: _employee2Id,
          createdAt: _customer.CreatedAt,
          id: null // <== without id
       );
@@ -112,7 +110,6 @@ public sealed class CustomerUt {
          subject: _customer.Subject,
          emailVo: _customer.EmailVo,
          addressVo: _customer.AddressVo,
-         auditedByEmployeeId: _employee2Id,
          createdAt: _customer.CreatedAt,
          id: _customer.Id.ToString()
       );
@@ -132,7 +129,6 @@ public sealed class CustomerUt {
          subject: _customer.Subject,
          emailVo: _customer.EmailVo,
          addressVo: _customer.AddressVo,
-         auditedByEmployeeId: _employee2Id,
          createdAt: _customer.CreatedAt,
          id: _customer.Id.ToString()
       );
@@ -153,7 +149,6 @@ public sealed class CustomerUt {
          subject: _customer.Subject,
          emailVo: _customer.EmailVo,
          addressVo: _customer.AddressVo,
-         auditedByEmployeeId: _employee2Id,
          createdAt: _customer.CreatedAt,
          id: _customer.Id.ToString()
       );
@@ -173,7 +168,6 @@ public sealed class CustomerUt {
          subject: _customer.Subject,
          emailVo: _customer.EmailVo,
          addressVo: _customer.AddressVo,
-         auditedByEmployeeId: _employee2Id,
          createdAt: _customer.CreatedAt,
          id: _customer.Id.ToString()
       );
@@ -195,7 +189,6 @@ public sealed class CustomerUt {
          subject: _customer.Subject,
          emailVo: _customer.EmailVo,
          addressVo: _customer.AddressVo,
-         auditedByEmployeeId: _employee2Id,
          createdAt: _customer.CreatedAt,
          id: id
       );
@@ -216,7 +209,6 @@ public sealed class CustomerUt {
          subject: _customer5.Subject,
          emailVo: _customer5.EmailVo,
          addressVo: _customer5.AddressVo,
-         auditedByEmployeeId: _employee2Id,
          createdAt: _customer5.CreatedAt,
          id: _customer5.Id.ToString()
       );
@@ -251,7 +243,6 @@ public sealed class CustomerUt {
          subject: _customer5.Subject,
          emailVo: _customer5.EmailVo,
          addressVo: _customer5.AddressVo,
-         auditedByEmployeeId: _employee2Id,
          createdAt: _customer5.CreatedAt,
          id: _customer5.Id.ToString()
       );
@@ -269,7 +260,6 @@ public sealed class CustomerUt {
          subject: _customer5.Subject,
          emailVo: _customer5.EmailVo,
          addressVo: _customer5.AddressVo,
-         auditedByEmployeeId: _employee2Id,
          createdAt: _customer5.CreatedAt,
          id: _customer5.Id.ToString()
       );

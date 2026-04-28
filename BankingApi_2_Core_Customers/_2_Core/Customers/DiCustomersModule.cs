@@ -3,9 +3,9 @@ using BankingApi._2_Core.Customers._2_Application.UseCases;
 using Microsoft.Extensions.DependencyInjection;
 namespace BankingApi._2_Core.Customers;
 
-public static class DiCustomerModules {
+public static class DiCustomersModule {
    
-   public static IServiceCollection AddCustomerModule(
+   public static IServiceCollection AddCustomersModule(
       this IServiceCollection services
    ) {
       // Inbound ports / Use Cases

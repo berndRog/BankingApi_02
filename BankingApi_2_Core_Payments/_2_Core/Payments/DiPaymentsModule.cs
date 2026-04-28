@@ -3,9 +3,9 @@ using BankingApi._2_Core.Payments._2_Application.UseCases;
 using Microsoft.Extensions.DependencyInjection;
 namespace BankingApi._2_Core.Payments;
 
-public static class DiPaymentModule {
+public static class DiPaymentsModule {
    
-   public static IServiceCollection AddPaymentModule(
+   public static IServiceCollection AddPaymentsModule(
       this IServiceCollection services
    ) {
       // Inbound ports / Use Cases

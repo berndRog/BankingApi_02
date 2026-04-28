@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingApiTest", "BankingAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingApi_2_Core_BuildingBlocks", "BankingApi_2_Core_BuildingBlocks\BankingApi_2_Core_BuildingBlocks.csproj", "{DFFA1CC2-03E1-434A-BC52-A3C4922B4A8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingApi_2_Core_Customer", "BankingApi_2_Core_Customer\BankingApi_2_Core_Customer.csproj", "{B41305A1-3739-4BC5-8887-433EE4399D62}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingApi_2_Core_Customers", "BankingApi_2_Core_Customers\BankingApi_2_Core_Customers.csproj", "{B41305A1-3739-4BC5-8887-433EE4399D62}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingApi_2_Core_Payments", "BankingApi_2_Core_Payments\BankingApi_2_Core_Payments.csproj", "{D4A2CC70-D858-4B3D-8034-CCEBDFB519AF}"
 EndProject

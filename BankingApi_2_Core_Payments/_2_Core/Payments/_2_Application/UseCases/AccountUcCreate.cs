@@ -1,8 +1,8 @@
 using System.Runtime.CompilerServices;
 using BankingApi._2_Core.BuildingBlocks;
 using BankingApi._2_Core.BuildingBlocks._1_Ports.Outbound;
+using BankingApi._2_Core.BuildingBlocks._3_Domain.Enums;
 using BankingApi._2_Core.BuildingBlocks._4_BcContracts._1_Ports;
-using BankingApi._2_Core.BuildingBlocks._4_BcContracts._2_Application.Dtos;
 using BankingApi._2_Core.Payments._1_Ports.Outbound;
 using BankingApi._2_Core.Payments._2_Application.Dtos;
 using BankingApi._2_Core.Payments._2_Application.Mappings;
@@ -15,8 +15,8 @@ using Microsoft.Extensions.Logging;
 namespace BankingApi._2_Core.Payments._2_Application.UseCases;
 
 internal sealed class AccountUcCreate(
-   ICustomerContract customerContract,
-   // IEmployeeContract employeeContract,
+   ICustomerContract customerContract, 
+   IEmployeeContract employeeContract,
    IAccountRepository accountRepository,
    IUnitOfWork unitOfWork,
    IClock clock,
@@ -28,23 +28,23 @@ internal sealed class AccountUcCreate(
       AccountDto accountDto,
       CancellationToken ct = default
    ) {
-      // 1) Exits Customer with given id and is active?
+      // 1) Validate input
+      if (customerId == Guid.Empty)
+         return Result<AccountDto>.Failure(AccountErrors.InvalidCustomerId);
+      
+      // 2) Exits Customer with given id and is active?
       var resultCustomer = await customerContract.ExistsActiveCustomerAsync(customerId, ct);
       if (resultCustomer.IsFailure)
          return Result<AccountDto>.Failure(AccountErrors.CustomerIdNotFoundOrInactive);
       
-      // 2) Load authorized employee and check if has rights to manage accounts
-      // var resultEmployee = await employeeContract.GetAuthorizedEmployeeAsync(
-      //    AdminRights.ManageAccounts, ct);   
-      // if(resultEmployee.IsFailure)
-      //   return Result<AccountDto>.Failure(resultEmployee.Error);
-      // var employeeContractDto = resultEmployee.Value;
-      var employeeContractDto = new EmployeeContractDto(
-         Id: Guid.Parse("00000000-0002-0000-0000-000000000000"),
-         AdminRightsInt: 511 // all AdminRights
-      );
+      // 3) Load authorized employee and check if has rights to manage accounts
+      var resultEmployee = await employeeContract.GetAuthorizedEmployeeAsync(
+          AdminRights.ManageAccounts, ct);   
+      if(resultEmployee.IsFailure)
+         return Result<AccountDto>.Failure(resultEmployee.Error);
+      var employeeContractDto = resultEmployee.Value;
       
-      // 3) Domain model  
+      // 4) Domain model  
       var resultIbanVo = IbanVo.Create(accountDto.Iban);
       if (resultIbanVo.IsFailure)
          return Result<AccountDto>.Failure(resultIbanVo.Error);
@@ -65,15 +65,13 @@ internal sealed class AccountUcCreate(
          id: accountDto.Id.ToString()
       );
       if (result.IsFailure)
-         return Result<AccountDto>.Failure(result.Error)
-            .LogIfFailure(logger, "CustomerUcCreate.DomainRejected",
-               new { accountDto });
+         return Result<AccountDto>.Failure(result.Error);
       var account = result.Value;
       
-      // 4) Add to repository
+      // 5) Add to repository
       accountRepository.Add(account);            
          
-      // 5) Unit of work, save changes to database
+      // 6) Unit of work, save changes to database
       var rows = await unitOfWork.SaveAllChangesAsync("Add account", ct);
       
       logger.LogInformation("AccountUcCreate={id} rows={rows}", account.Id, rows);

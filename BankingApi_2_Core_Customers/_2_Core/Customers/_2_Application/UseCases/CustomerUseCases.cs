@@ -26,8 +26,12 @@ internal class CustomerUseCases(
    ) => deactivateUc.ExecuteAsync(customerId, ct);
    
    public Task<Result> UpdateAsync(
-      CustomerDto customerDto, 
+      Guid customerId,
+      CustomerUpdateDto customerUpdateDto, 
       CancellationToken ct = default
-   ) => updateUc.ExecuteAsync(customerDto,ct);
+   ) => updateUc.ExecuteAsync(
+      customerId: customerId,
+      customerUpdateDto: customerUpdateDto,
+      ct: ct);
    
 }

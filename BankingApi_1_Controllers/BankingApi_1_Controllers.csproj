@@ -23,9 +23,8 @@
   
   <ItemGroup>
     <ProjectReference Include="..\BankingApi_2_Core_BuildingBlocks\BankingApi_2_Core_BuildingBlocks.csproj" />
-    <ProjectReference Include="..\BankingApi_2_Core_Customer\BankingApi_2_Core_Customer.csproj" />
+    <ProjectReference Include="..\BankingApi_2_Core_Customers\BankingApi_2_Core_Customers.csproj" />
     <ProjectReference Include="..\BankingApi_2_Core_Payments\BankingApi_2_Core_Payments.csproj" />
   </ItemGroup>
-
-
+  
 </Project>
