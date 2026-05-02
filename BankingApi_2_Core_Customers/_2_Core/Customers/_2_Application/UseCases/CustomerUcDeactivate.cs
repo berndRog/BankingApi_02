@@ -4,6 +4,9 @@ using BankingApi._2_Core.BuildingBlocks._1_Ports.Outbound;
 using BankingApi._2_Core.BuildingBlocks._3_Domain.Enums;
 using BankingApi._2_Core.BuildingBlocks._4_BcContracts._1_Ports;
 using BankingApi._2_Core.Customers._1_Ports.Outbound;
+using BankingApi._2_Core.Customers._2_Application.Dtos;
+using BankingApi._2_Core.Customers._2_Application.Mappings;
+using BankingApi._2_Core.Customers._3_Domain.Entities;
 using BankingApi._2_Core.Customers._3_Domain.Errors;
 using Microsoft.Extensions.Logging;
 [assembly: InternalsVisibleTo("BankingApiTest")]
@@ -18,47 +21,46 @@ internal sealed class CustomerUcDeactivate(
    ILogger<CustomerUcDeactivate> logger
 ) {
 
-   public async Task<Result> ExecuteAsync(
+   public async Task<Result<bool>> ExecuteAsync(
       Guid customerId,
       CancellationToken ct
    ) {
-      // 1) Validate input
       if (customerId == Guid.Empty)
-         return Result.Failure(CustomerErrors.InvalidId);
+         return Result<bool>.Failure(CustomerErrors.InvalidId);
 
-      // 2) Load authorized employee and check if has rights to manage accounts
+      // 1) Load authorized employee and check if has rights to manage accounts
       var resultEmployee = await employeeContract.GetAuthorizedEmployeeAsync(
          AdminRights.ManageAccounts, ct);   
       if(resultEmployee.IsFailure)
-         return Result.Failure(resultEmployee.Error);
+         return Result<bool>.Failure(resultEmployee.Error);
       var employeeContractDto = resultEmployee.Value;
       
-      // 3) Load aggregate
-      var customer = await repository.FindByIdAsync(customerId, ct);
-      if (customer is null)
-         return Result.Failure(CustomerErrors.NotFound);
-
-      // 4) Domain model
-      // deactivate all accounts
+      // 2) Domain model
+      // deactivate all accounts and delete according beneficiaries
       var resultDeactivateAccounts = await accountContract.DeactivateAllAccountsAsync(
          customerId: customerId, 
          ct: ct
       );
       if(resultDeactivateAccounts.IsFailure)
-         return Result.Failure(resultDeactivateAccounts.Error);
+         return Result<bool>.Failure(resultDeactivateAccounts.Error);
       
       // deactivate customer
+      var customer = await repository.FindByIdAsync(customerId, ct);
+      if (customer is null)
+         return Result<bool>.Failure(CustomerErrors.NotFound);
+
       var result = customer.Deactivate(
          deactivatedByEmployeeId: employeeContractDto.Id, 
          deactivatedAt: clock.UtcNow
       );
       if (result.IsFailure)
-         return Result.Failure(result.Error);
+         return Result<bool>.Failure(result.Error);
+      var deactivatedCustomer = result.Value;
 
-      // 5) Save all changes to database
-      var rows = await unitOfWork.SaveAllChangesAsync("Customer deactivated by employee", ct);
+      // 3) Save all changes to database
+      var rows = await unitOfWork.SaveAllChangesAsync("Customer deactivated", ct);
       logger.LogInformation("Account deactivated: {customerId} rows={rows}", customerId, rows);
 
-      return Result.Success();
+      return Result<bool>.Success(deactivatedCustomer.IsActive);
    }
 }

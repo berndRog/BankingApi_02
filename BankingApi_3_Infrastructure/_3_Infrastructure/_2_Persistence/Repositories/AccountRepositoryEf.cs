@@ -68,6 +68,14 @@ internal sealed class AccountRepositoryEf(
       .Include(a => a.Beneficiaries.Where(b => b.Id == beneficiaryId))
       .FirstOrDefaultAsync(a => a.Id == accountId, ct);
 
+   public async Task<IReadOnlyList<Account>> SelelctAccountsByCustomerIdWithBeneficiariesAsync(
+      Guid customerId, 
+      CancellationToken ct = default
+   )  => await accountDbContext.Accounts
+      .Include(a => a.Beneficiaries)
+      .Where(a => a.CustomerId == customerId)
+      .ToListAsync(ct);
+   
    public void Add(Beneficiary beneficiary)
       => accountDbContext.Add(beneficiary);
 

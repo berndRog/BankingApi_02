@@ -168,14 +168,14 @@ public sealed class CustomersController(
    /// Deactivate an activated customer 
    /// </summary>
    /// <param name="ct">Cancellation token.</param>
-   /// <returns>The created customer resource.</returns>
+   /// <returns>Is activated, should be false.</returns>
    [ApiVersion("2.0")]
    [HttpPut("customers/{id:guid}/deactivate", Name = nameof(DeactivateCustomerAsync))]
    [Consumes("application/json")]
    [Produces("application/json")]
    [ProducesResponseType<CustomerDto>(StatusCodes.Status200OK)]
    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")]
-   public async Task<ActionResult<CustomerDto>> DeactivateCustomerAsync(
+   public async Task<ActionResult<bool>> DeactivateCustomerAsync(
       [FromRoute] Guid id,
       CancellationToken ct
    ) {

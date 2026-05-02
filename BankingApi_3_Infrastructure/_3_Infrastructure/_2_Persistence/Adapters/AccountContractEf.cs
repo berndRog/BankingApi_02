@@ -5,7 +5,6 @@ using BankingApi._2_Core.BuildingBlocks._3_Domain.Enums;
 using BankingApi._2_Core.BuildingBlocks._4_BcContracts._1_Ports;
 using BankingApi._2_Core.BuildingBlocks._4_BcContracts._2_Application.Dtos;
 using BankingApi._2_Core.Payments._1_Ports.Outbound;
-using BankingApi._2_Core.Payments._2_Application.Dtos;
 using BankingApi._2_Core.Payments._2_Application.Mappings;
 using BankingApi._2_Core.Payments._3_Domain.Entities;
 using BankingApi._2_Core.Payments._3_Domain.Enums;
@@ -114,13 +113,15 @@ internal class AccountContractEf(
          return Result.Failure(resultEmployee.Error);
       var employeeContractDto = resultEmployee.Value;
       
-      // 2) Load all accounts for a given customer
-      var accounts = await accountRepository.SelelctByCustomerIdAsync(customerId, ct);
+      // 2) Load all accounts with beneficiaries for a given customer
+      var accounts = 
+         await accountRepository.SelelctAccountsByCustomerIdWithBeneficiariesAsync(customerId, ct);
       
       // 3) Delete beneficiaries first and then the accounts 
       foreach(var account in accounts) {
          // delete all beneficiaries in account and database
-         foreach (var beneficiary in account.Beneficiaries) {
+         var snapShot = account.Beneficiaries.ToList(); // create copy to avoid modification during iteration
+         foreach (var beneficiary in snapShot) {
             var resultBeneficiary = account.RemoveBeneficiary(beneficiary.Id, clock.UtcNow);
             if(resultBeneficiary.IsFailure)
                return Result.Failure(resultBeneficiary.Error);
@@ -135,6 +136,8 @@ internal class AccountContractEf(
       
       // 4) Save all changes to database
       var rows = await unitOfWork.SaveAllChangesAsync("Deactivate account", ct);
+      unitOfWork.ClearChangeTracker(); // clear tracked entities to avoid side effects in later operations in the same transaction
+      
       logger.LogInformation(
          "Deactivate accounts for customerId={customerId} rows={rows}", 
          customerId, rows);

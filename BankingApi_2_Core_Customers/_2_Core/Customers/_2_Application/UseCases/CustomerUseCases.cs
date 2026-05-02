@@ -8,8 +8,8 @@ namespace BankingApi._2_Core.Customers._2_Application.UseCases;
 // UseCases Facade for Customer aggregate
 internal class CustomerUseCases(
    CustomerUcCreate createUc,
-   CustomerUcDeactivate deactivateUc,
-   CustomerUcUpdate updateUc
+   CustomerUcUpdate updateUc,
+   CustomerUcDeactivate deactivateUc
 ): ICustomerUseCases {
 
    public Task<Result<CustomerDto>> CreateAsync(
@@ -29,7 +29,7 @@ internal class CustomerUseCases(
       customerUpdateDto: customerUpdateDto,
       ct: ct);      
 
-   public Task<Result> DeactivateAsync(
+   public Task<Result<bool>> DeactivateAsync(
       Guid customerId,
       CancellationToken ct
    ) => deactivateUc.ExecuteAsync(customerId, ct);

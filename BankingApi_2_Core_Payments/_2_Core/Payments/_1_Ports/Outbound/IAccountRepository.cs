@@ -50,6 +50,12 @@ public interface IAccountRepository {
       Guid beneficiaryId,
       CancellationToken ct = default
    );
+   
+   // Load all accounts for a customer with beneficiaries
+   Task<IReadOnlyList<Account>> SelelctAccountsByCustomerIdWithBeneficiariesAsync(
+      Guid customerId,
+      CancellationToken ct = default
+   );
 
    // Add Beneficiary as added in the tracker
    void Add(Beneficiary beneficiary);

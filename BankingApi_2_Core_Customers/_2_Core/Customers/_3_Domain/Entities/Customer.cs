@@ -168,26 +168,26 @@ public sealed class Customer : AggregateRoot {
    }
    
    // Employee deactivates the customer (end customer relationship).
-   public Result Deactivate(
+   public Result<Customer> Deactivate(
       Guid deactivatedByEmployeeId,
       DateTimeOffset deactivatedAt
    ) {
       if (deactivatedAt == default)
-         return Result.Failure(CommonErrors.TimestampIsRequired);
+         return Result<Customer>.Failure(CommonErrors.TimestampIsRequired);
 
       // fail early if preconditions for deactivation are not met
       // (employee, timestamp, status)
       if (deactivatedByEmployeeId == Guid.Empty)
-         return Result.Failure(CustomerErrors.AuditRequiresEmployee);
+         return Result<Customer>.Failure(CustomerErrors.AuditRequiresEmployee);
       if (Status == CustomerStatus.Deactivated)
-         return Result.Failure(CustomerErrors.AlreadyDeactivated);
+         return Result<Customer>.Failure(CustomerErrors.AlreadyDeactivated);
 
       Status = CustomerStatus.Deactivated;
       DeactivatedAt = deactivatedAt;
       DeactivatedByEmployeeId = deactivatedByEmployeeId;
 
       Touch(deactivatedAt);
-      return Result.Success();
+      return Result<Customer>.Success(this);
    }
    
    // Customer updates their profile
