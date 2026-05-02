@@ -113,31 +113,22 @@ public static class CustomerErrors {
          Title: "Customer: CustomCreateDto required",
          Message: "A CustomCreateDto object must must be provided.");
 
+   public static readonly DomainErrors CustomerUpdateDtoRequired =
+      new(ErrorCode.BadRequest,
+         Title: "Customer: CustomUpdateDto required",
+         Message: "A CustomUpdateDto object must must be provided.");
    
-   public static readonly DomainErrors EmployeesCannotUpdateCustomerProfile =
-      new(ErrorCode.Conflict,
-         Title: "Customer: Employee cannot update Customer profiles",
-         Message: "The customer profile is blocked against employees access.");
-
    
-   public static readonly DomainErrors EmployeeRightsRequired =
-      new(
-         ErrorCode.Forbidden,
-         Title: "Customer: Employee rights required",
-         Message: "This operation requires employee privileges."
-      );
+   public static readonly DomainErrors IsDeactivated =
+      new(ErrorCode.BadRequest,
+         Title: "Customer: Custom Is Deactivated",
+         Message: "Custom is deactivated.");
    
    public static readonly DomainErrors EmailAlreadyInUse =
       new(ErrorCode.Conflict,
          Title: "Customer: Email Already Used",
          Message: "The customer email is already in use by another customer.");
    
-   public static readonly DomainErrors EmailMustBeUnique =
-      new(
-         ErrorCode.Conflict,
-         Title: "Customer: Email Must Be Unique",
-         Message: "A customer with the given email address already exists."
-      );
    
    public static readonly DomainErrors AlreadyHasAccounts =
       new(
@@ -146,11 +137,6 @@ public static class CustomerErrors {
          Message: "A new customer must not have existing accounts."
       );
    
-   public static readonly DomainErrors FilterIsRequired =
-      new(ErrorCode.Conflict,
-         Title: "Customer: Filter Is Required",
-         Message: "The provided filter must not be null");
-
    public static readonly DomainErrors InvalidStatusTransition =
       new(
          ErrorCode.UnprocessableEntity,

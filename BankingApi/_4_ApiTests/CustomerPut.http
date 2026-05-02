@@ -1,0 +1,27 @@
+@baseUrl = https://localhost:8010/banking/v2
+
+###
+# @name Update customer1
+PUT {{baseUrl}}/customers/10000000-0000-0000-0000-000000000000
+Content-Type: application/json
+Accept: application/json
+
+{
+  "lastname": "Meier",
+  "companyName": "Hardware Meier",
+  "email": "erika.meier@vodafonemail.de",
+  "addressDto": {
+    "street": "Am Berge 2",
+    "postalCode": "29389",
+    "city": "Bad Bodenteich",
+    "country": "DE"
+  }
+}
+
+
+###
+# @name Deactivated customer1
+PUT {{baseUrl}}/customers/10000000-0000-0000-0000-000000000000/deactivate
+Content-Type: application/json
+Accept: application/json
+

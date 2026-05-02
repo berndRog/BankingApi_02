@@ -1,7 +1,7 @@
 @baseUrl = https://localhost:8010/banking/v2
 
 ###
-# @name Post customer1
+# @name Create customer1
 POST {{baseUrl}}/customers
 Content-Type: application/json
 Accept: application/json
@@ -26,7 +26,7 @@ Accept: application/json
 }
 
 ###
-# @name Post customer2
+# @name Create customer2
 POST {{baseUrl}}/customers
 Content-Type: application/json
 Accept: application/json
@@ -51,7 +51,7 @@ Accept: application/json
 }
 
 ###
-# @name Post customer3
+# @name Create customer3
 POST {{baseUrl}}/customers
 Content-Type: application/json
 Accept: application/json
@@ -75,7 +75,7 @@ Accept: application/json
 }
 
 ###
-# @name Post customer4
+# @name Create customer4
 POST {{baseUrl}}/customers
 Content-Type: application/json
 Accept: application/json
@@ -99,7 +99,7 @@ Accept: application/json
 }
 
 ###
-# @name Post customer5
+# @name Create customer5
 POST {{baseUrl}}/customers
 Content-Type: application/json
 Accept: application/json
@@ -124,7 +124,7 @@ Accept: application/json
 }
 
 ###
-# @name Post customer6
+# @name Create customer6
 POST {{baseUrl}}/customers
 Content-Type: application/json
 Accept: application/json
