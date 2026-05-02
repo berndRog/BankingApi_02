@@ -1,9 +1,7 @@
-using System.Diagnostics.CodeAnalysis;
 using BankingApi._2_Core.BuildingBlocks;
 using BankingApi._2_Core.BuildingBlocks._3_Domain.Entities;
 using BankingApi._2_Core.BuildingBlocks._3_Domain.Errors;
 using BankingApi._2_Core.BuildingBlocks._3_Domain.ValueObjects;
-using BankingApi._2_Core.Customers._2_Application.Mappings;
 using BankingApi._2_Core.Customers._3_Domain.Enum;
 using BankingApi._2_Core.Customers._3_Domain.Errors;
 namespace BankingApi._2_Core.Customers._3_Domain.Entities;
@@ -168,35 +166,35 @@ public sealed class Customer : AggregateRoot {
    }
    
    // Employee deactivates the customer (end customer relationship).
-   public Result<Customer> Deactivate(
+   public Result Deactivate(
       Guid deactivatedByEmployeeId,
       DateTimeOffset deactivatedAt
    ) {
       if (deactivatedAt == default)
-         return Result<Customer>.Failure(CommonErrors.TimestampIsRequired);
+         return Result.Failure(CommonErrors.TimestampIsRequired);
 
       // fail early if preconditions for deactivation are not met
       // (employee, timestamp, status)
       if (deactivatedByEmployeeId == Guid.Empty)
-         return Result<Customer>.Failure(CustomerErrors.AuditRequiresEmployee);
+         return Result.Failure(CustomerErrors.AuditRequiresEmployee);
       if (Status == CustomerStatus.Deactivated)
-         return Result<Customer>.Failure(CustomerErrors.AlreadyDeactivated);
+         return Result.Failure(CustomerErrors.AlreadyDeactivated);
 
       Status = CustomerStatus.Deactivated;
       DeactivatedAt = deactivatedAt;
       DeactivatedByEmployeeId = deactivatedByEmployeeId;
 
       Touch(deactivatedAt);
-      return Result<Customer>.Success(this);
+      return Result.Success();
    }
    
    // Customer updates their profile
    public Result<Customer> Update(
-      string? lastname,
-      string? companyName,
-      EmailVo? emailVo,
-      AddressVo? addressVo,
-      DateTimeOffset updatedAt
+      string? lastname = null,
+      string? companyName = null,
+      EmailVo? emailVo = null,
+      AddressVo? addressVo = null,
+      DateTimeOffset updatedAt = default
    ) {
       if (updatedAt == default)
          return Result<Customer>.Failure(CommonErrors.TimestampIsRequired);

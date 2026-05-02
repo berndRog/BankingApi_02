@@ -1,5 +1,4 @@
 using BankingApi._2_Core.BuildingBlocks;
-using BankingApi._2_Core.BuildingBlocks._3_Domain;
 using BankingApi._2_Core.Customers._2_Application.Dtos;
 namespace BankingApi._2_Core.Customers._1_Ports.Outbound;
 

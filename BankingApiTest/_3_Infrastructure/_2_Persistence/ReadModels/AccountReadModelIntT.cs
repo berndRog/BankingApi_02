@@ -3,7 +3,7 @@ using BankingApi._2_Core.Payments._1_Ports.Outbound;
 using BankingApi._2_Core.Payments._2_Application.Mappings;
 using BankingApiTest.TestInfrastructure;
 using Microsoft.Extensions.DependencyInjection;
-namespace BankingApiTest._3_Infrastructure._2_Persistence.Repositories;
+namespace BankingApiTest._3_Infrastructure._2_Persistence.ReadModels;
 public sealed class AccountReadModelIntT : TestBaseIntegration {
 
    public AccountReadModelIntT() {

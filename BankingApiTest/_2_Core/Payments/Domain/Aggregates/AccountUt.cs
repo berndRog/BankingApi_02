@@ -2,7 +2,7 @@ using BankingApi._2_Core.BuildingBlocks._1_Ports.Outbound;
 using BankingApi._2_Core.Customers._3_Domain.Entities;
 using BankingApi._2_Core.Payments._3_Domain.Entities;
 using BankingApiTest.TestInfrastructure;
-namespace BankingApiTest._2_Core.Core.Domain.Aggregates;
+namespace BankingApiTest._2_Core.Payments.Domain.Aggregates;
 
 public sealed class AccountUt {
    private readonly TestSeed _seed;
@@ -37,7 +37,7 @@ public sealed class AccountUt {
       True(result.IsSuccess);
       NotNull(result.Value);
 
-      var actual = result.Value!;
+      var actual = result.Value;
       IsType<Account>(actual);
       NotEqual(Guid.Empty, actual.Id);
       Equal(_account.Id, actual.Id);
@@ -62,7 +62,7 @@ public sealed class AccountUt {
       True(result.IsSuccess);
       NotNull(result.Value);
 
-      var actual = result.Value!;
+      var actual = result.Value;
       NotEqual(Guid.Empty, actual.Id);
       Equal(_account.IbanVo, actual.IbanVo);
       Equal(_account.BalanceVo, actual.BalanceVo);
@@ -137,10 +137,10 @@ public sealed class AccountUt {
 
       True(result1.IsSuccess);
       True(result2.IsSuccess);
-      Equal(result1.Value!.Id, result2.Value!.Id);
-      Equal(result1.Value!.IbanVo, result2.Value!.IbanVo);
-      Equal(result1.Value!.CustomerId, result2.Value!.CustomerId);
-      Equal(result1.Value!.BalanceVo, result2.Value!.BalanceVo);
+      Equal(result1.Value.Id, result2.Value.Id);
+      Equal(result1.Value.IbanVo, result2.Value.IbanVo);
+      Equal(result1.Value.CustomerId, result2.Value.CustomerId);
+      Equal(result1.Value.BalanceVo, result2.Value.BalanceVo);
    }
  
    #region --- Beneficiaries ----------------------------------------------------------------

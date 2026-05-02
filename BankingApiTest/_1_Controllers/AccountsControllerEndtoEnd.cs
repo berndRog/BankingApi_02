@@ -7,7 +7,7 @@ using BankingApiTest.TestController;
 using BankingApiTest.TestInfrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-namespace BankingApiTest._2_Modules.Owners.Application;
+namespace BankingApiTest._1_Controllers;
 
 public sealed class AccountsControllerEndToEnd : TestBaseEndToEnd {
    private TestSeed _seed = new TestSeed();

@@ -1,5 +1,5 @@
 using BankingApi._2_Core.BuildingBlocks._3_Domain.ValueObjects;
-namespace BankingApiTest._2_Core.Customers.Domain.Entities;
+namespace BankingApiTest._2_Core.BuildingBlocks._3_Domain.ValueObjects;
 
 public sealed class EmailVoUt {
 

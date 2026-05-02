@@ -132,12 +132,12 @@ public sealed class CustomersControllerEndtoEnd : TestBaseEndToEnd {
          await response.Content.ReadFromJsonAsync<CustomerDto>(ct);
       NotNull(actualCustomerDto);
 
-      Equals(customer.Id, actualCustomerDto?.Id);
-      Equals(customer.Firstname, actualCustomerDto?.Firstname);
-      Equals(customer.Lastname, actualCustomerDto?.Lastname);
-      Equals(customer.CompanyName, actualCustomerDto?.CompanyName);
-      Equals(customer.EmailVo, actualCustomerDto?.Email);
-      Equals((int)customer.Status, actualCustomerDto?.StatusInt);
+      Equals(customer.Id, actualCustomerDto.Id);
+      Equals(customer.Firstname, actualCustomerDto.Firstname);
+      Equals(customer.Lastname, actualCustomerDto.Lastname);
+      Equals(customer.CompanyName, actualCustomerDto.CompanyName);
+      Equals(customer.EmailVo, actualCustomerDto.Email);
+      Equals((int)customer.Status, actualCustomerDto.StatusInt);
       //Equal(Factory.TestSubject, owner.Subject);
       Equals(customer.AddressVo, actualCustomerDto);
    }
@@ -206,7 +206,7 @@ public sealed class CustomersControllerEndtoEnd : TestBaseEndToEnd {
       // Act
       var request = new HttpRequestMessage(
          method: HttpMethod.Get,
-         requestUri: $"/banking/v2/customers"
+         requestUri: "/banking/v2/customers"
       );
       request.Headers.Add(TestAuthHandler.Header, "Employee");
 

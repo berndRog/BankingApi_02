@@ -16,7 +16,7 @@ namespace BankingApi._2_Core.Payments._3_Domain.ValueObjects;
 // - characters A-Z / 0-9 only
 // - MOD-97 checksum must pass
 [ComplexType]
-public sealed record class IbanVo {
+public sealed record IbanVo {
    
    //--- Properties ------------------------------------------------------------
    // Canonical IBAN (uppercase, no separators).

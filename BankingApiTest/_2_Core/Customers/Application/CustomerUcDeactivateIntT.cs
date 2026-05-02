@@ -72,4 +72,46 @@ public sealed class CustomerUcDeactivateIntT : TestBaseIntegration {
       Equal(account1.IbanVo, actualAccount.IbanVo);
       Equal(account1.BalanceVo, actualAccount.BalanceVo);
    }
+   
+      [Fact]
+   public async Task Deactivate_Customer_withAccountsAndBeneficiries_ok() {
+      
+      using var scope = Root.CreateDefaultScope();
+      var ct = TestContext.Current.CancellationToken;
+      var customerRepository = scope.ServiceProvider.GetRequiredService<ICustomerRepository>();
+      var accountRepository = scope.ServiceProvider.GetRequiredService<IAccountRepository>();
+      
+      var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+      var seed = scope.ServiceProvider.GetRequiredService<TestSeed>();
+      var sut = scope.ServiceProvider.GetRequiredService<CustomerUcDeactivate>();
+
+      // Arrange
+      var customers = seed.Customers.ToList();
+      var accountsWithBeneficiaries = seed.AddBeneficiariesToAccounts();
+      customerRepository.AddRange(customers);
+      accountRepository.AddRange(accountsWithBeneficiaries);
+
+      var rows = await unitOfWork.SaveAllChangesAsync("Fill database", ct);
+      True(rows > 0);
+      
+
+      // Act
+      var customer = customers[0];
+      var resultDeactivate = await sut.ExecuteAsync(
+         customerId: customer.Id,
+         ct
+      );
+      True(resultDeactivate.IsSuccess);
+      unitOfWork.ClearChangeTracker();
+      
+      // // Assert
+      var actualCustomer = await customerRepository.FindByIdAsync(customer.Id, ct);
+      False(actualCustomer.IsActive);
+      
+      var actualAccounts = await accountRepository
+         .SelelctAccountsByCustomerIdWithBeneficiariesAsync(actualCustomer.Id, ct);
+      NotNull(actualAccounts);
+      True(actualAccounts.Count == 2);
+      False(actualAccounts.Any(a => a.IsActive)); // all accounts should be deactivated
+   }
 }

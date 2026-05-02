@@ -25,9 +25,7 @@ internal sealed class CustomerUcUpdate(
    ) {
      if(customerId == Guid.Empty)
         return Result<CustomerDto>.Failure(CustomerErrors.InvalidId);
-     if(customerUpdateDto == default)
-        return Result<CustomerDto>.Failure(CustomerErrors.CustomerUpdateDtoRequired);
-     
+
       // 1) Find existing customer
       var customer = await repository.FindByIdAsync(customerId, ct);
       if (customer is null) {
@@ -35,7 +33,7 @@ internal sealed class CustomerUcUpdate(
          return Result<CustomerDto>.Failure(CustomerErrors.NotFound);
       }
       if(!customer.IsActive)
-         return Result<CustomerDto>.Failure(CustomerErrors.IsDeactivated);
+         return Result<CustomerDto>.Failure(CustomerErrors.AlreadyDeactivated);
       
       // 2) DomainModel
       // check Email

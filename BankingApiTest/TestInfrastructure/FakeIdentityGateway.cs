@@ -1,5 +1,5 @@
 using BankingApi._2_Core.BuildingBlocks._1_Ports.Outbound;
-namespace BankingApiTest._3_Infrastructure._3_Security;
+namespace BankingApiTest.TestInfrastructure;
 
 public sealed class FakeIdentityGateway : IIdentityGateway {
    public string Subject { get; }

@@ -29,7 +29,7 @@ internal class CustomerUseCases(
       customerUpdateDto: customerUpdateDto,
       ct: ct);      
 
-   public Task<Result<bool>> DeactivateAsync(
+   public Task<Result> DeactivateAsync(
       Guid customerId,
       CancellationToken ct
    ) => deactivateUc.ExecuteAsync(customerId, ct);

@@ -1,11 +1,9 @@
 using System.Runtime.CompilerServices;
 using BankingApi._2_Core.BuildingBlocks;
 using BankingApi._2_Core.BuildingBlocks._1_Ports.Outbound;
-using BankingApi._2_Core.BuildingBlocks._2_Application.Mappings;
 using BankingApi._2_Core.BuildingBlocks._3_Domain.Enums;
 using BankingApi._2_Core.BuildingBlocks._3_Domain.ValueObjects;
 using BankingApi._2_Core.BuildingBlocks._4_BcContracts._1_Ports;
-using BankingApi._2_Core.BuildingBlocks._4_BcContracts._2_Application.Dtos;
 using BankingApi._2_Core.Customers._1_Ports.Outbound;
 using BankingApi._2_Core.Customers._2_Application.Dtos;
 using BankingApi._2_Core.Customers._2_Application.Mappings;
@@ -79,7 +77,7 @@ internal sealed class CustomerUcCreate(
       );
       if (result.IsFailure)
          return Result<CustomerDto>.Failure(result.Error);
-      var customer = result.Value!;
+      var customer = result.Value;
       
       // 4) Check if there are accounts for this customer,
       // if so, fail (this is a severe error)
@@ -119,7 +117,7 @@ internal sealed class CustomerUcCreate(
          return Result<CustomerDto>.Failure(resultAccount.Error);
             
       logger.LogInformation("CustomerUcCreate done CustomerId={id}, iban={iban}",
-         customer.Id, resultAccount.Value!.Iban);  
+         customer.Id, resultAccount.Value.Iban);  
       
       return Result<CustomerDto>.Success(customer.ToCustomerDto());
    }

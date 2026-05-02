@@ -27,7 +27,7 @@ public sealed record EmailVo {
       if (resultNormalized.IsFailure)
          return Result<EmailVo>.Failure(resultNormalized.Error);
       
-      return Result<EmailVo>.Success(new EmailVo(resultNormalized.Value!));
+      return Result<EmailVo>.Success(new EmailVo(resultNormalized.Value));
    }
 
    //--- Factory - database (trusted) -----------------------------------------

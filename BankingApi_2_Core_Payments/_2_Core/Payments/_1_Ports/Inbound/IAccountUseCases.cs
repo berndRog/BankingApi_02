@@ -1,7 +1,5 @@
 using BankingApi._2_Core.BuildingBlocks;
-using BankingApi._2_Core.BuildingBlocks._3_Domain;
 using BankingApi._2_Core.Payments._2_Application.Dtos;
-
 namespace BankingApi._2_Core.Payments._1_Ports.Inbound;
 
 // Application port defining command use cases for the Accounts domain.

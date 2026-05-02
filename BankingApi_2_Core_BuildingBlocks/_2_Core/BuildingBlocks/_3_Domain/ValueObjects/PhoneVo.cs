@@ -41,7 +41,7 @@ public sealed record PhoneVo {
       var normalized = NormalizeFromInput(input);
       if (normalized.IsFailure)
          return Result<PhoneVo>.Failure(normalized.Error);
-      return Result<PhoneVo>.Success(new PhoneVo(normalized.Value!));
+      return Result<PhoneVo>.Success(new PhoneVo(normalized.Value));
    }
 
    // database 

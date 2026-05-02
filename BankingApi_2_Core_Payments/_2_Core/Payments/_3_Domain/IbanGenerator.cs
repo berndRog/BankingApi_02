@@ -1,7 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
-
-namespace BankingApi._2_Core.Payments;
+namespace BankingApi._2_Core.Payments._3_Domain;
 
 public static class IbanGenerator {
 

@@ -14,10 +14,12 @@ internal class FakeEmployeeContractEf(
       CancellationToken ct = default
    ) {
       // ALWAYS WALTER WAGNER! 
+      await Task.Delay(10, ct); // simulate some async work (e.g. call to identity gateway)
       var employeeContractDto =  new EmployeeContractDto(
          Id: Guid.Parse("00000000-0002-0000-0000-000000000000"),
          AdminRightsInt: 511 // all AdminRights
       );
+
       
       return Result<EmployeeContractDto>.Success(employeeContractDto);
       

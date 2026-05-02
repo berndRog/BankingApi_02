@@ -4,7 +4,7 @@ using BankingApi._2_Core.Payments._2_Application.Mappings;
 using BankingApi._2_Core.Payments._2_Application.UseCases;
 using BankingApiTest.TestInfrastructure;
 using Microsoft.Extensions.DependencyInjection;
-namespace BankingApiTest._2_Core.Core.Application.UseCases;
+namespace BankingApiTest._2_Core.Payments.Application.UseCases;
 
 public sealed class AccountUcBeneficiaryAddIntT : TestBaseIntegration {
 

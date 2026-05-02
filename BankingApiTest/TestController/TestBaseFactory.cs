@@ -2,8 +2,6 @@ using System.Data.Common;
 using BankingApi;
 using BankingApi._2_Core.BuildingBlocks._1_Ports.Outbound;
 using BankingApi._3_Infrastructure._2_Persistence.Database;
-using BankingApiTest._3_Infrastructure._3_Security;
-using BankingApiTest._3_Infrastructure._5_Utils;
 using BankingApiTest.TestInfrastructure;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;

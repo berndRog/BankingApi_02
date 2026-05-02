@@ -20,7 +20,7 @@ public static class CustomerErrors {
    public static readonly DomainErrors AlreadyDeactivated =
       new(ErrorCode.Conflict,
          Title: "Customer:  Already deactivated",
-         Message: "The owner has already been deactivated.");
+         Message: "The customer has already been deactivated.");
 
    // Validation
    public static readonly DomainErrors FirstnameIsRequired =
@@ -117,12 +117,6 @@ public static class CustomerErrors {
       new(ErrorCode.BadRequest,
          Title: "Customer: CustomUpdateDto required",
          Message: "A CustomUpdateDto object must must be provided.");
-   
-   
-   public static readonly DomainErrors IsDeactivated =
-      new(ErrorCode.BadRequest,
-         Title: "Customer: Custom Is Deactivated",
-         Message: "Custom is deactivated.");
    
    public static readonly DomainErrors EmailAlreadyInUse =
       new(ErrorCode.Conflict,

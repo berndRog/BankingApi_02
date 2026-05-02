@@ -1,4 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
 namespace BankingApiTest.TestInfrastructure;
 
 // Base class for integration tests that need a fresh <see cref="TestCompositionRoot"/>

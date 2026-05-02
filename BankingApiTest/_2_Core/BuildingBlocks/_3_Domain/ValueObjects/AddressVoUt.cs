@@ -1,7 +1,7 @@
 using BankingApi._2_Core.BuildingBlocks._3_Domain.Errors;
 using BankingApi._2_Core.BuildingBlocks._3_Domain.ValueObjects;
 using BankingApiTest.TestInfrastructure;
-namespace BankingApiTest._2_Core.Customers.Domain.Entities;
+namespace BankingApiTest._2_Core.BuildingBlocks._3_Domain.ValueObjects;
 
 public sealed class AddressVoUt {
    private readonly TestSeed _seed = default!;

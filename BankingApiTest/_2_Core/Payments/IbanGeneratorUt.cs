@@ -1,4 +1,4 @@
-using BankingApi._2_Core.Payments;
+using BankingApi._2_Core.Payments._3_Domain;
 using BankingApiTest._2_Core;
 namespace BankingApiTest.TestController._2_Core.Core.Payments;
 

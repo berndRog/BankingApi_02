@@ -22,7 +22,7 @@ public interface ICustomerUseCases {
    );
    
    // Employee action: deactivate an existing customer
-   Task<Result<bool>> DeactivateAsync(
+   Task<Result> DeactivateAsync(
       Guid customerId,
       CancellationToken ct = default
    );

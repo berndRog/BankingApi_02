@@ -143,6 +143,7 @@ public sealed class CustomersController(
    /// <summary>
    /// Updates an activated customer 
    /// </summary>
+   /// <param name="id">Customers unique id</param>
    /// <param name="customerUpdateDto">Customer data with updated profile data.</param>
    /// <param name="ct">Cancellation token.</param>
    /// <returns>The created customer resource.</returns>
@@ -159,23 +160,22 @@ public sealed class CustomersController(
    ) {
       const string context = $"{nameof(CustomersController)}.{nameof(UpdateCustomerAsync)}";
       
-      var result = await useCases.UpdateAsync(id,customerUpdateDto, ct);
+      var result = await useCases.UpdateAsync(id, customerUpdateDto, ct);
 
       return this.ToActionResult(result, logger, context, args: id);
    }
    
    /// <summary>
-   /// Deactivate an activated customer 
+   /// Deactivate an activated customer
    /// </summary>
+   /// <param name="id">Customers unique id</param>
    /// <param name="ct">Cancellation token.</param>
-   /// <returns>Is activated, should be false.</returns>
+   /// <returns>No content.</returns>
    [ApiVersion("2.0")]
-   [HttpPut("customers/{id:guid}/deactivate", Name = nameof(DeactivateCustomerAsync))]
-   [Consumes("application/json")]
-   [Produces("application/json")]
-   [ProducesResponseType<CustomerDto>(StatusCodes.Status200OK)]
+   [HttpPatch("customers/{id:guid}/deactivate", Name = nameof(DeactivateCustomerAsync))]
+   [ProducesResponseType(StatusCodes.Status204NoContent)]
    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")]
-   public async Task<ActionResult<bool>> DeactivateCustomerAsync(
+   public async Task<IActionResult> DeactivateCustomerAsync(
       [FromRoute] Guid id,
       CancellationToken ct
    ) {

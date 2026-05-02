@@ -1,6 +1,4 @@
 using Asp.Versioning.ApiExplorer;
-using BankingApi._2_Core.BuildingBlocks;
-using BankingApi._2_Core.BuildingBlocks._4_BcContracts._1_Ports;
 using BankingApi._2_Core.Customers;
 using BankingApi._2_Core.Payments;
 using BankingApi._3_Infrastructure;

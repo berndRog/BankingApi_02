@@ -1,5 +1,5 @@
 using BankingApi._2_Core.BuildingBlocks._1_Ports.Outbound;
-namespace BankingApiTest._3_Infrastructure._5_Utils;
+namespace BankingApiTest.TestInfrastructure;
 
 public sealed class FakeClock : IClock {
    public static readonly DateTimeOffset DefaultUtcNow = DateTimeOffset.Parse("2020-01-01T00:00:00Z");

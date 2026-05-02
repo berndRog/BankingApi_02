@@ -13,8 +13,6 @@ using BankingApi._3_Infrastructure._2_Persistence.Adapters;
 using BankingApi._3_Infrastructure._2_Persistence.Database;
 using BankingApi._3_Infrastructure._2_Persistence.ReadModel;
 using BankingApi._3_Infrastructure._2_Persistence.Repositories;
-using BankingApiTest._3_Infrastructure._3_Security;
-using BankingApiTest._3_Infrastructure._5_Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 namespace BankingApiTest.TestInfrastructure;
