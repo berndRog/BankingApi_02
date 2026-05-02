@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using BankingApi._2_Core.BuildingBlocks;
 using BankingApi._2_Core.BuildingBlocks._1_Ports.Outbound;
 using BankingApi._2_Core.BuildingBlocks._3_Domain.Enums;
@@ -5,12 +6,11 @@ using BankingApi._2_Core.BuildingBlocks._4_BcContracts._1_Ports;
 using BankingApi._2_Core.Customers._1_Ports.Outbound;
 using BankingApi._2_Core.Customers._3_Domain.Errors;
 using Microsoft.Extensions.Logging;
+[assembly: InternalsVisibleTo("BankingApiTest")]
 namespace BankingApi._2_Core.Customers._2_Application.UseCases;
 
-/// <summary>
-/// Employee use case: deactivate a customer relationship
-/// </summary>
-public sealed class CustomerUcDeactivate(
+internal sealed class CustomerUcDeactivate(
+   IAccountContract accountContract,
    IEmployeeContract employeeContract,
    ICustomerRepository repository,
    IUnitOfWork unitOfWork,
@@ -39,6 +39,15 @@ public sealed class CustomerUcDeactivate(
          return Result.Failure(CustomerErrors.NotFound);
 
       // 4) Domain model
+      // deactivate all accounts
+      var resultDeactivateAccounts = await accountContract.DeactivateAllAccountsAsync(
+         customerId: customerId, 
+         ct: ct
+      );
+      if(resultDeactivateAccounts.IsFailure)
+         return Result.Failure(resultDeactivateAccounts.Error);
+      
+      // deactivate customer
       var result = customer.Deactivate(
          deactivatedByEmployeeId: employeeContractDto.Id, 
          deactivatedAt: clock.UtcNow
@@ -46,13 +55,10 @@ public sealed class CustomerUcDeactivate(
       if (result.IsFailure)
          return Result.Failure(result.Error);
 
-      // 5) Persist
+      // 5) Save all changes to database
       var rows = await unitOfWork.SaveAllChangesAsync("Customer deactivated by employee", ct);
       logger.LogInformation("Account deactivated: {customerId} rows={rows}", customerId, rows);
 
       return Result.Success();
    }
-
-   private static Guid ParseEmployeeId(string subject) =>
-      Guid.TryParse(subject, out var id) ? id : Guid.Empty;
 }

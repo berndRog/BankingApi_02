@@ -19,12 +19,7 @@ internal class CustomerUseCases(
       customerCreateDto: customerCreateDto,
       ct: ct
    );
-   
-   public Task<Result> DeactivateAsync(
-      Guid customerId,
-      CancellationToken ct
-   ) => deactivateUc.ExecuteAsync(customerId, ct);
-   
+
    public Task<Result> UpdateAsync(
       Guid customerId,
       CustomerUpdateDto customerUpdateDto, 
@@ -32,6 +27,11 @@ internal class CustomerUseCases(
    ) => updateUc.ExecuteAsync(
       customerId: customerId,
       customerUpdateDto: customerUpdateDto,
-      ct: ct);
+      ct: ct);      
+
+   public Task<Result> DeactivateAsync(
+      Guid customerId,
+      CancellationToken ct
+   ) => deactivateUc.ExecuteAsync(customerId, ct);
    
 }

@@ -111,7 +111,7 @@ public sealed class Customer : AggregateRoot {
       if (!string.IsNullOrWhiteSpace(companyName) && companyName.Length is < 2 or > 80)
          return Result<Customer>.Failure(CustomerErrors.InvalidCompanyName);
       
-      var resultSubject = SubjectCheck.Run(subject);
+      var resultSubject = IdentitySubject.Check(subject);
       if (resultSubject.IsFailure)
          return Result<Customer>.Failure(resultSubject.Error);
 
@@ -136,97 +136,12 @@ public sealed class Customer : AggregateRoot {
 
       return Result<Customer>.Success(customer);
    }
-
-   // Create an owner on first login (provisioning).
-   public static Result<Customer> CreateProvision(
-      string subject,
-      EmailVo emailVo,
-      DateTimeOffset createdAt = default!,
-      string? id = null
-   ) {
-      
-      var resultId = Resolve(id, CustomerErrors.InvalidId);
-      if (resultId.IsFailure)
-         return Result<Customer>.Failure(resultId.Error);
-      var customerId = resultId.Value;
-
-      var addressVo = AddressVo.Create(
-         street: "undefined",
-         postalCode: "undefined",
-         city: "undefined",
-         country: null
-      ).Value;
-      
-      // Provisioned customer starts with identity data plus required business profile data.
-      var customer = new Customer(
-         id: customerId,
-         firstname: "undefined",
-         lastname: "undefined",
-         companyName: null,
-         subject: subject,
-         emailVo: emailVo,
-         addressVo: addressVo
-      );
-
-      // Provisioning should reflect identity creation time in IA-Server
-      customer.Initialize(createdAt);
-
-      return Result<Customer>.Success(customer);
-   }
-
-   // --------------------------------------------------------------------------
-   // Domain methods (mutations)
-   // --------------------------------------------------------------------------
-   // Customer completes or updates their profile after provisioning.
-   public Result UpdateProfile(
-      string firstname,
-      string lastname,
-      string? companyName,
-      EmailVo emailVo,
-      AddressVo addressVo,
-      DateTimeOffset updatedAt
-   ) {
-      if (updatedAt == default)
-         return Result.Failure(CommonErrors.TimestampIsRequired);
-
-      firstname = firstname.Trim();
-      lastname = lastname.Trim();
-      companyName = companyName?.Trim();
-
-      // Validate required profile fields
-      if (string.IsNullOrWhiteSpace(firstname))
-         return Result.Failure(CustomerErrors.FirstnameIsRequired);
-      if (firstname.Length is < 2 or > 80)
-         return Result.Failure(CustomerErrors.InvalidFirstname);
-
-      if (string.IsNullOrWhiteSpace(lastname))
-         return Result.Failure(CustomerErrors.LastnameIsRequired);
-      if (lastname.Length is < 2 or > 80)
-         return Result.Failure(CustomerErrors.InvalidLastname);
-
-      if (!string.IsNullOrWhiteSpace(companyName) && companyName.Length is < 2 or > 80)
-         return Result.Failure(CustomerErrors.InvalidCompanyName);
-
-      // Apply changes
-      Firstname = firstname;
-      Lastname = lastname;
-      CompanyName = companyName;
-      EmailVo = emailVo;
-      AddressVo = addressVo;
-
-      // SELF-SERVICE: if profile is complete, we auto-activate the owner without employee involvement.
-      // auto-activate on profile completion (no employee involved)
-      Activate(Guid.Empty, updatedAt);
-
-      Touch(updatedAt);
-
-      return Result.Success();
-   }
-
-   // Employee activates the owner after external identity verification.
-   // Activation is only possible if the owner is Pending and profile is complete.
+   
+   //--- domain methods --------------------------------------------------------
+   // Employee activates the customer after external identity verification.
+   // Activation is only possible if the customer is Pending and profile is complete.
    public Result Activate(
-      Guid activatedByEmployeeId,
+      Guid auditeddByEmployeeId,
       DateTimeOffset activatedAt
    ) {
       if (activatedAt == default)
@@ -234,7 +149,7 @@ public sealed class Customer : AggregateRoot {
 
       // fail early if preconditions for activation are not met
       // (employee, timestamp, status, profile)
-      if (activatedByEmployeeId == Guid.Empty)
+      if (auditeddByEmployeeId == Guid.Empty)
          return Result.Failure(CustomerErrors.AuditRequiresEmployee);
       if (Status != CustomerStatus.Pending)
          return Result.Failure(CustomerErrors.NotPending);
@@ -243,43 +158,15 @@ public sealed class Customer : AggregateRoot {
 
       Status = CustomerStatus.Active;
       ActivatedAt = activatedAt;
-      AuditedByEmployeeId = activatedByEmployeeId;
+      AuditedByEmployeeId = auditeddByEmployeeId;
 
       RejectedAt = null;
       CustomerRejectCode = CustomerRejectCode.None;
 
-      // create initial account for the owner (domain event, handled in application layer)
       Touch(activatedAt);
       return Result.Success();
    }
    
-   // Employee rejects the owner (e.g., KYC failed).
-   public Result Reject(
-      Guid rejectedByEmployeeId,
-      CustomerRejectCode customerRejectCode,
-      DateTimeOffset rejectedAt
-   ) {
-      if (rejectedAt == default)
-         return Result.Failure(CommonErrors.TimestampIsRequired);
-
-      // fail early if preconditions for rejection are not met
-      // (employee, timestamp, status, reason code)
-      if (rejectedByEmployeeId == Guid.Empty)
-         return Result.Failure(CustomerErrors.AuditRequiresEmployee);
-      if (customerRejectCode == default)
-         return Result.Failure(CustomerErrors.RejectionRequiresReason);
-      if (Status != CustomerStatus.Pending)
-         return Result.Failure(CustomerErrors.NotPending);
-
-      Status = CustomerStatus.Rejected;
-      RejectedAt = rejectedAt;
-      AuditedByEmployeeId = rejectedByEmployeeId;
-      CustomerRejectCode = customerRejectCode;
-
-      Touch(rejectedAt);
-      return Result.Success();
-   }
-
    // Employee deactivates the customer (end customer relationship).
    public Result Deactivate(
       Guid deactivatedByEmployeeId,

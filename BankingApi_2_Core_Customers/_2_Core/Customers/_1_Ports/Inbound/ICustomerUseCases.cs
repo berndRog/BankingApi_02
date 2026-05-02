@@ -13,6 +13,13 @@ public interface ICustomerUseCases {
       CustomerCreateDto customerCreateDto,
       CancellationToken ct = default
    );
+
+   // Update the customer's profile data
+   Task<Result> UpdateAsync(
+      Guid customerId,
+      CustomerUpdateDto customerUpdateDto,
+      CancellationToken ct = default
+   );
    
    // Employee action: deactivate an existing customer
    Task<Result> DeactivateAsync(
@@ -20,10 +27,4 @@ public interface ICustomerUseCases {
       CancellationToken ct = default
    );
    
-   // Update the customer's profile data
-   Task<Result> UpdateAsync(
-      Guid customerId,
-      CustomerUpdateDto customerUpdateDto,
-      CancellationToken ct = default
-   );
 }

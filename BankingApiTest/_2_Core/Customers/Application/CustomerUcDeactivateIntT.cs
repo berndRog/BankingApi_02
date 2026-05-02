@@ -15,7 +15,6 @@ public sealed class CustomerUcDeactivateIntT : TestBaseIntegration {
       this.SensitiveDataLogging = true;
    }
    
-   
    [Fact]
    public async Task Deactivate_Customer_ok() {
       

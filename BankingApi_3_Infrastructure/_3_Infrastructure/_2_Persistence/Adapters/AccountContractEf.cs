@@ -17,7 +17,7 @@ using IbanGenerator = BankingApi._2_Core.BuildingBlocks.Utils.IbanGenerator;
 namespace BankingApi._3_Infrastructure._2_Persistence.Adapters;
 
 internal class AccountContractEf(
-   // IEmployeeContract employeeContract,
+   IEmployeeContract employeeContract,
    IAccountRepository accountRepository,
    IUnitOfWork unitOfWork,
    IClock clock,
@@ -32,17 +32,12 @@ internal class AccountContractEf(
       int currency = 1, // EUR
       CancellationToken ct = default!
    ) {
-      
       // 1) Load authorized employee and check if has rights to manage accounts
-      // var resultEmployee = await employeeContract.GetAuthorizedEmployeeAsync(
-      //    AdminRights.ManageAccounts, ct);   
-      // if(resultEmployee.IsFailure)
-      //    return Result<AccountContractDto>.Failure(resultEmployee.Error);
-      // var employeeContractDto = resultEmployee.Value;
-      var employeeContractDto = new EmployeeContractDto(
-         Id: Guid.Parse("00000000-0002-0000-0000-000000000000"),
-         AdminRightsInt: 511 // all AdminRights
-      );
+      var resultEmployee = await employeeContract.GetAuthorizedEmployeeAsync(
+         AdminRights.ManageAccounts, ct);   
+      if(resultEmployee.IsFailure)
+         return Result<AccountContractDto>.Failure(resultEmployee.Error);
+      var employeeContractDto = resultEmployee.Value;
       
       // 2) Create IBAN (generate if not provided, validate if provided)
       if (string.IsNullOrEmpty(iban)) {
@@ -84,14 +79,14 @@ internal class AccountContractEf(
          return Result<AccountContractDto>.Failure(resultAccount.Error);
       var account = resultAccount.Value;
       
-      // Add to repository
+      // 5) Add to repository
       accountRepository.Add(account);
       
-      // Persist
-      var savedRows = await unitOfWork.SaveAllChangesAsync("Initial account", ct);
+      // 6) Save all changes to database
+      var rows = await unitOfWork.SaveAllChangesAsync("Initial account", ct);
       logger.LogInformation(
-         "Initial account created customerId={ownId} accountId {accId} savedRows={rows}", 
-         customerId, account.Id, savedRows);
+         "Initial account created customerId={ownId} accountId {accId} rows={rows}", 
+         customerId, account.Id, rows);
       
       return Result<AccountContractDto>.Success(account.ToAccountContractDto());
    }
@@ -106,5 +101,35 @@ internal class AccountContractEf(
       return !exits is true
          ? Result<bool>.Success(true)  // has no accounts
          : Result<bool>.Failure(AccountErrors.CustomerAlreadyHasAccount);
+   }
+
+   public async Task<Result> DeactivateAllAccountsAsync(
+      Guid customerId,
+      CancellationToken ct = default!
+   ) {
+      // 1) Load authorized employee and check if has rights to manage accounts
+      var resultEmployee = await employeeContract.GetAuthorizedEmployeeAsync(
+         AdminRights.ManageAccounts, ct);
+      if (resultEmployee.IsFailure)
+         return Result.Failure(resultEmployee.Error);
+      var employeeContractDto = resultEmployee.Value;
+      
+      // load all accounts
+      var accounts = await accountRepository.SelelctByCustomerIdAsync(customerId, ct);
+      
+      foreach(var account in accounts) {
+         // delete all beneficiaries in account and database
+         foreach (var beneficiary in account.Beneficiaries) {
+            account.RemoveBeneficiary(beneficiary.Id, clock.UtcNow);
+            accountRepository.Remove(beneficiary); 
+         }
+         // deactivate account
+         account.Deactivate(
+            deactivatedByEmployeeId: employeeContractDto.Id, 
+            deactivatedAt: clock.UtcNow
+         );
+      }
+      
+      return Result.Success();
    }
 }

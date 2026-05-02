@@ -1,3 +1,4 @@
+@baseUrl = https://localhost:8010/banking/v2
 
 ###
 # @name Post beneficiary1

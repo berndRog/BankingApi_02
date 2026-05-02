@@ -27,6 +27,9 @@ internal sealed class CustomerUcCreate(
       CustomerCreateDto customerCreateDto,
       CancellationToken ct = default
    ) {
+      if(customerCreateDto == default)
+         return Result<CustomerDto>.Failure(CustomerErrors.CustomerCreateDtoRequired);
+      
       // 1) Load authorized employee and check if has rights to manage accounts
       var resultEmployee = await employeeContract.GetAuthorizedEmployeeAsync(
          AdminRights.ManageAccounts, ct);   
@@ -34,65 +37,77 @@ internal sealed class CustomerUcCreate(
          return Result<CustomerDto>.Failure(resultEmployee.Error);
       var employeeContractDto = resultEmployee.Value;
       
-      // 2) DomainModel
+      // 2) subject required
+      var resultSubject = IdentitySubject.Check(customerCreateDto.Subject);
+      if (resultSubject.IsFailure) 
+         return Result<CustomerDto>.Failure(resultSubject.Error);
+      var subject = resultSubject.Value;
+      
+      // 3) DomainModel
       // create email value object (domain logic inside)
       var resultDtoEmail = EmailVo.Create(customerCreateDto.Email);
       if (resultDtoEmail.IsFailure)
          return Result<CustomerDto>.Failure(resultDtoEmail.Error);
       var emailDtoVo = resultDtoEmail.Value;
-      
       // check email uniqueness
       if (await repository.FindByEmailAsync(emailDtoVo, ct) != null) {
          return Result<CustomerDto>.Failure(CustomerErrors.EmailAlreadyInUse);
       }
       
-      // create aggregate (domain logic inside)
+      // validate address if provided and create AddressVo
+      var addressDto = customerCreateDto.AddressDto;
+      var resultAddress = AddressVo.Create(
+         street: addressDto.Street,
+         postalCode: addressDto.PostalCode,
+         city: addressDto.City,
+         country: addressDto.Country
+      );
+      if (resultAddress.IsFailure)
+         return Result<CustomerDto>.Failure(resultAddress.Error);
+      var addressVo = resultAddress.Value;
+      
+      // create Customer entity using factory method and activate Customer 
       var result = Customer.Create(
          firstname: customerCreateDto.Firstname, 
          lastname: customerCreateDto.Lastname,  
          companyName: customerCreateDto.CompanyName, 
+         subject: subject, 
          emailVo: emailDtoVo,
-         subject: customerCreateDto.Subject, 
+         addressVo: addressVo,
          createdAt: clock.UtcNow,
-         id: customerCreateDto.Id.ToString(),
-         addressVo: customerCreateDto.AddressDto.ToAddressVo()
+         id: customerCreateDto.Id.ToString()
       );
-      
-      if (result.IsFailure) 
-         return Result<CustomerDto>.Failure(result.Error)
-            .LogIfFailure(logger, "CustomerUcCreate.DomainRejected",
-               new { customerDto = customerCreateDto });
+      if (result.IsFailure)
+         return Result<CustomerDto>.Failure(result.Error);
       var customer = result.Value!;
       
-      // Check if there are accounts for this customer,
+      // 4) Check if there are accounts for this customer,
       // if so, fail (this is a severe error)
       var resultHasAccounts = await accountContract.HasNoAccountsAsync(customer.Id, ct);
       if (resultHasAccounts.IsFailure)
-         return Result<CustomerDto>.Failure(resultHasAccounts.Error)
-            .LogIfFailure(logger, "CustomerUcCreate.HasAccountsCheckFailed", new { customerId = result.Value!.Id });
+         return Result<CustomerDto>.Failure(resultHasAccounts.Error);
       var hasNoAccounts = resultHasAccounts.Value;
       if (!hasNoAccounts)
          return Result<CustomerDto>.Failure(CustomerErrors.AlreadyHasAccounts);
-      //
-      // Add customer to repository (tracked by EF)
+      
+      // 5) Add customer to repository (tracked by EF)
       repository.Add(customer);
      
-      // 5) Unit of work, save changes to database
+      // 6) Save all changes to database
       var rows = await unitOfWork.SaveAllChangesAsync("Create Customer", ct);
       logger.LogInformation("CustomerUcCreate={id} rows={rows}", customer.Id, rows);
       
-      // 6) Activate customer
+      // 7) Activate customer
       customer.Activate(
-         activatedByEmployeeId: employeeContractDto.Id,
+         auditeddByEmployeeId: employeeContractDto.Id,
          activatedAt: clock.UtcNow
       );
       
-      // 5) Unit of work, save changes to database
+      // 8) Save all changes to database
       rows = await unitOfWork.SaveAllChangesAsync("Activate Customer", ct);
       logger.LogInformation("CustomerUcCreate={id} rows={rows}", customer.Id, rows);
-
       
-      // Create initial account for owner (domain logic in accounts module)
+      // 9) Create initial account for customer 
       var resultAccount = await accountContract.OpenInitialAccountAsync(
          customerId: customer.Id,
          accountId: customerCreateDto.AccountId,
@@ -100,10 +115,9 @@ internal sealed class CustomerUcCreate(
          balance: customerCreateDto.Balance ?? 0.0m,
          ct: ct
       );
-      if(resultAccount.IsFailure)
-         return Result<CustomerDto>.Failure(resultAccount.Error)
-            .LogIfFailure(logger, "CustomerUcCreate.OpenInitialAccountFailed", new { customerId = customer.Id });
-     
+      if (resultAccount.IsFailure)
+         return Result<CustomerDto>.Failure(resultAccount.Error);
+            
       logger.LogInformation("CustomerUcCreate done CustomerId={id}, iban={iban}",
          customer.Id, resultAccount.Value!.Iban);  
       

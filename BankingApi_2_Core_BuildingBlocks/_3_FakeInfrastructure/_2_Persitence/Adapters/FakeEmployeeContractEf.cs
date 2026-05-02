@@ -4,7 +4,7 @@ using BankingApi._2_Core.BuildingBlocks._3_Domain.Enums;
 using BankingApi._2_Core.BuildingBlocks._4_BcContracts._1_Ports;
 using BankingApi._2_Core.BuildingBlocks._4_BcContracts._2_Application.Dtos;
 [assembly: InternalsVisibleTo("BankingApiTest")]
-namespace BankingApi._3_FakeInfraStructure._2_Persitence.Adapters;
+namespace BankingApi._3_FakeInfrastructure._2_Persitence.Adapters;
 
 internal class FakeEmployeeContractEf(
 ): IEmployeeContract {

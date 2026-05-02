@@ -11,7 +11,6 @@ public sealed class AccountReadModelIntT : TestBaseIntegration {
       DbMode = DbMode.FileUnique;
       SensitiveDataLogging = true;
    }
-      
    
    #region --- Aggregate root: Account ------------------------------------------------------
    [Fact]
@@ -149,7 +148,7 @@ public sealed class AccountReadModelIntT : TestBaseIntegration {
       await unitOfWork.SaveAllChangesAsync("Customers&Accounts inserted", ct);
       unitOfWork.ClearChangeTracker();
       
-      var account1 = seed.Account1();
+      var account1 = accounts[0];
       var expectedBeneficiaryDtos = account1.Beneficiaries
          .Select(b => b.ToBeneficiaryDto())
          .ToList();
@@ -159,9 +158,15 @@ public sealed class AccountReadModelIntT : TestBaseIntegration {
       
       // Assert
       True(result.IsSuccess);
-      var actualDtos = result.Value;
+      var actualDtos = result.Value.ToList();
       NotNull(actualDtos);
-      Equals(expectedBeneficiaryDtos, actualDtos);
+      for (int i = 0; i < expectedBeneficiaryDtos.Count; i++) {
+         Equals(expectedBeneficiaryDtos[i].Id, actualDtos[i].Id);
+         Equals(expectedBeneficiaryDtos[i].Name, actualDtos[i].Name);
+         Equals(expectedBeneficiaryDtos[i].Iban, actualDtos[i].Iban);
+         Equals(expectedBeneficiaryDtos[i].AccountId, actualDtos[i].AccountId);
+      }
+
    }
 
    [Fact]

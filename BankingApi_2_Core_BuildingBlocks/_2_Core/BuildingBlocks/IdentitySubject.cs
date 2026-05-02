@@ -1,9 +1,9 @@
 using BankingApi._2_Core.BuildingBlocks._3_Domain.Errors;
 namespace BankingApi._2_Core.BuildingBlocks;
 
-public static class SubjectCheck {
+public static class IdentitySubject {
 
-   public static Result<string> Run(string input) {
+   public static Result<string> Check(string input) {
       if (string.IsNullOrWhiteSpace(input))
          return Result<string>.Failure(CommonErrors.InvalidIdentitySubject);
       if (input.Length > 200)

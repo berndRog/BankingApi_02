@@ -21,6 +21,12 @@ public interface IAccountContract {
       Guid customerId,
       CancellationToken ct = default
    );
+
+   // Deactivate account
+   Task<Result> DeactivateAllAccountsAsync(
+      Guid customerId,
+      CancellationToken ct = default!
+   );
 }
 
 /*

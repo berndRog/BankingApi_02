@@ -1,5 +1,5 @@
 using BankingApi._2_Core.BuildingBlocks._4_BcContracts._1_Ports;
-using BankingApi._3_FakeInfraStructure._2_Persitence.Adapters;
+using BankingApi._3_FakeInfrastructure._2_Persitence.Adapters;
 using Microsoft.Extensions.DependencyInjection;
 namespace BankingApi;
 
