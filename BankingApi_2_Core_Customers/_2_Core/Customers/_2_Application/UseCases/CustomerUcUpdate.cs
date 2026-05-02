@@ -5,6 +5,7 @@ using BankingApi._2_Core.BuildingBlocks._3_Domain.ValueObjects;
 using BankingApi._2_Core.BuildingBlocks.Utils;
 using BankingApi._2_Core.Customers._1_Ports.Outbound;
 using BankingApi._2_Core.Customers._2_Application.Dtos;
+using BankingApi._2_Core.Customers._2_Application.Mappings;
 using BankingApi._2_Core.Customers._3_Domain.Errors;
 using Microsoft.Extensions.Logging;
 [assembly: InternalsVisibleTo("BankingApiTest")]
@@ -17,7 +18,7 @@ internal sealed class CustomerUcUpdate(
    ILogger<CustomerUcUpdate> logger
 )  {
    
-   public async Task<Result> ExecuteAsync(
+   public async Task<Result<CustomerDto>> ExecuteAsync(
       Guid customerId,
       CustomerUpdateDto customerUpdateDto,
       CancellationToken ct = default
@@ -26,7 +27,7 @@ internal sealed class CustomerUcUpdate(
       var customer = await repository.FindByIdAsync(customerId, ct);
       if (customer is null) {
          logger.LogWarning("Update failed: customer found ({Id})", customerId.To8());
-         return Result.Failure(CustomerErrors.NotFound);
+         return Result<CustomerDto>.Failure(CustomerErrors.NotFound);
       }
 
       // 2) DomainModel
@@ -37,7 +38,7 @@ internal sealed class CustomerUcUpdate(
       }
       else {
          var resultEmail = EmailVo.Create(customerUpdateDto.Email);
-         if (resultEmail.IsFailure) return Result.Failure(resultEmail.Error);
+         if (resultEmail.IsFailure) return Result<CustomerDto>.Failure(resultEmail.Error);
          newEmailVo = resultEmail.Value;
       }
       
@@ -53,7 +54,7 @@ internal sealed class CustomerUcUpdate(
             city: customerUpdateDto.AddressDto!.City,
             country: customerUpdateDto.AddressDto!.Country
          );
-         if (resultAddressVo.IsFailure) return Result.Failure(resultAddressVo.Error);
+         if (resultAddressVo.IsFailure) return Result<CustomerDto>.Failure(resultAddressVo.Error);
          newAddressVo = resultAddressVo.Value;
       }
       
@@ -66,14 +67,15 @@ internal sealed class CustomerUcUpdate(
          updatedAt: clock.UtcNow
       );
       if (resultUpdate.IsFailure) 
-         return Result.Failure(resultUpdate.Error);
+         return Result<CustomerDto>.Failure(resultUpdate.Error);
+      var updatedCustomer = resultUpdate.Value;
 
       // 3) Save changes to database
       var savedRows = await unitOfWork.SaveAllChangesAsync("Update customer",ct);
       logger.LogDebug("Customer updated ({Id}, saved row {rows})", 
          customer.Id.To8(), savedRows);
       
-      return Result.Success();
+      return Result<CustomerDto>.Success(updatedCustomer.ToCustomerDto());
    }
 
 }

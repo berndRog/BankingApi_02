@@ -114,13 +114,16 @@ internal class AccountContractEf(
          return Result.Failure(resultEmployee.Error);
       var employeeContractDto = resultEmployee.Value;
       
-      // load all accounts
+      // 2) Load all accounts for a given customer
       var accounts = await accountRepository.SelelctByCustomerIdAsync(customerId, ct);
       
+      // 3) Delete beneficiaries first and then the accounts 
       foreach(var account in accounts) {
          // delete all beneficiaries in account and database
          foreach (var beneficiary in account.Beneficiaries) {
-            account.RemoveBeneficiary(beneficiary.Id, clock.UtcNow);
+            var resultBeneficiary = account.RemoveBeneficiary(beneficiary.Id, clock.UtcNow);
+            if(resultBeneficiary.IsFailure)
+               return Result.Failure(resultBeneficiary.Error);
             accountRepository.Remove(beneficiary); 
          }
          // deactivate account
@@ -129,6 +132,12 @@ internal class AccountContractEf(
             deactivatedAt: clock.UtcNow
          );
       }
+      
+      // 4) Save all changes to database
+      var rows = await unitOfWork.SaveAllChangesAsync("Deactivate account", ct);
+      logger.LogInformation(
+         "Deactivate accounts for customerId={customerId} rows={rows}", 
+         customerId, rows);
       
       return Result.Success();
    }

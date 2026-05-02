@@ -3,6 +3,7 @@ using BankingApi._2_Core.BuildingBlocks;
 using BankingApi._2_Core.BuildingBlocks._3_Domain.Entities;
 using BankingApi._2_Core.BuildingBlocks._3_Domain.Errors;
 using BankingApi._2_Core.BuildingBlocks._3_Domain.ValueObjects;
+using BankingApi._2_Core.Customers._2_Application.Mappings;
 using BankingApi._2_Core.Customers._3_Domain.Enum;
 using BankingApi._2_Core.Customers._3_Domain.Errors;
 namespace BankingApi._2_Core.Customers._3_Domain.Entities;
@@ -61,7 +62,6 @@ public sealed class Customer : AggregateRoot {
    }
 
    // Domain constructor (used by factories)
-   [SetsRequiredMembers]
    private Customer(
       Guid id,
       string firstname,
@@ -191,7 +191,7 @@ public sealed class Customer : AggregateRoot {
    }
    
    // Customer updates their profile
-   public Result Update(
+   public Result<Customer> Update(
       string? lastname,
       string? companyName,
       EmailVo? emailVo,
@@ -199,18 +199,18 @@ public sealed class Customer : AggregateRoot {
       DateTimeOffset updatedAt
    ) {
       if (updatedAt == default)
-         return Result.Failure(CommonErrors.TimestampIsRequired);
+         return Result<Customer>.Failure(CommonErrors.TimestampIsRequired);
       if (addressVo is null)
-         return Result.Failure(CustomerErrors.AddressIsRequired);
+         return Result<Customer>.Failure(CustomerErrors.AddressIsRequired);
 
       lastname = lastname?.Trim();
       companyName = companyName?.Trim();
 
       if (!string.IsNullOrWhiteSpace(lastname) && lastname.Length is < 2 or > 80)
-         return Result.Failure(CustomerErrors.InvalidLastname);
+         return Result<Customer>.Failure(CustomerErrors.InvalidLastname);
 
       if (!string.IsNullOrWhiteSpace(companyName) && companyName.Length is < 2 or > 80)
-         return Result.Failure(CustomerErrors.InvalidCompanyName);
+         return Result<Customer>.Failure(CustomerErrors.InvalidCompanyName);
 
       // var resultEmail = EmailVo.Create(email);
       // if (resultEmail.IsFailure)
@@ -224,7 +224,7 @@ public sealed class Customer : AggregateRoot {
       if (addressVo is not null) AddressVo = addressVo;
 
       Touch(updatedAt);
-      return Result.Success();
+      return Result<Customer>.Success(this);
    }
 }
 

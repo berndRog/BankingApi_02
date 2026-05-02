@@ -20,7 +20,7 @@ internal class CustomerUseCases(
       ct: ct
    );
 
-   public Task<Result> UpdateAsync(
+   public Task<Result<CustomerDto>> UpdateAsync(
       Guid customerId,
       CustomerUpdateDto customerUpdateDto, 
       CancellationToken ct = default

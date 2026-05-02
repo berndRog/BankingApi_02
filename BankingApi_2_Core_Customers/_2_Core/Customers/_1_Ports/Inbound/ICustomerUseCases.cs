@@ -15,7 +15,7 @@ public interface ICustomerUseCases {
    );
 
    // Update the customer's profile data
-   Task<Result> UpdateAsync(
+   Task<Result<CustomerDto>> UpdateAsync(
       Guid customerId,
       CustomerUpdateDto customerUpdateDto,
       CancellationToken ct = default
