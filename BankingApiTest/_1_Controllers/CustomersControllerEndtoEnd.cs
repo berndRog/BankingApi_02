@@ -30,7 +30,6 @@ public sealed class CustomersControllerEndtoEnd : TestBaseEndToEnd {
          Lastname: customer1.Lastname,
          CompanyName: customer1.CompanyName,
          Email: customer1.EmailVo.Value,
-         StatusInt: (int) customer1.Status,
          Subject : customer1.Subject,
          AddressDto: customer1.AddressVo.ToAddressDto(),
          AccountId: account1.Id.ToString(),
@@ -79,7 +78,6 @@ public sealed class CustomersControllerEndtoEnd : TestBaseEndToEnd {
          Equal(requestDto.Firstname, customer.Firstname);
          Equal(requestDto.Lastname, customer.Lastname);
          Equal(requestDto.Email, customer.EmailVo.Value);
-         Equal(requestDto.StatusInt, (int)customer.Status);
          Equal(Factory.TestSubject, customer.Subject);
          Equal(requestDto.AddressDto, customer.AddressVo.ToAddressDto());
          

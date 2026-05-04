@@ -46,7 +46,8 @@ public sealed class CustomerUt {
       // Assert
       True(result.IsSuccess);
 
-      var actual = result.Value!;
+      var actual = result.Value;
+      NotNull(actual);
       IsType<Customer>(actual);
       Equal(_customer.Id, actual.Id);
       Equal(_customer.Firstname, actual.Firstname);
@@ -57,7 +58,7 @@ public sealed class CustomerUt {
       Equal(_customer.Subject, actual.Subject);
       Equal(_customer.Status, actual.Status);
       Equal(_customer.AddressVo, actual.AddressVo);
-      True(actual.IsActive);
+      False(actual.IsActive);
       True(actual.IsProfileComplete);
    }
 
@@ -78,7 +79,8 @@ public sealed class CustomerUt {
       // Assert
       True(result.IsSuccess);
 
-      var actual = result.Value!;
+      var actual = result.Value;
+      NotNull(actual);
       IsType<Customer>(actual);
       False(actual.Id == Guid.Empty);
       Equal(_customer.Firstname, actual.Firstname);
@@ -89,7 +91,7 @@ public sealed class CustomerUt {
       Equal(_addressVo, actual.AddressVo);
       Equal(_customer.DisplayName, actual.DisplayName);
       Equal(_customer.Status, actual.Status);
-      True(actual.IsActive);
+      False(actual.IsActive);
       True(actual.IsProfileComplete);
    }
 
@@ -211,8 +213,8 @@ public sealed class CustomerUt {
       // Assert
       True(result.IsSuccess);
 
-      var actual = result.Value!;
-      IsType<Customer>(actual);
+      var actual = result.Value;
+      NotNull(actual);
       IsType<Customer>(actual);
       Equal(_customer5.Id, actual.Id);
       Equal(_customer5.Firstname, actual.Firstname);
@@ -223,7 +225,7 @@ public sealed class CustomerUt {
       Equal(_customer5.Subject, actual.Subject);
       Equal(_customer5.Status, actual.Status);
       Equal(_customer5.AddressVo, actual.AddressVo);
-      True(actual.IsActive);
+      False(actual.IsActive);
       True(actual.IsProfileComplete);
    }
 

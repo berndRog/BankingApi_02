@@ -18,7 +18,10 @@ public sealed class Customer : AggregateRoot {
      
    // Display name used in UIs and documents (derived, not persisted)
    public string DisplayName => CompanyName ?? $"{Firstname} {Lastname}";
-
+   
+   // Subject identifier from the identity provider (OIDC / OAuth)
+   public string Subject { get; private set; } = default!;
+   
    // Value Objects EmailVo
    public EmailVo EmailVo { get; private set; } = default!;
 
@@ -36,10 +39,7 @@ public sealed class Customer : AggregateRoot {
 
    public DateTimeOffset? DeactivatedAt { get; private set; }
    public Guid? DeactivatedByEmployeeId { get; private set; }
-   
-   // Subject identifier from the identity provider (OIDC / OAuth)
-   public string Subject { get; private set; } = default!;
-   
+
    // Derived state (read convenience, not persisted)
    public bool IsProfileComplete =>
       !string.IsNullOrWhiteSpace(Firstname) &&
