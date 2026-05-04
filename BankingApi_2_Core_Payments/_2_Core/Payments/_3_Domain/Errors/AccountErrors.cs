@@ -14,6 +14,12 @@ public static class AccountErrors {
          Title: "Account: Invalid CustomerId",
          Message: "The given CustomerId is not valid.");
    
+      
+   public static readonly DomainErrors ConflictCustomerId =
+      new(ErrorCode.Conflict,
+         Title: "Account: CustomerId and Account.CustomerId mismatch",
+         Message: "The given CustomerId does not match the CustomerId of the account.");
+   
    public static readonly DomainErrors InvalidIbanFormat =
       new(ErrorCode.UnprocessableEntity,
          Title: "Account: Invalid Iban Format",

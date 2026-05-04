@@ -18,14 +18,16 @@ internal sealed class AccountUcDeactivate(
 ) {
 
    public async Task<Result> ExecuteAsync(
+      Guid customerId,
       Guid accountId,
       CancellationToken ct
    ) {
-      // 1) Validate input
+      if (accountId == Guid.Empty)
+         return Result.Failure(AccountErrors.InvalidCustomerId);
       if (accountId == Guid.Empty)
          return Result.Failure(AccountErrors.InvalidId);
       
-      // 2) Load authorized employee and check if has rights to manage accounts
+      // 1) Load authorized employee and check if has rights to manage accounts
       var resultEmployee = await employeeContract.GetAuthorizedEmployeeAsync(
           AdminRights.ManageAccounts, ct);   
       if(resultEmployee.IsFailure)
@@ -36,6 +38,8 @@ internal sealed class AccountUcDeactivate(
       var account = await repository.FindByIdAsync(accountId, ct);
       if (account is null)
          return Result.Failure(AccountErrors.NotFound);
+      if (customerId != account.CustomerId)
+         return Result.Failure(AccountErrors.ConflictCustomerId);
 
       // 4) Domain model
       var deactivatedAt = clock.UtcNow;
@@ -50,7 +54,4 @@ internal sealed class AccountUcDeactivate(
 
       return Result.Success();
    }
-
-   private static Guid ParseEmployeeId(string subject) =>
-      Guid.TryParse(subject, out var id) ? id : Guid.Empty;
 }

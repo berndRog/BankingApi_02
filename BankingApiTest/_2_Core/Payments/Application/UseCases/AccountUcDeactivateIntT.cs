@@ -33,6 +33,7 @@ public sealed class AccountUcDeactivateIntT : TestBaseIntegration {
 
       // Act
       var resultAccountDeactivate = await sut.ExecuteAsync(
+         customerId: account.CustomerId,
          accountId: account.Id,
          ct: ct
       );

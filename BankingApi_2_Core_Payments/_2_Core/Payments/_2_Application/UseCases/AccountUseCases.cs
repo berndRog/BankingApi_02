@@ -19,9 +19,10 @@ internal class AccountUseCases(
    ) => accountUcCreate.ExecuteAsync(customerId, accountDto, ct);
    
    public Task<Result> DeactivateAsync(
+      Guid customerId,
       Guid accountId,
       CancellationToken ct = default
-   ) => accountUcDeactivate.ExecuteAsync(accountId, ct);
+   ) => accountUcDeactivate.ExecuteAsync(customerId, accountId, ct);
    
    public Task<Result<BeneficiaryDto>> AddBeneficiaryAsync(
       Guid accountId,

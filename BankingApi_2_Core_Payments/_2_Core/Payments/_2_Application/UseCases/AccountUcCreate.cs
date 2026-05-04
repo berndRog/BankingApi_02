@@ -28,23 +28,22 @@ internal sealed class AccountUcCreate(
       AccountDto accountDto,
       CancellationToken ct = default
    ) {
-      // 1) Validate input
       if (customerId == Guid.Empty)
          return Result<AccountDto>.Failure(AccountErrors.InvalidCustomerId);
       
-      // 2) Exits Customer with given id and is active?
+      // 1) Exits Customer with given id and is active?
       var resultCustomer = await customerContract.ExistsActiveCustomerAsync(customerId, ct);
       if (resultCustomer.IsFailure)
          return Result<AccountDto>.Failure(AccountErrors.CustomerIdNotFoundOrInactive);
       
-      // 3) Load authorized employee and check if has rights to manage accounts
+      // 2) Load authorized employee and check if has rights to manage accounts
       var resultEmployee = await employeeContract.GetAuthorizedEmployeeAsync(
           AdminRights.ManageAccounts, ct);   
       if(resultEmployee.IsFailure)
          return Result<AccountDto>.Failure(resultEmployee.Error);
       var employeeContractDto = resultEmployee.Value;
       
-      // 4) Domain model  
+      // 3) Domain model  
       var resultIbanVo = IbanVo.Create(accountDto.Iban);
       if (resultIbanVo.IsFailure)
          return Result<AccountDto>.Failure(resultIbanVo.Error);

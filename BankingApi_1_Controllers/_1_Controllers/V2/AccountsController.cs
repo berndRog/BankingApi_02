@@ -131,23 +131,25 @@ public sealed class AccountsController(
    /// This endpoint changes the lifecycle state of the account and does not return
    /// a response body on success.
    /// </remarks>
+   /// <param name="customerId">Unique identifier of the customer.</param>
    /// <param name="id">Unique identifier of the account.</param>
    /// <param name="ct">Cancellation token.</param>
    /// <returns>No content on success.</returns>
    //[Authorize(Policy = "EmployeesOnly")]
-   [HttpPut("accounts/{id:guid}", Name = nameof(DeactivateAccountAsync))]
+   [HttpPatch("customers/{customerId:guid}/accounts/{id:guid}", Name = nameof(DeactivateAccountAsync))]
    [ProducesResponseType(StatusCodes.Status204NoContent)]
    [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized, "application/problem+json")]
    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")]
    [ProducesResponseType<ProblemDetails>(StatusCodes.Status409Conflict, "application/problem+json")]
    [ProducesResponseType<ProblemDetails>(StatusCodes.Status422UnprocessableEntity, "application/problem+json")]
    public async Task<ActionResult> DeactivateAccountAsync(
+      [FromRoute] Guid customerId,
       [FromRoute] Guid id,
       CancellationToken ct
    ) {
       const string context = $"{nameof(AccountsController)}.{nameof(DeactivateAccountAsync)}";
 
-      var result = await useCases.DeactivateAsync(id, ct);
+      var result = await useCases.DeactivateAsync(customerId, id, ct);
 
       return this.ToActionResult(result, logger, context, args: new { id });
    }

@@ -24,15 +24,15 @@ public sealed class BeneficiariesController(
    /// <param name="ct">Cancellation token.</param>
    /// <returns>A collection of beneficiaries assigned to the account.</returns>
    //[Authorize]
-   [HttpGet("accounts/{accountId:guid}/beneficiaries", Name = nameof(GetBeneficiariesByAccountIdAsync))]
+   [HttpGet("accounts/{accountId:guid}/beneficiaries", Name = nameof(SelectBeneficiariesByAccountIdAsync))]
    [ProducesResponseType<IEnumerable<BeneficiaryDto>>(StatusCodes.Status200OK)]
    [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized, "application/problem+json")]
    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")]
-   public async Task<ActionResult<IEnumerable<BeneficiaryDto>>> GetBeneficiariesByAccountIdAsync(
+   public async Task<ActionResult<IEnumerable<BeneficiaryDto>>> SelectBeneficiariesByAccountIdAsync(
       [FromRoute] Guid accountId,
       CancellationToken ct
    ) {
-      const string context = $"{nameof(BeneficiariesController)}.{nameof(GetBeneficiariesByAccountIdAsync)}";
+      const string context = $"{nameof(BeneficiariesController)}.{nameof(SelectBeneficiariesByAccountIdAsync)}";
 
       var result = await readModel.SelectBeneficiariesByAccountIdAsync(accountId, ct);
 

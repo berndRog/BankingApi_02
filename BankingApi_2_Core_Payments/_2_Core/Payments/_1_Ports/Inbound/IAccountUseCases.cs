@@ -16,6 +16,7 @@ public interface IAccountUseCases {
    
    // deactivate an account 
    Task<Result> DeactivateAsync(
+      Guid customerId,
       Guid accountId,
       CancellationToken ct = default
    );
