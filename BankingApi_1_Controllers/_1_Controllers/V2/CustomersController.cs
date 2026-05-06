@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 namespace BankingApi._1_Controllers.V2;
 
-
 [Route("banking/v{version:apiVersion}")]
 [ApiController]
 public sealed class CustomersController(
@@ -31,6 +30,8 @@ public sealed class CustomersController(
    [Produces("application/json")]
    [ProducesResponseType<CustomerDto>(StatusCodes.Status201Created)]
    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")]
+   [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized, "application/problem+json")]
+   [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")]
    public async Task<ActionResult<CustomerDto>> CreateCustomerAsync(
       [FromBody] CustomerCreateDto customerCreateDto,
       CancellationToken ct
@@ -56,6 +57,8 @@ public sealed class CustomersController(
    [ApiVersion("2.0")]
    [HttpGet("customers/{id:guid}", Name = nameof(GetCustomerByIdAsync))]
    [ProducesResponseType<CustomerDto>(StatusCodes.Status200OK)]
+   [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")]
+   [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized, "application/problem+json")]
    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")]
    public async Task<ActionResult<CustomerDto>> GetCustomerByIdAsync(
       [FromRoute] Guid id,
@@ -78,6 +81,7 @@ public sealed class CustomersController(
    [ApiVersion("2.0")]
    [HttpGet("customers/email", Name = nameof(GetCustomerByEmailAsync))]
    [ProducesResponseType<CustomerDto>(StatusCodes.Status200OK)]
+   [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")]
    [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized, "application/problem+json")]
    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")]
    public async Task<ActionResult<CustomerDto>> GetCustomerByEmailAsync(

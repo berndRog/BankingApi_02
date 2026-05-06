@@ -43,6 +43,11 @@ public static class CustomerErrors {
          Title: "Customer: Invalid last name",
          Message: "The provided last name is too short or too long (2–80 characters).");
    
+   public static readonly DomainErrors CompanyNameIsRequired =
+      new(ErrorCode.BadRequest,
+         Title: "Customer: Company name required",
+         Message: "A Company name must be provided.");
+
    public static readonly DomainErrors InvalidCompanyName =
       new(ErrorCode.BadRequest,
          Title: "Customer: Invalid company name",
@@ -103,11 +108,6 @@ public static class CustomerErrors {
          Title: "Customer: Rejection reason required",
          Message: "A rejection reason code must be provided.");
    
-   public static readonly DomainErrors NotProvisioned =
-      new(ErrorCode.NotFound,
-         Title: "Customer: Is not provisioned",
-         Message: "No customer with the given sub exists.");
-
    public static readonly DomainErrors CustomerCreateDtoRequired =
       new(ErrorCode.BadRequest,
          Title: "Customer: CustomCreateDto required",

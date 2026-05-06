@@ -3,11 +3,12 @@ using BankingApi._2_Core.BuildingBlocks._3_Domain.ValueObjects;
 namespace BankingApi._2_Core.BuildingBlocks._2_Application.Mappings;
 
 public static class AddressMappings {
-   public static AddressDto ToAddressDto(this AddressVo address) => new(
-      Street: address.Street,
-      PostalCode: address.PostalCode,
-      City: address.City,
-      Country: address.Country
+  
+   public static AddressDto ToAddressDto(this AddressVo addressVo) => new AddressDto(
+      Street: addressVo.Street,
+      PostalCode: addressVo.PostalCode,
+      City: addressVo.City,
+      Country: addressVo.Country
    );
    
    public static AddressVo ToAddressVo(this AddressDto addressDto) {

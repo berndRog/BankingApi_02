@@ -46,9 +46,9 @@ internal sealed class CustomerUcCreate(
       var resultDtoEmail = EmailVo.Create(customerCreateDto.Email);
       if (resultDtoEmail.IsFailure)
          return Result<CustomerDto>.Failure(resultDtoEmail.Error);
-      var emailDtoVo = resultDtoEmail.Value;
+      var emailVo = resultDtoEmail.Value;
       // check email uniqueness
-      if (await repository.FindByEmailAsync(emailDtoVo, ct) != null) {
+      if (await repository.FindByEmailAsync(emailVo, ct) != null) {
          return Result<CustomerDto>.Failure(CustomerErrors.EmailAlreadyInUse);
       }
       
@@ -70,7 +70,7 @@ internal sealed class CustomerUcCreate(
          lastname: customerCreateDto.Lastname,  
          companyName: customerCreateDto.CompanyName, 
          subject: subject, 
-         emailVo: emailDtoVo,
+         emailVo: emailVo,
          addressVo: addressVo,
          createdAt: clock.UtcNow,
          id: customerCreateDto.Id.ToString()

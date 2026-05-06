@@ -63,8 +63,13 @@ public static class IbanGenerator {
       string bankCode,        // 8 digits of BLZ
       string accountPrefix8   // 8 digits of account
    ) {
+      // Normalize and validate inputs
+      checkDigits = NormalizeDigits(checkDigits);
       bankCode = NormalizeDigits(bankCode);
       accountPrefix8 = NormalizeDigits(accountPrefix8);
+
+      if (checkDigits.Length != 2)
+         throw new ArgumentException("Check digits must be exactly 2 digits.", nameof(checkDigits));
 
       if (bankCode.Length != 8)
          throw new ArgumentException("Bank code must be exactly 8 digits.", nameof(bankCode));
@@ -80,7 +85,11 @@ public static class IbanGenerator {
 
       var factor100 = 100 % 97;           // = 3
       var pow10_6 = PowMod(10, 6, 97);    // = 64
-      var tail = Mod97Digits("131470");   // "DE70"
+
+      // tail is the numeric representation of country letters + check digits
+      // For "DE" the letters map to 13 and 14 => "1314". Append the provided check digits.
+      var countryNumeric = "1314"; // D=13, E=14
+      var tail = Mod97Digits(countryNumeric + checkDigits);
 
       var k = ((aMod * factor100) % 97 * pow10_6) % 97;
       k = (k + tail) % 97;
@@ -88,7 +97,8 @@ public static class IbanGenerator {
       var rhs = (1 - k) % 97;
       if (rhs < 0) rhs += 97;
 
-      var inv64 = ModInverse(64, 97);
+      // use computed pow10_6 when computing the modular inverse
+      var inv64 = ModInverse(pow10_6, 97);
 
       var xx = (rhs * inv64) % 97;
 

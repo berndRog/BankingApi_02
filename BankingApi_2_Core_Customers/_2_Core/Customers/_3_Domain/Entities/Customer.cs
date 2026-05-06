@@ -15,7 +15,7 @@ public sealed class Customer : AggregateRoot {
    public string Firstname { get; private set; } = string.Empty;
    public string Lastname { get; private set; } = string.Empty;
    public string? CompanyName { get; private set; }
-     
+
    // Display name used in UIs and documents (derived, not persisted)
    public string DisplayName => CompanyName ?? $"{Firstname} {Lastname}";
    
@@ -34,7 +34,7 @@ public sealed class Customer : AggregateRoot {
    // Employee decisions (audit facts)
    public DateTimeOffset? ActivatedAt { get; private set; }
    public DateTimeOffset? RejectedAt { get; private set; }
-   public CustomerRejectCode CustomerRejectCode { get; private set; }
+   public CustomerRejectCode RejectCode { get; private set; }
    public Guid? AuditedByEmployeeId { get; private set; }
 
    public DateTimeOffset? DeactivatedAt { get; private set; }
@@ -54,12 +54,12 @@ public sealed class Customer : AggregateRoot {
       Status == CustomerStatus.Active &&
       DeactivatedAt is null;
 
-   //--- ctors -----------------------------------------------------------------
-   // EF Core constructor
+   //--- constructors ----------------------------------------------------------
+   // EF Core ctor
    private Customer() {
    }
 
-   // Domain constructor (used by factories)
+   // Domain ctor (used by factories)
    private Customer(
       Guid id,
       string firstname,
@@ -73,8 +73,8 @@ public sealed class Customer : AggregateRoot {
       Firstname = firstname;
       Lastname = lastname;
       CompanyName = companyName;
-      EmailVo = emailVo;
       Subject = subject;
+      EmailVo = emailVo;
       AddressVo = addressVo;
    }
 
@@ -151,6 +151,7 @@ public sealed class Customer : AggregateRoot {
          return Result.Failure(CustomerErrors.AuditRequiresEmployee);
       if (Status != CustomerStatus.Pending)
          return Result.Failure(CustomerErrors.NotPending);
+      
       if (!IsProfileComplete)
          return Result.Failure(CustomerErrors.ProfileIncomplete);
 
@@ -159,7 +160,7 @@ public sealed class Customer : AggregateRoot {
       AuditedByEmployeeId = auditeddByEmployeeId;
 
       RejectedAt = null;
-      CustomerRejectCode = CustomerRejectCode.None;
+      RejectCode = CustomerRejectCode.None;
 
       Touch(activatedAt);
       return Result.Success();

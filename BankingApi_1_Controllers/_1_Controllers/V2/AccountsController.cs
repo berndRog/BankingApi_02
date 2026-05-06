@@ -94,7 +94,7 @@ public sealed class AccountsController(
    /// together with a Location header pointing to the account resource.
    /// </remarks>
    /// <param name="customerId">Id of the Customer who ownes the account.</param>
-   /// <param name="accounDto">Account data used to create the account.</param>
+   /// <param name="accountDto">Account data used to create the account.</param>
    /// <param name="ct">Cancellation token.</param>
    /// <returns>The created account resource.</returns>
    // [Authorize(Policy = "EmployeesOnly")]
@@ -108,19 +108,17 @@ public sealed class AccountsController(
    [ProducesResponseType<ProblemDetails>(StatusCodes.Status422UnprocessableEntity, "application/problem+json")]
    public async Task<ActionResult<AccountDto>> CreateAccountAsync(
       [FromRoute] Guid customerId,
-      [FromBody] AccountDto accounDto,
+      [FromBody] AccountDto accountDto,
       CancellationToken ct
    ) {
       const string context = $"{nameof(AccountsController)}.{nameof(CreateAccountAsync)}";
 
-      var result = await useCases.CreateAsync(customerId, accounDto, ct);
+      var result = await useCases.CreateAsync(customerId, accountDto, ct);
 
       return this.ToCreatedAtRoute(
          routeName: nameof(GetAccountByIdAsync),
          routeValues: new { id = result.IsSuccess ? result.Value.Id : Guid.Empty },
-         result,
-         logger,
-         context
+         result, logger, context
       );
    }
    

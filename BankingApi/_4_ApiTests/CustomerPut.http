@@ -19,8 +19,3 @@ Accept: application/json
 }
 
 
-###
-# @name Deactivated customer1
-PUT {{baseUrl}}/customers/10000000-0000-0000-0000-000000000000/deactivate
-
-

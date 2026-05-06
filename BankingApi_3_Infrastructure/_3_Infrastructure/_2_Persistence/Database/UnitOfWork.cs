@@ -13,14 +13,16 @@ internal sealed class UnitOfWork(
 ) : IUnitOfWork {
    public async Task<int> SaveAllChangesAsync(
       string? text = null,
-      CancellationToken ctToken = default
+      CancellationToken ct = default
    ) {
+      // log repos before saving to database
       dbContext.ChangeTracker.DetectChanges();
       DumpChangeTrackerToConsole(text);
       
       ApplyAuditInfo();
-      var rows = await dbContext.SaveChangesAsync(ctToken);
+      var rows = await dbContext.SaveChangesAsync(ct);
       
+      // log repos after saving
       DumpChangeTrackerToConsole(text);
       return rows;
    }
@@ -53,9 +55,12 @@ internal sealed class UnitOfWork(
 
    // Workaround - Logger is cutting output
    public void DumpChangeTrackerToConsole(string? text) {
+      
       if (!logger.IsEnabled(LogLevel.Debug)) return;
+      
       dbContext.ChangeTracker.DetectChanges();
       var output = dbContext.ChangeTracker.DebugView.LongView;
+      
       Console.WriteLine($"{DateTime.Now:HH:mm:ss} DEBUG ChangeTracker:");
       if(text is not null) Console.WriteLine($"=== {text} ===");
       Console.WriteLine(output);

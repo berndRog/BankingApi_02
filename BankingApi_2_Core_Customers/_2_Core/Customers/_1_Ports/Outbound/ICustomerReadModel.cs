@@ -8,11 +8,6 @@ namespace BankingApi._2_Core.Customers._1_Ports.Outbound;
 // Returns DTOs because this port belongs to the query side.
 public interface ICustomerReadModel {
 
-   // Returns the currently authenticated customer
-   Task<Result<CustomerDto>> FindMeAsync(
-      CancellationToken ct = default
-   );
-
    // Find customer by technical identifier
    Task<Result<CustomerDto>> FindByIdAsync(
       Guid id,

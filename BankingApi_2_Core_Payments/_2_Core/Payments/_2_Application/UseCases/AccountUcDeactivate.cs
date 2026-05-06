@@ -34,7 +34,7 @@ internal sealed class AccountUcDeactivate(
          return Result.Failure(resultEmployee.Error);
       var employeeContractDto = resultEmployee.Value;
       
-      // 3) Load account from database
+      // 2) Load account from database
       var account = await repository.FindByIdAsync(accountId, ct);
       if (account is null)
          return Result.Failure(AccountErrors.NotFound);

@@ -11,7 +11,7 @@ using BankingApi._3_FakeInfrastructure._2_Persitence.Adapters;
 using BankingApi._3_Infrastructure._2_Persistence;
 using BankingApi._3_Infrastructure._2_Persistence.Adapters;
 using BankingApi._3_Infrastructure._2_Persistence.Database;
-using BankingApi._3_Infrastructure._2_Persistence.ReadModel;
+using BankingApi._3_Infrastructure._2_Persistence.ReadModels;
 using BankingApi._3_Infrastructure._2_Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

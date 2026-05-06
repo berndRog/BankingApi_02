@@ -8,7 +8,7 @@ using BankingApi._2_Core.Payments._3_Domain.ValueObjects;
 using BankingApi._3_Infrastructure._2_Persistence.Database;
 using Microsoft.EntityFrameworkCore;
 [assembly: InternalsVisibleTo("BankingApiTest")]
-namespace BankingApi._3_Infrastructure._2_Persistence.ReadModel;
+namespace BankingApi._3_Infrastructure._2_Persistence.ReadModels;
 
 internal sealed class AccountReadModelEf(
    AppDbContext dbContext

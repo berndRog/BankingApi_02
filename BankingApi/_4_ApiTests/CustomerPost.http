@@ -13,7 +13,6 @@ Accept: application/json
   "companyName": null,
   "email": "erika.mustermann@t-online.de",
   "subject": "a00090ad-d9df-486a-8757-4a649e26a54e",
-  "statusInt": 1,
   "addressDto": {
     "street": "Hauptstr. 23",
     "postalCode": "29556",
@@ -38,7 +37,6 @@ Accept: application/json
   "companyName": null,
   "email": "max.mustermann@gmail.com",
   "subject": "b0000640-161e-4228-9729-d6b142C2dfad",
-  "statusInt": 1,
   "addressDto": {
     "street": "Hauptstr. 23",
     "postalCode": "29556",
@@ -62,7 +60,6 @@ Accept: application/json
   "lastname": "Arndt",
   "email": "a.arndt@t.online.de",
   "subject": "c0004e61-ba7a-4d2a-977f-766b42bb79a9",
-  "statusInt": 1,
   "addressDto": {
     "street": "Neuperverstr. 29",
     "postalCode": "29410",
@@ -86,7 +83,6 @@ Accept: application/json
   "lastname": "Bauer",
   "email": "b.bauer@gmail.com",
   "subject": "d0024ab-43c5-4c64-872d-6ca05f66756b",
-  "statusInt": 1,
   "addressDto": {
     "street": "Neuperverstr. 29",
     "postalCode": "29410",
@@ -111,7 +107,6 @@ Accept: application/json
   "companyname": "CC Consulting GmbH",
   "email": "c.conrad@gmx.de",
   "subject": "e00050fb-a381-4e3f-a44b-81ffa7610b72",
-  "statusInt": 1,
   "addressDto": {
     "street": "Berliner Platz 8",
     "postalCode": "29614",
@@ -135,7 +130,6 @@ Accept: application/json
   "lastname": "Deppe",
   "email": "d.deppe@icloud.com",
   "subject": "f0004f67-72a3-4449-af1f-803dcfaddb7f",
-  "statusInt": 1,
   "addressDto": {
     "street": "Allertalweg 2",
     "postalCode": "29227",

@@ -14,7 +14,6 @@ public static class AccountErrors {
          Title: "Account: Invalid CustomerId",
          Message: "The given CustomerId is not valid.");
    
-      
    public static readonly DomainErrors ConflictCustomerId =
       new(ErrorCode.Conflict,
          Title: "Account: CustomerId and Account.CustomerId mismatch",

@@ -30,6 +30,8 @@ internal sealed class AccountUcCreate(
    ) {
       if (customerId == Guid.Empty)
          return Result<AccountDto>.Failure(AccountErrors.InvalidCustomerId);
+      if(customerId != accountDto.CustomerId)
+         return Result<AccountDto>.Failure(AccountErrors.ConflictCustomerId);
       
       // 1) Exits Customer with given id and is active?
       var resultCustomer = await customerContract.ExistsActiveCustomerAsync(customerId, ct);

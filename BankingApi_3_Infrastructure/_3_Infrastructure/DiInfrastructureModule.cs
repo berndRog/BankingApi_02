@@ -4,7 +4,7 @@ using BankingApi._2_Core.Customers._1_Ports.Outbound;
 using BankingApi._2_Core.Payments._1_Ports.Outbound;
 using BankingApi._3_Infrastructure._2_Persistence.Adapters;
 using BankingApi._3_Infrastructure._2_Persistence.Database;
-using BankingApi._3_Infrastructure._2_Persistence.ReadModel;
+using BankingApi._3_Infrastructure._2_Persistence.ReadModels;
 using BankingApi._3_Infrastructure._2_Persistence.Repositories;
 using BankingApi._3_Infrastructure._3_Security;
 using BankingApi._3_Infrastructure._5_Utils;

@@ -1,8 +1,7 @@
 using BankingApi._2_Core.BuildingBlocks._2_Application.Dtos;
 namespace BankingApi._2_Core.Customers._2_Application.Dtos;
 
-public sealed record 
-   CustomerCreateDto(
+public sealed record CustomerCreateDto(
    Guid Id,
    string Firstname,
    string Lastname,

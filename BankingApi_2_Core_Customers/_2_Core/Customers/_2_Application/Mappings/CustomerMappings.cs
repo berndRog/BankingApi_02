@@ -29,27 +29,20 @@ public static class CustomerMappings {
       AddressDto: customer.AddressVo.ToAddressDto()
    );
    
-   public static CustomerProvisionDto ToCustomerProvisionDto(this Customer customer, bool wasCreated) => new(
-      Id: customer.Id,
-      WasCreated: wasCreated
-   );
-
    public static CustomerDetailsDto ToCustomerDetailsDto(this Customer customer) => new(
       Id: customer.Id,
       Firstname: customer.Firstname,
       Lastname: customer.Lastname,
       CompanyName: customer.CompanyName,
+      Email: customer.EmailVo.Value,
       StatusInt: (int)customer.Status,
       ActivatedAt: customer.ActivatedAt?.ToString("O"),
       RejectedAt: customer.RejectedAt?.ToString("O"),
-      RejectCodeInt: (int)customer.CustomerRejectCode,
+      RejectCodeInt: (int)customer.RejectCode,
       AuditedByEmployeeId: customer.AuditedByEmployeeId,
       DeactivatedAt: customer.DeactivatedAt?.ToString("O"),
       DeactivatedByEmployeeId: customer.DeactivatedByEmployeeId,
-      Email: customer.EmailVo.Value,
       AddressDto: customer.AddressVo.ToAddressDto()
    );
-   
-
 
 }

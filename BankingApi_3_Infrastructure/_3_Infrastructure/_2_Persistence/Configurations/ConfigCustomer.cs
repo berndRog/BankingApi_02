@@ -12,27 +12,27 @@ public sealed class ConfigCustomer(
 
    public void Configure(EntityTypeBuilder<Customer> builder) {
       
-      // Tablename
+      // tablename
       builder.ToTable("Customers");
-
-      // Primary Key will never be generated
-      builder.HasKey(o => o.Id);
-      builder.Property(o => o.Id)
+      
+      // primary key
+      builder.HasKey(c => c.Id);
+      builder.Property(c => c.Id)
          .ValueGeneratedNever()
          .HasColumnName("Id").HasColumnOrder(0);
       
       // Profile data
-      builder.Property(o => o.Firstname)
+      builder.Property(c => c.Firstname)
          .HasMaxLength(80)
          .HasColumnName("Firstname").HasColumnOrder(1)
          .IsRequired(); 
       
-      builder.Property(o => o.Lastname)
+      builder.Property(c => c.Lastname)
          .HasMaxLength(80)
          .HasColumnName("Lastname").HasColumnOrder(2)
          .IsRequired();
       
-      builder.Property(o => o.CompanyName)
+      builder.Property(c => c.CompanyName)
          .HasMaxLength(80)
          .HasColumnName("CompanyName").HasColumnOrder(3)
          .IsRequired(false);
@@ -46,19 +46,19 @@ public sealed class ConfigCustomer(
       builder.HasIndex(c => c.EmailVo).IsUnique();
 
       // Status
-      builder.Property(o => o.Status)
-         .HasConversion<int>()
+      builder.Property(c => c.Status)
+         .HasConversion<int>()   
          .HasColumnName("Status").HasColumnOrder(5)
          .IsRequired();
       
-      builder.Property(o => o.Subject)
+      builder.Property(c => c.Subject)
          .HasMaxLength(200)
          .HasColumnName("Subject").HasColumnOrder(6)
          .IsRequired();
       builder.HasIndex(o => o.Subject).IsUnique();
       
       // Address (owned value object)
-      builder.OwnsOne(o => o.AddressVo, a => {
+      builder.OwnsOne(c => c.AddressVo, a => {
          
          a.Property(p => p.Street)
             .HasMaxLength(80)
@@ -80,54 +80,52 @@ public sealed class ConfigCustomer(
             .HasColumnName("Country").HasColumnOrder(10)
             .IsRequired(false);
       });
-      builder.Navigation(o => o.AddressVo).IsRequired();
+      builder.Navigation(c => c.AddressVo).IsRequired();
       
       // Employee decisions / audit facts
-      builder.Property(o => o.AuditedByEmployeeId)
+      builder.Property(c => c.AuditedByEmployeeId)
          .HasColumnName("AuditedByEmployeeId").HasColumnOrder(11)
          .IsRequired(false);
       
-      builder.Property(o => o.ActivatedAt)
+      builder.Property(c => c.ActivatedAt)
          .HasConversion(dtConvNul)
          .HasColumnName("ActivatedAt").HasColumnOrder(12)
          .IsRequired(false);
 
-      builder.Property(o => o.RejectedAt)
+      builder.Property(c => c.RejectedAt)
          .HasConversion(dtConvNul)
          .HasColumnName("RejectedAt").HasColumnOrder(13)
          .IsRequired(false);
 
-      builder.Property(o => o.CustomerRejectCode)
+      builder.Property(c => c.RejectCode)
          .HasConversion<int>()   
          .HasColumnName("RejectCode").HasColumnOrder(14)
          .IsRequired();
 
-      builder.Property(o => o.DeactivatedByEmployeeId)
+      builder.Property(c => c.DeactivatedByEmployeeId)
          .HasColumnName("DeactivatedByEmployeeId").HasColumnOrder(15)
          .IsRequired(false);
       
-      builder.Property(o => o.DeactivatedAt)
+      builder.Property(c => c.DeactivatedAt)
          .HasConversion(dtConvNul)
          .HasColumnName("DeactivatedAt").HasColumnOrder(16)
          .IsRequired(false);
       
       // Auditing timestamps
-      builder.Property(o => o.CreatedAt)
+      builder.Property(c => c.CreatedAt)
          .HasConversion(dtConv)
          .HasColumnName("CreatedAt").HasColumnOrder(17)
          .IsRequired();
-      
-      builder.Property(o => o.UpdatedAt)
+
+      builder.Property(c => c.UpdatedAt)
          .HasConversion(dtConv)
          .HasColumnName("UpdatedAt").HasColumnOrder(18)
          .IsRequired();
       
       // Domain-only
-      builder.Ignore(o => o.DisplayName);
-      builder.Ignore(o => o.IsActive);
-      builder.Ignore(o => o.IsProfileComplete);
-
-      // Optional indexes for admin filtering
-      builder.HasIndex(o => o.CreatedAt);
+      builder.Ignore(c => c.DisplayName);
+      builder.Ignore(c => c.IsActive);
+      builder.Ignore(c => c.IsProfileComplete);
+      
    }
 }

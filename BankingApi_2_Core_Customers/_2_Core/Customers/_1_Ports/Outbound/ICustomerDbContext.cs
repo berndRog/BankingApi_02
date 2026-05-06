@@ -1,5 +1,4 @@
 using BankingApi._2_Core.Customers._3_Domain.Entities;
-
 namespace BankingApi._2_Core.Customers._1_Ports.Outbound;
 
 // Database context abstraction used by the Customers module.

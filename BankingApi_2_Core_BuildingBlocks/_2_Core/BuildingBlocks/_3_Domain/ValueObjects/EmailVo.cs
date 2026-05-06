@@ -9,7 +9,7 @@ namespace BankingApi._2_Core.BuildingBlocks._3_Domain.ValueObjects;
 
 [ComplexType]
 public sealed record EmailVo {
-   
+
    //--- Properties ------------------------------------------------------------
    public string Value { get; private init; } 
    

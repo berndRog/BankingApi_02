@@ -19,10 +19,8 @@ internal class FakeEmployeeContractEf(
          Id: Guid.Parse("00000000-0002-0000-0000-000000000000"),
          AdminRightsInt: 511 // all AdminRights
       );
-
       
       return Result<EmployeeContractDto>.Success(employeeContractDto);
-      
    }
    
    public async Task<Result<EmployeeContractDto>> GetAuthorizedEmployeeAsync(
