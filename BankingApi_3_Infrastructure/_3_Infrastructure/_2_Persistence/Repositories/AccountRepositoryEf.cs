@@ -34,7 +34,7 @@ internal sealed class AccountRepositoryEf(
          .AnyAsync(ct);
    
    // Retrieves all accounts associated with a customer ID.
-   public async Task<IReadOnlyList<Account>> SelelctByCustomerIdAsync(
+   public async Task<IReadOnlyList<Account>> SelectByCustomerIdAsync(
       Guid customerId,
       CancellationToken ct = default
    ) => await accountDbContext.Accounts
@@ -52,15 +52,15 @@ internal sealed class AccountRepositoryEf(
 
    #region --- Child entity: Benficiary -----------------------------------------------------
    // Loads the Account Aggregate Root and all its Beneficiary child entities.
-   public async Task<Account?> FindAccountByIdWithBeneficiariesAsync(
+   public async Task<Account?> FindByIdWithBeneficiariesAsync(
       Guid accountId,
       CancellationToken ct = default
    ) => await accountDbContext.Accounts
       .Include(a => a.Beneficiaries)
       .FirstOrDefaultAsync(a => a.Id == accountId, ct);
-
+   
    // Loads the Account root and attach the specific Beneficiary we want to modify.
-   public async Task<Account?> FindAccountByWithBeneficiaryByIdAsync(
+   public async Task<Account?> FindByWithBeneficiaryByIdAsync(
       Guid accountId,
       Guid beneficiaryId,
       CancellationToken ct = default
@@ -68,21 +68,12 @@ internal sealed class AccountRepositoryEf(
       .Include(a => a.Beneficiaries.Where(b => b.Id == beneficiaryId))
       .FirstOrDefaultAsync(a => a.Id == accountId, ct);
 
-   public async Task<IReadOnlyList<Account>> SelelctAccountsByCustomerIdWithBeneficiariesAsync(
+   public async Task<IReadOnlyList<Account>> SelectByCustomerIdWithBeneficiariesAsync(
       Guid customerId, 
       CancellationToken ct = default
    )  => await accountDbContext.Accounts
       .Include(a => a.Beneficiaries)
       .Where(a => a.CustomerId == customerId)
       .ToListAsync(ct);
-   
-   public void Add(Beneficiary beneficiary)
-      => accountDbContext.Add(beneficiary);
-
-   public void AddRange(IEnumerable<Beneficiary> beneficiaries)
-      => accountDbContext.AddRange(beneficiaries);
-
-   public void Remove(Beneficiary beneficiary)
-      => accountDbContext.Remove(beneficiary);
    #endregion
 }

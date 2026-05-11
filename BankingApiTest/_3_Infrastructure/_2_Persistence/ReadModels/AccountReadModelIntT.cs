@@ -8,7 +8,7 @@ public sealed class AccountReadModelIntT : TestBaseIntegration {
 
    public AccountReadModelIntT() {
       DbName = nameof(AccountReadModelIntT);
-      DbMode = DbMode.FileUnique;
+      DbMode = DbMode.InMemory;
       SensitiveDataLogging = true;
    }
    

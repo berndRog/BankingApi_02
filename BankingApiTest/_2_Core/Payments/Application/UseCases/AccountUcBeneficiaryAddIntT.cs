@@ -40,7 +40,7 @@ public sealed class AccountUcBeneficiaryAddIntT : TestBaseIntegration {
 
       // Assert
       var actualAccount = 
-         await accountRepository.FindAccountByIdWithBeneficiariesAsync(account.Id, ct);
+         await accountRepository.FindByIdWithBeneficiariesAsync(account.Id, ct);
       NotNull(actualAccount);
       var actual = actualAccount.Beneficiaries
           .FirstOrDefault(b => b.Id == beneficiary.Id);

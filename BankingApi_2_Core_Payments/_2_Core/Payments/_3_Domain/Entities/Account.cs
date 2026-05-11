@@ -10,8 +10,8 @@ public sealed class Account : AggregateRoot {
    //--- Properties ------------------------------------------------------------
    // inherited from Entity + Aggregate root base class
    // public Guid Id { get; private set; } 
-   // public DateTimeOffset CreatedAt { get; private set; }
-   // public DateTimeOffset UpdatedAt { get; private set; }
+   // public DateTime CreatedAt { get; private set; }
+   // public DateTime UpdatedAt { get; private set; }
 
    // IBAN as a domain value object.
    public IbanVo IbanVo { get; private set; } = default!;
@@ -21,7 +21,7 @@ public sealed class Account : AggregateRoot {
 
    // Employee decisions (audit facts)
    public Guid? CreatedByEmployeeId { get; private set; }
-   public DateTimeOffset? DeactivatedAt { get; private set; } = null;
+   public DateTime? DeactivatedAt { get; private set; } = null;
    public Guid? DeactivatedByEmployeeId { get; private set; }
    
    public bool IsActive => DeactivatedAt == null;
@@ -61,7 +61,7 @@ public sealed class Account : AggregateRoot {
       MoneyVo balanceVo,
       Guid customerId,
       Guid createdByEmployeeId,
-      DateTimeOffset createdAt,
+      DateTime createdAt,
       string? id = null
    ) {
       // invariant: customerId must be valid
@@ -98,7 +98,7 @@ public sealed class Account : AggregateRoot {
    // Employee deactivates the customer (end customer relationship).
    public Result Deactivate(
       Guid deactivatedByEmployeeId,
-      DateTimeOffset deactivatedAt
+      DateTime deactivatedAt
    ) {
       if (deactivatedAt == default)
          return Result.Failure(CommonErrors.TimestampIsRequired);
@@ -108,6 +108,9 @@ public sealed class Account : AggregateRoot {
       
       DeactivatedAt = deactivatedAt;
       DeactivatedByEmployeeId = deactivatedByEmployeeId;
+      
+      // delete all beneficiaries when deactivated
+      _beneficiaries.Clear();
 
       Touch(deactivatedAt);
       return Result.Success();
@@ -118,7 +121,7 @@ public sealed class Account : AggregateRoot {
    // Story 3.1: add a beneficiary to THIS account
    public Result<Beneficiary> AddBeneficiary(
       Beneficiary beneficiary,
-      DateTimeOffset updatedAt
+      DateTime updatedAt
    ) {
       // check for duplicate IBANs
       if (_beneficiaries.Any(b => b.IbanVo.Equals(beneficiary.IbanVo)))
@@ -142,7 +145,7 @@ public sealed class Account : AggregateRoot {
 
    public Result<Guid> RemoveBeneficiary(
       Guid beneficiaryId,
-      DateTimeOffset updatedAt
+      DateTime updatedAt
    ) {
       if (beneficiaryId == Guid.Empty)
          return Result<Guid>.Failure(BeneficiaryErrors.InvalidId);

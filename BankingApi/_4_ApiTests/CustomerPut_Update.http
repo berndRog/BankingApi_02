@@ -1,21 +1,16 @@
 @baseUrl = https://localhost:8010/banking/v2
 
 ###
-# @name Update customer1
 PUT {{baseUrl}}/customers/10000000-0000-0000-0000-000000000000
 Content-Type: application/json
 Accept: application/json
 
 {
-  "lastname": "Meier",
-  "companyName": "Hardware Meier",
-  "email": "erika.meier@vodafonemail.de",
+  "email": "erika.mustermann@freenet.de",
   "addressDto": {
-    "street": "Am Berge 2",
-    "postalCode": "29389",
-    "city": "Bad Bodenteich",
+    "street": "Hannoverschen Str. 123",
+    "postalCode": "30826",
+    "city": "Garbsen",
     "country": "DE"
   }
 }
-
-

@@ -1,7 +1,0 @@
-@baseUrl = https://localhost:8010/banking/v2
-
-###
-# @name Deactivated customer1
-PATCH {{baseUrl}}/customers/10000000-0000-0000-0000-000000000000/deactivate
-
-

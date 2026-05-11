@@ -124,9 +124,7 @@ public sealed class BeneficiariesController(
             accountId,
             beneficiaryId = result.IsSuccess ? result.Value.Id : Guid.Empty
          },
-         result,
-         logger,
-         context
+         result, logger, context
       );
    }
    

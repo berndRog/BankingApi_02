@@ -22,7 +22,7 @@ internal sealed class AccountUcBeneficiaryRemove(
    ) {
       // 1) Find account with beneficiaries
       var account = 
-         await accountRepository.FindAccountByIdWithBeneficiariesAsync(accountId, ct);
+         await accountRepository.FindByIdWithBeneficiariesAsync(accountId, ct);
       if (account is null) 
          return Result.Failure(BeneficiaryErrors.AccountNotFound);
       

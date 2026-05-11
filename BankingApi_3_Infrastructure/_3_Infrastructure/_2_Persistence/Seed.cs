@@ -405,7 +405,7 @@ public sealed class Seed(
    private void AddBeneficaryToAccount(
       Account account,
       Beneficiary beneficiary,
-      DateTimeOffset createdAt
+      DateTime createdAt
    ) {
       account.AddBeneficiary(beneficiary, createdAt);
       _beneficiaries.Add(beneficiary);
@@ -500,7 +500,7 @@ public sealed class Seed(
    ) {
       
       var bookedAt = bookedAtString is not null
-         ? DateTimeOffset.Parse(bookedAtString, null, DateTimeStyles.AdjustToUniversal)
+         ? DateTime.Parse(bookedAtString, null, DateTimeStyles.AdjustToUniversal)
          : clock.UtcNow;
       
       var creditAccountIbanVo = IbanVo.Create(creditAccountIban).GetValueOrThrow();

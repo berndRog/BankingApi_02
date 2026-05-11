@@ -24,10 +24,10 @@ public sealed class IdentityGatewayHttpContext(
       ?? throw new InvalidOperationException("Missing claim: preferred_username");
 
    // Optional creation timestamp of the identity.
-   public DateTimeOffset CreatedAt {
+   public DateTime CreatedAt {
       get {
          var v = User?.FindFirstValue(IdentityClaims.CreatedAt);
-         return DateTimeOffset.TryParse(v, out var dt) 
+         return DateTime.TryParse(v, out var dt) 
             ? dt 
             : throw new InvalidOperationException("Missing claim: created_at");
          

@@ -10,8 +10,8 @@ public sealed class Customer : AggregateRoot {
    //--- properties ------------------------------------------------------------
    // inherited from Entity + Aggregate root base class
    // public Guid Id { get; private set; } 
-   // public DateTimeOffset CreatedAt { get; private set; }
-   // public DateTimeOffset UpdatedAt { get; private set; }
+   // public DateTime CreatedAt { get; private set; }
+   // public DateTime UpdatedAt { get; private set; }
    public string Firstname { get; private set; } = string.Empty;
    public string Lastname { get; private set; } = string.Empty;
    public string? CompanyName { get; private set; }
@@ -32,12 +32,12 @@ public sealed class Customer : AggregateRoot {
    public AddressVo AddressVo { get; private set; } = default!; 
    
    // Employee decisions (audit facts)
-   public DateTimeOffset? ActivatedAt { get; private set; }
-   public DateTimeOffset? RejectedAt { get; private set; }
+   public DateTime? ActivatedAt { get; private set; }
+   public DateTime? RejectedAt { get; private set; }
    public CustomerRejectCode RejectCode { get; private set; }
    public Guid? AuditedByEmployeeId { get; private set; }
 
-   public DateTimeOffset? DeactivatedAt { get; private set; }
+   public DateTime? DeactivatedAt { get; private set; }
    public Guid? DeactivatedByEmployeeId { get; private set; }
 
    // Derived state (read convenience, not persisted)
@@ -87,7 +87,7 @@ public sealed class Customer : AggregateRoot {
       string subject,
       EmailVo emailVo,
       AddressVo addressVo,
-      DateTimeOffset createdAt = default!,
+      DateTime createdAt = default!,
       string? id = null
    ) {
       // Normalize inputs early
@@ -140,7 +140,7 @@ public sealed class Customer : AggregateRoot {
    // Activation is only possible if the customer is Pending and profile is complete.
    public Result Activate(
       Guid auditeddByEmployeeId,
-      DateTimeOffset activatedAt
+      DateTime activatedAt
    ) {
       if (activatedAt == default)
          return Result.Failure(CommonErrors.TimestampIsRequired);
@@ -169,7 +169,7 @@ public sealed class Customer : AggregateRoot {
    // Employee deactivates the customer (end customer relationship).
    public Result Deactivate(
       Guid deactivatedByEmployeeId,
-      DateTimeOffset deactivatedAt
+      DateTime deactivatedAt
    ) {
       if (deactivatedAt == default)
          return Result.Failure(CommonErrors.TimestampIsRequired);
@@ -195,7 +195,7 @@ public sealed class Customer : AggregateRoot {
       string? companyName = null,
       EmailVo? emailVo = null,
       AddressVo? addressVo = null,
-      DateTimeOffset updatedAt = default
+      DateTime updatedAt = default
    ) {
       if (updatedAt == default)
          return Result<Customer>.Failure(CommonErrors.TimestampIsRequired);

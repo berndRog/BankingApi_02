@@ -18,24 +18,22 @@ internal sealed class AccountUcBeneficiaryAdd(
    IClock clock,
    ILogger<AccountUcBeneficiaryAdd> logger
 ) {
-   
    public async Task<Result<BeneficiaryDto>> ExecuteAsync(
       Guid accountId,
       BeneficiaryDto beneficiaryDto,
       CancellationToken ct = default
    ) {
       // 1) Load account with beneficiaries
-      var account = await accountRepository.FindAccountByIdWithBeneficiariesAsync(accountId, ct);
-      if (account is null) 
+      var account = await accountRepository.FindByIdWithBeneficiariesAsync(accountId, ct);
+      if (account is null)
          return Result<BeneficiaryDto>.Failure(BeneficiaryErrors.AccountNotFound);
-      
+
       // 2) Domain Model
       // create IbanVo
       var resultIban = IbanVo.Create(beneficiaryDto.Iban);
-      if (resultIban.IsFailure) 
+      if (resultIban.IsFailure)
          return Result<BeneficiaryDto>.Failure(BeneficiaryErrors.InvalidIban);
       var ibanVo = resultIban.Value;
-      
       // Create a new beneficiary
       var resultBeneficiary = Beneficiary.Create(
          accountId: accountId,
@@ -45,16 +43,16 @@ internal sealed class AccountUcBeneficiaryAdd(
       );
       if (resultBeneficiary.IsFailure)
          return Result<BeneficiaryDto>.Failure(resultBeneficiary.Error);
-      
+
       // Add beneficiary to account
       var result = account.AddBeneficiary(
-         beneficiary:   resultBeneficiary.Value,
+         beneficiary: resultBeneficiary.Value,
          updatedAt: clock.UtcNow
       );
-      if (result.IsFailure) 
+      if (result.IsFailure)
          return Result<BeneficiaryDto>.Failure(result.Error);
       var beneficiary = result.Value;
-      
+
       // 3) Unit of work, save changes to database
       var savedRows = await unitOfWork.SaveAllChangesAsync("Add beneficiary to account", ct);
 

@@ -57,7 +57,7 @@ public sealed class CustomerUcCreateIntT : TestBaseIntegration {
       Equal(customer.Subject, actualCustomer.Subject);
       Equal(customer.AddressVo, actualCustomer.AddressVo);
       
-      var actualAccounts = await accountRepository.SelelctByCustomerIdAsync(customer.Id, ct);
+      var actualAccounts = await accountRepository.SelectByCustomerIdAsync(customer.Id, ct);
       NotNull(actualAccounts);
       Single(actualAccounts);
       var actualAccount = actualAccounts.First();

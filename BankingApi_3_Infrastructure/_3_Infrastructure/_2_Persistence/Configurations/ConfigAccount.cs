@@ -1,13 +1,10 @@
 using BankingApi._2_Core.Payments._3_Domain.Entities;
 using BankingApi._2_Core.Payments._3_Domain.ValueObjects;
-using BankingApi._3_Infrastructure._2_Persistence.Database.Converter;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace BankingApi._3_Infrastructure._2_Persistence.Configurations;
 
-internal sealed class ConfigAccount(
-   DateTimeOffsetToIsoStringConverter dtConv
-) : IEntityTypeConfiguration<Account> {
+internal sealed class ConfigAccount : IEntityTypeConfiguration<Account> {
 
    public void Configure(EntityTypeBuilder<Account> builder) {
       builder.ToTable("Accounts");
@@ -30,8 +27,7 @@ internal sealed class ConfigAccount(
       
       builder.Property(a => a.Id)
          .ValueGeneratedNever()
-         .HasColumnName("Id")
-         .HasColumnOrder(0);
+         .HasColumnName("Id") .HasColumnOrder(0);
 
       builder.Property(a => a.IbanVo)
          .HasConversion(vo => vo.Value, s => IbanVo.FromPersisted(s))
@@ -42,52 +38,40 @@ internal sealed class ConfigAccount(
 
       builder.ComplexProperty(a => a.BalanceVo, money => {
          money.Property(m => m.Amount)
-            .HasColumnName("Balance")
-            .HasColumnOrder(2)
             .HasPrecision(18, 2)
+            .HasColumnName("Balance").HasColumnOrder(2)
             .IsRequired();
 
          money.Property(m => m.Currency)
-            .HasColumnName("Currency")
-            .HasColumnOrder(3)
             .HasConversion<string>()
             .HasMaxLength(3)
+            .HasColumnName("Currency").HasColumnOrder(3)
             .IsRequired();
       });
       
-
       builder.Property(a => a.CustomerId)
-         .HasColumnName("CustomerId")
-         .HasColumnOrder(4)
+         .HasColumnName("CustomerId").HasColumnOrder(4)
          .IsRequired();
 
       // audit fields
       builder.Property(o => o.CreatedByEmployeeId)
-         .HasColumnName("CreatedByEmployeeId")
-         .HasColumnOrder(5)
+         .HasColumnName("CreatedByEmployeeId").HasColumnOrder(5)
          .IsRequired(false);
 
       builder.Property(o => o.DeactivatedByEmployeeId)
-         .HasColumnName("DeactivatedByEmployeeId")
-         .HasColumnOrder(6)
+         .HasColumnName("DeactivatedByEmployeeId").HasColumnOrder(6)
          .IsRequired(false);
       
       builder.Property(a => a.DeactivatedAt)
-         .HasConversion(dtConv)
-         .HasColumnName("DeactivatedAt")
-         .HasColumnOrder(7)
+         .HasColumnName("DeactivatedAt").HasColumnOrder(7)
          .IsRequired(false);
 
       builder.Property(a => a.CreatedAt)
-         .HasColumnName("CreatedAt")
-         .HasColumnOrder(8)
-         .HasConversion(dtConv)
+         .HasColumnName("CreatedAt").HasColumnOrder(8)
          .IsRequired();
 
       builder.Property(a => a.UpdatedAt)
-         .HasConversion(dtConv)
-         .HasColumnName("UpdatedAt")
-         .HasColumnOrder(9)
+         .HasColumnName("UpdatedAt").HasColumnOrder(9)
          .IsRequired();
 
       // Domain-only

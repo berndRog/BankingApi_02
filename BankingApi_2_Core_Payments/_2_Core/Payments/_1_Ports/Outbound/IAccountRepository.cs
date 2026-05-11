@@ -28,7 +28,7 @@ public interface IAccountRepository {
    );
 
    // Load all accounts for a customer
-   Task<IReadOnlyList<Account>> SelelctByCustomerIdAsync(
+   Task<IReadOnlyList<Account>> SelectByCustomerIdAsync(
       Guid customerId,
       CancellationToken ct = default
    );
@@ -39,30 +39,15 @@ public interface IAccountRepository {
    
    //---- Child Entity: Beneficiary --------------------------------------------      
    // Loads the Account Aggregate Root and all its Beneficiary child entities.
-   Task<Account?> FindAccountByIdWithBeneficiariesAsync(
+   Task<Account?> FindByIdWithBeneficiariesAsync(
       Guid accountId,
-      CancellationToken ct = default
-   );
-   
-   // Loads the Account root and attach the specific Beneficiary we want to modify.ficiary
-   Task<Account?> FindAccountByWithBeneficiaryByIdAsync (
-      Guid accountId,
-      Guid beneficiaryId,
       CancellationToken ct = default
    );
    
    // Load all accounts for a customer with beneficiaries
-   Task<IReadOnlyList<Account>> SelelctAccountsByCustomerIdWithBeneficiariesAsync(
+   Task<IReadOnlyList<Account>> SelectByCustomerIdWithBeneficiariesAsync(
       Guid customerId,
       CancellationToken ct = default
    );
-
-   // Add Beneficiary as added in the tracker
-   void Add(Beneficiary beneficiary);
-   void AddRange(IEnumerable<Beneficiary> beneficiaries);
-
-   // Remove a beneficiary from the persistence context
-   void Remove(Beneficiary beneficiary);
-   
    
 }

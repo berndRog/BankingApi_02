@@ -1,0 +1,20 @@
+import EmployeePost.http
+import CustomerPost.http
+import AccountPost.http
+import BeneficiaryPost.http
+import TransferSendMoney.http
+
+###
+### run EmployeePost.http
+
+###
+run CustomerPost_Create.http
+
+###
+run AccountPost_Create.http
+
+###
+run BeneficiaryPost_Create.http
+
+###
+### run TransferSendMoney.http

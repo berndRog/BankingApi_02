@@ -51,7 +51,7 @@ public static class DiInfrastructureModule {
       services.AddScoped<IIdentityGateway>(_ => new FakeIdentityGateway(
          subject: "11111111-0002-0000-0000-000000000000",
          username: "w.wagner@banking.de",
-         createdAt: DateTimeOffset.UtcNow,
+         createdAt: DateTime.UtcNow,
          adminRights: 511
       ));
       

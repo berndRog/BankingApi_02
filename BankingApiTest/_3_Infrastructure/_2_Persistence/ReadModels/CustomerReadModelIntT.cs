@@ -6,6 +6,12 @@ using Microsoft.Extensions.DependencyInjection;
 namespace BankingApiTest._3_Infrastructure._2_Persistence.ReadModels;
 public sealed class CustomerReadModelIntT : TestBaseIntegration {
 
+   public CustomerReadModelIntT() {
+      DbName = nameof(CustomerReadModelIntT);
+      DbMode = DbMode.InMemory;
+      SensitiveDataLogging = true;
+   }
+   
    [Fact]
    public async Task FindByIdAsync_ok() {
       using var scope = Root.CreateDefaultScope();

@@ -115,18 +115,10 @@ internal class AccountContractEf(
       
       // 2) Load all accounts with beneficiaries for a given customer
       var accounts = 
-         await accountRepository.SelelctAccountsByCustomerIdWithBeneficiariesAsync(customerId, ct);
+         await accountRepository.SelectByCustomerIdWithBeneficiariesAsync(customerId, ct);
       
-      // 3) Delete beneficiaries first and then the accounts 
+      // 3) Deactive account and delete beneficiaries  
       foreach(var account in accounts) {
-         // delete all beneficiaries in account and database
-         var snapShot = account.Beneficiaries.ToList(); // create copy to avoid modification during iteration
-         foreach (var beneficiary in snapShot) {
-            var resultBeneficiary = account.RemoveBeneficiary(beneficiary.Id, clock.UtcNow);
-            if(resultBeneficiary.IsFailure)
-               return Result.Failure(resultBeneficiary.Error);
-            accountRepository.Remove(beneficiary); 
-         }
          // deactivate account
          account.Deactivate(
             deactivatedByEmployeeId: employeeContractDto.Id, 

@@ -64,7 +64,7 @@ public sealed class CustomerUcDeactivateIntT : TestBaseIntegration {
       Equal(customer.Subject, actualCustomer.Subject);
       Equal(customer.AddressVo, actualCustomer.AddressVo);
       
-      var actualAccounts = await accountRepository.SelelctByCustomerIdAsync(customer.Id, ct);
+      var actualAccounts = await accountRepository.SelectByCustomerIdAsync(customer.Id, ct);
       NotNull(actualAccounts);
       Single(actualAccounts);
       var actualAccount = actualAccounts.First();
@@ -110,7 +110,7 @@ public sealed class CustomerUcDeactivateIntT : TestBaseIntegration {
       False(actualCustomer.IsActive);
       
       var actualAccounts = await accountRepository
-         .SelelctAccountsByCustomerIdWithBeneficiariesAsync(actualCustomer.Id, ct);
+         .SelectByCustomerIdWithBeneficiariesAsync(customer.Id, ct);
       NotNull(actualAccounts);
       Equal(2, actualAccounts.Count);
       

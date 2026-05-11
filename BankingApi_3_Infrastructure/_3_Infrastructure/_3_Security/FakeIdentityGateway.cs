@@ -4,13 +4,13 @@ namespace BankingApi._3_Infrastructure._3_Security;
 public sealed class FakeIdentityGateway : IIdentityGateway {
    public string Subject { get; }
    public string Username { get; }
-   public DateTimeOffset CreatedAt { get; }
+   public DateTime CreatedAt { get; }
    public int AdminRights { get; }
 
    public FakeIdentityGateway(
       string subject,
       string username,
-      DateTimeOffset createdAt,
+      DateTime createdAt,
       int? adminRights = null
    ) {
       Subject = subject;

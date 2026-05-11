@@ -9,10 +9,10 @@ namespace BankingApi._2_Core.BuildingBlocks._3_Domain.Entities;
 public abstract class AggregateRoot : Entity {
 
    // Timestamp when the aggregate was created (Should only be set once).
-   public DateTimeOffset CreatedAt { get; protected set; }
+   public DateTime CreatedAt { get; protected set; }
 
    // Timestamp of the last modification of the aggregate (Updated on every state change).
-   public DateTimeOffset UpdatedAt { get; protected set; }
+   public DateTime UpdatedAt { get; protected set; }
 
    // Ctor injection of time provider.
    // - No direct dependency on system clock.
@@ -21,7 +21,7 @@ public abstract class AggregateRoot : Entity {
    
    // Explicitly sets the creation timestamp.
    // Guard: CreatedAt must not be default.
-   protected void Initialize(DateTimeOffset createdAt) {
+   protected void Initialize(DateTime createdAt) {
       if (createdAt == default)
          throw new ArgumentException("createdAt must be set.", nameof(createdAt));
 
@@ -30,7 +30,7 @@ public abstract class AggregateRoot : Entity {
    }
    
    // Updates the modification timestamp.
-   protected void Touch(DateTimeOffset updatedAt) =>
+   protected void Touch(DateTime updatedAt) =>
       UpdatedAt = updatedAt;
 
    // OPTIONAL EXTENSIONS (not implemented – shown for architectural evolution)
@@ -86,7 +86,7 @@ DIDAKTIK UND LERNZIELE (Aggregate Root – Minimalversion)
    - AggregateRoot: Einstiegspunkt eines Konsistenzbereichs (Consistency Boundary).
 
 2. Zeit als Abhängigkeit modellieren
-   - Kein direkter Zugriff auf DateTimeOffset.UtcNow.
+   - Kein direkter Zugriff auf DateTime.UtcNow.
    - Verwendung eines IClock abstrahiert Infrastruktur.
    - Ermöglicht deterministische Unit Tests.
 

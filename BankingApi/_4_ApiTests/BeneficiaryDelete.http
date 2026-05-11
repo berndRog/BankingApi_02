@@ -1,0 +1,8 @@
+@baseUrl = https://localhost:8010/banking/v2
+
+###
+### Deletes beneficiary1
+DELETE {{baseUrl}}/accounts/02000000-0000-0000-0000-000000000000/beneficiaries/00300000-0000-0000-0000-000000000000
+
+
+

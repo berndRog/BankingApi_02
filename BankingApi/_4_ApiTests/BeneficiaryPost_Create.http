@@ -1,17 +1,19 @@
 @baseUrl = https://localhost:8010/banking/v2
 
 ###
-# @name Post beneficiary1
+### POST beneficiary1
 POST {{baseUrl}}/accounts/01000000-0000-0000-0000-000000000000/beneficiaries
 Content-Type: application/json
 Accept: application/json
 
 {
-  "id": "00100000-0000-0000-0000-000000000000",
-  "name": "CC Consulting GmbH",
-  "iban": "DE50 1000 0000 0000 0000 01"
+    "id": "00100000-0000-0000-0000-000000000000",
+    "name": "CC Consulting GmbH",
+    "iban": "DE50 1000 0000 0000 0000 01",
+    "accountId": "01000000-0000-0000-0000-000000000000"
 }
 
+###
 ###
 # @name Post beneficiary2
 POST {{baseUrl}}/accounts/01000000-0000-0000-0000-000000000000/beneficiaries
@@ -21,7 +23,8 @@ Accept: application/json
 {
   "id": "00200000-0000-0000-0000-000000000000",
   "name": "CC Consulting GmbH",
-  "iban": "DE50 2000 0000 0000 0000 60"
+  "iban": "DE50 2000 0000 0000 0000 60",
+  "accountId": "01000000-0000-0000-0000-000000000000"
 }
 
 ###
@@ -33,7 +36,8 @@ Accept: application/json
 {
   "id": "00300000-0000-0000-0000-000000000000",
   "name": "Arne Arndt",
-  "iban": "DE30 1000 0000 0000 0000 70"
+  "iban": "DE30 1000 0000 0000 0000 70",
+  "accountId": "02000000-0000-0000-0000-000000000000"
 }
 
 ###
@@ -45,7 +49,8 @@ Accept: application/json
 {
   "id": "00400000-0000-0000-0000-000000000000",
   "name": "Benno Bauer",
-  "iban": "DE40 1000 0000 0000 0000 84"
+  "iban": "DE40 1000 0000 0000 0000 84",
+  "accountId": "02000000-0000-0000-0000-000000000000"
 }
 
 ###
@@ -57,7 +62,8 @@ Accept: application/json
 {
   "id": "00500000-0000-0000-0000-000000000000",
   "name": "Arne Arndt",
-  "iban": "DE30 1000 0000 0000 0000 70"
+  "iban": "DE30 1000 0000 0000 0000 70",
+  "accountId": "03000000-0000-0000-0000-000000000000"
 }
 
 ###
@@ -69,7 +75,8 @@ Accept: application/json
 {
   "id": "00600000-0000-0000-0000-000000000000",
   "name": "Benno Bauer",
-  "iban": "DE40 1000 0000 0000 0000 84"
+  "iban": "DE40 1000 0000 0000 0000 84",
+  "accountId": "02000000-0000-0000-0000-000000000000"
 }
 
 ###
@@ -81,7 +88,8 @@ Accept: application/json
 {
   "id": "00700000-0000-0000-0000-000000000000",
   "name": "Dana Deppe",
-  "iban": "DE60 1000 0000 0000 0000 15"
+  "iban": "DE60 1000 0000 0000 0000 15",
+  "accountId": "03000000-0000-0000-0000-000000000000"
 }
 
 ###
@@ -93,7 +101,8 @@ Accept: application/json
 {
   "id": "00800000-0000-0000-0000-000000000000",
   "name": "Max Mustermann",
-  "iban": "DE20 1000 0000 0000 0000 56"
+  "iban": "DE20 1000 0000 0000 0000 56",
+  "accountId": "04000000-0000-0000-0000-000000000000"
 }
 
 ###
@@ -105,7 +114,8 @@ Accept: application/json
 {
   "id": "00900000-0000-0000-0000-000000000000",
   "name": "Christine Conrad",
-  "iban": "DE50 2000 0000 0000 0000 60"
+  "iban": "DE50 2000 0000 0000 0000 60",
+  "accountId": "04000000-0000-0000-0000-000000000000"
 }
 
 ###
@@ -117,7 +127,8 @@ Accept: application/json
 {
   "id": "01000000-0000-0000-0000-000000000000",
   "name": "Erika Mustermann",
-  "iban": "DE10 1000 0000 0000 0000 42"
+  "iban": "DE10 1000 0000 0000 0000 42",
+  "accountId": "05000000-0000-0000-0000-000000000000"
 }
 
 ###
@@ -129,5 +140,6 @@ Accept: application/json
 {
   "id": "01100000-0000-0000-0000-000000000000",
   "name": "Erika Mustermann",
-  "iban": "DE10 2000 0000 0000 0000 04"
+  "iban": "DE10 2000 0000 0000 0000 04",
+  "accountId": "05000000-0000-0000-0000-000000000000"
 }

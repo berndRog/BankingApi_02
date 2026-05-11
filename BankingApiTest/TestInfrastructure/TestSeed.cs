@@ -7,14 +7,14 @@ namespace BankingApiTest.TestInfrastructure;
 
 public sealed class TestSeed {
    
-   private DateTimeOffset _utcNow;
+   private DateTime _utcNow;
    private IClock _clock;
    private Seed _seed;
    
    public IClock Clock => _clock;
 
    public TestSeed() {
-      _utcNow = DateTimeOffset.Parse("2025-01-01T00:00:00Z");
+      _utcNow = DateTime.Parse("2025-01-01T00:00:00Z").ToUniversalTime();
       _clock = new FakeClock(_utcNow);
       _seed = new Seed(_clock);
    }

@@ -1,7 +1,6 @@
 @baseUrl = https://localhost:8010/banking/v2
 
 ###
-# @name Create customer1
 POST {{baseUrl}}/customers
 Content-Type: application/json
 Accept: application/json
@@ -24,8 +23,9 @@ Accept: application/json
   "balance": 2100.0
 }
 
+
 ###
-# @name Create customer2
+# @name Post customer2
 POST {{baseUrl}}/customers
 Content-Type: application/json
 Accept: application/json
@@ -49,7 +49,7 @@ Accept: application/json
 }
 
 ###
-# @name Create customer3
+# @name Post customer3
 POST {{baseUrl}}/customers
 Content-Type: application/json
 Accept: application/json
@@ -72,7 +72,7 @@ Accept: application/json
 }
 
 ###
-# @name Create customer4
+# @name Post customer4
 POST {{baseUrl}}/customers
 Content-Type: application/json
 Accept: application/json
@@ -95,7 +95,7 @@ Accept: application/json
 }
 
 ###
-# @name Create customer5
+# @name Post customer5
 POST {{baseUrl}}/customers
 Content-Type: application/json
 Accept: application/json
@@ -119,7 +119,7 @@ Accept: application/json
 }
 
 ###
-# @name Create customer6
+# @name Post customer6
 POST {{baseUrl}}/customers
 Content-Type: application/json
 Accept: application/json
@@ -140,3 +140,4 @@ Accept: application/json
   "iban": "DE60 1000 0000 0000 0000 15",
   "balance": 4300.0
 }
+
